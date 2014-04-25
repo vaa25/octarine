@@ -1,0 +1,49 @@
+package info.dejv.octarine.model.chunk;
+
+import info.dejv.octarine.model.AbstractObservable;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
+/**
+ *
+ * <br/>
+ * Author: dejv (www.dejv.info)
+ */
+public class Coords2D
+        extends AbstractObservable {
+
+    private final DoubleProperty x = new SimpleDoubleProperty(0.0d);
+    private final DoubleProperty y = new SimpleDoubleProperty(0.0d);
+
+
+    public Coords2D() {
+
+    }
+
+
+    public Coords2D(double initialX, double initialY) {
+        set(initialX, initialY);
+    }
+
+
+    public DoubleProperty getX() {
+        return x;
+    }
+
+    public void setX(double newX) {
+        this.x.set(newX);
+    }
+
+    public DoubleProperty getY() {
+        return y;
+    }
+
+    public void setY(double newY) {
+        this.y.set(newY);
+    }
+
+    public final void set(double newX, double newY) {
+        setX(newX);
+        setY(newY);
+    }
+}
