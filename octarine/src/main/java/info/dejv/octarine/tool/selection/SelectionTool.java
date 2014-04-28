@@ -10,16 +10,17 @@ import info.dejv.octarine.tool.selection.editmode.EditModeDelete;
 import info.dejv.octarine.tool.selection.editmode.EditModeRotate;
 import info.dejv.octarine.tool.selection.editmode.EditModeScale;
 import info.dejv.octarine.tool.selection.editmode.EditModeTranslate;
-import info.dejv.octarine.utils.ControllerUtils;
-import info.dejv.octarine.utils.FeedbackFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 import org.slf4j.Logger;
@@ -30,6 +31,7 @@ public class SelectionTool
         implements Tool, SelectionChangeListener, ExclusivityCoordinator {
 
     private static final Logger LOG = LoggerFactory.getLogger(SelectionTool.class);
+    private static final double SELECTION_BOX_OFFSET = 4.0;
     private final List<Double> DASH_ARRAY_MULTI_OUTLINE = Arrays.asList(7.0d, 5.0d);
 
     private final Map<Controller, Shape> selectionOutlines = new HashMap<>();
@@ -130,7 +132,7 @@ public class SelectionTool
         selectionOutlines.clear();
 
         selection.stream().forEach(controller -> {
-            Shape outline = format(ControllerUtils.getShape(controller), "[" + controller.getId() + "] Selection Outline");
+            Shape outline = createSelectionBox(controller.getView(), "[" + controller.getId() + "] Selection box");
             selectionOutlines.put(controller, outline);
             octarine.getFeedback().add(outline);
             LOG.trace("Added outline: {}", outline.getId());
@@ -179,52 +181,35 @@ public class SelectionTool
     }
 
 
-    private Shape format(Shape outline, String id) {
-        outline = FeedbackFormatter.grow(outline, 1.0d);
-        outline.setMouseTransparent(true);
-        outline.setFill(null);
-        outline.setSmooth(false);
-        outline.setStrokeWidth(2.0d);
-        outline.setStrokeType(StrokeType.OUTSIDE);
-        outline.getStrokeDashArray().addAll(DASH_ARRAY_MULTI_OUTLINE);
-        outline.setStroke(OctarineProps.getInstance().getStaticFeedbackColor());
-        outline.setId(id);
+    private Rectangle createSelectionBox(Node view, String id) {
+        Rectangle box = new Rectangle();
+        box.setMouseTransparent(true);
+        box.setFill(null);
+        box.setSmooth(false);
+        box.setStrokeWidth(2.0d);
+        box.setStrokeType(StrokeType.OUTSIDE);
+        box.getStrokeDashArray().addAll(DASH_ARRAY_MULTI_OUTLINE);
+        box.setStroke(OctarineProps.getInstance().getStaticFeedbackColor());
+        box.setId(id);
 
-        return outline;
+        view.boundsInParentProperty().addListener((ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) -> {
+            updateSelectionBoxCoords(box, newValue);
+        });
+
+        updateSelectionBoxCoords(box, view.getBoundsInParent());
+        return box;
     }
 
 
-//    private void updateBoundBox() {
-//        if (editor.getFeedback().contains(selectionBoundingBox)) {
-//            editor.getFeedback().remove(selectionBoundingBox);
-//        }
-//
-//        if (selectionOutlines.isEmpty()) {
-//            return;
-//        }
-//
-//        Rectangle2D r = null;
-//        for (Shape s : selectionOutlines.values()) {
-//            Rectangle2D rs = Conversions.toRectangle(s.getBoundsInParent());
-//
-//            if (r == null) {
-//                r = rs;
-//            } else {
-//                r = r.union(rs);
-//            }
-//        }
-//
-//        assert r != null : "[r] shouldn't be null at this point";
-//
-//        //TODO: Remove
-//        selectionBoundingBox.setX(r.getMin().getX());
-//        selectionBoundingBox.setY(r.getMin().getY());
-//        selectionBoundingBox.setWidth(r.getWidth());
-//        selectionBoundingBox.setHeight(r.getHeight());
-//        //editor.getFeedback().add(selectionBoundingBox);
-//    }
-    public Octarine getEditor() {
+    public Octarine getOctarine() {
         return octarine;
     }
 
+
+    private static void updateSelectionBoxCoords(Rectangle r, Bounds viewBounds) {
+        r.setX(viewBounds.getMinX() - SELECTION_BOX_OFFSET);
+        r.setY(viewBounds.getMinY() - SELECTION_BOX_OFFSET);
+        r.setWidth(viewBounds.getWidth() + 2 * SELECTION_BOX_OFFSET);
+        r.setHeight(viewBounds.getHeight() + 2 * SELECTION_BOX_OFFSET);
+    }
 }
