@@ -6,6 +6,7 @@ import info.dejv.octarine.controller.AbstractContainerController;
 import info.dejv.octarine.demo.model.ShapeContainer;
 import info.dejv.octarine.model.ModelElement;
 import info.dejv.octarine.model.chunk.Dimension2D;
+import info.dejv.octarine.request.handler.DeleteRequestHandler;
 import info.dejv.octarine.tool.selection.SelectionTool;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -24,6 +25,8 @@ public class ShapeContainerController
     public ShapeContainerController(final Octarine octarine, final ShapeContainer model) {
         super(model, null, new DemoControllerFactory());
         this.octarine = octarine;
+
+        requestHandlers.add(new DeleteRequestHandler(this));
 
         actionHandlers.add(new ContainerSelectionHandler<>(SelectionTool.class, this, octarine.getLayerManager().getAllLayers()));
     }

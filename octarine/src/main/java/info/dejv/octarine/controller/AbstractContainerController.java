@@ -2,7 +2,6 @@ package info.dejv.octarine.controller;
 
 import info.dejv.octarine.model.ContainerModelElement;
 import info.dejv.octarine.model.ModelElement;
-import info.dejv.octarine.request.handler.DeleteRequestHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,8 +28,6 @@ public abstract class AbstractContainerController
         super(model, parent);
         this.model = model;
         this.controllerFactory = controllerFactory;
-
-        requestHandlers.add(new DeleteRequestHandler(this));
 
         this.model.getChildren().addListener(this::onChildrenListChanged);
 
