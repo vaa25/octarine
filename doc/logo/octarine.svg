@@ -31,44 +31,6 @@
          id="feGaussianBlur3935" />
     </filter>
     <filter
-       inkscape:collect="always"
-       id="filter3798"
-       x="-0.22144016"
-       width="1.4428803"
-       y="-0.151625"
-       height="1.30325">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="1.27365"
-         id="feGaussianBlur3800" />
-    </filter>
-    <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
-       id="filter3798-4"
-       x="-0.22144017"
-       width="1.4428803"
-       y="-0.15162501"
-       height="1.30325">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="1.27365"
-         id="feGaussianBlur3800-1" />
-    </filter>
-    <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
-       id="filter3798-4-4"
-       x="-0.22144017"
-       width="1.4428803"
-       y="-0.15162501"
-       height="1.30325">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="1.27365"
-         id="feGaussianBlur3800-1-6" />
-    </filter>
-    <filter
        color-interpolation-filters="sRGB"
        inkscape:collect="always"
        id="filter3798-5"
@@ -107,6 +69,70 @@
          stdDeviation="1.27365"
          id="feGaussianBlur3800-1-6-6" />
     </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter3992"
+       x="-0.035916035"
+       width="1.0718321"
+       y="-0.18212891"
+       height="1.3642578">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.3710937"
+         id="feGaussianBlur3994" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter3992-1"
+       x="-0.035916034"
+       width="1.0718321"
+       y="-0.18212891"
+       height="1.3642578">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.3710937"
+         id="feGaussianBlur3994-2" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter3933-2"
+       x="-0.043099243"
+       width="1.0861984"
+       y="-0.21855469"
+       height="1.4371094">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="2.6226562"
+         id="feGaussianBlur3935-7" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter3992-1-8"
+       x="-0.035916034"
+       width="1.0718321"
+       y="-0.18212891"
+       height="1.3642578">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.3710937"
+         id="feGaussianBlur3994-2-1" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter3933-2-2"
+       x="-0.043099243"
+       width="1.0861984"
+       y="-0.21855469"
+       height="1.4371094">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="2.6226562"
+         id="feGaussianBlur3935-7-5" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -115,17 +141,19 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2"
-     inkscape:cx="345.65943"
-     inkscape:cy="841.57745"
+     inkscape:zoom="1"
+     inkscape:cx="82.309032"
+     inkscape:cy="817.49415"
      inkscape:document-units="px"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer3"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1173"
      inkscape:window-x="0"
      inkscape:window-y="0"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true" />
   <metadata
      id="metadata6">
     <rdf:RDF>
@@ -140,67 +168,666 @@
   </metadata>
   <g
      inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="Vrstva 00"
+     style="opacity:0.3;display:none">
+    <rect
+       id="rect3004-6-8"
+       width="54.516052"
+       height="3.6009099"
+       x="-292.62021"
+       y="143.44954"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-ydpi="73.848877"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:tile-cx="145.24999"
+       inkscape:tile-cy="265.36218"
+       inkscape:tile-w="3.6009099"
+       inkscape:tile-h="54.516052"
+       inkscape:tile-x0="143.44954"
+       inkscape:tile-y0="238.10416" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="143.44954"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6310" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="150.59735"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6312" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="157.74515"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6314" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="164.89296"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6316" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="172.04077"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6318" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="179.18857"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6320" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="186.33638"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6322" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="193.48418"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6324" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="200.63199"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6326" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="207.7798"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6328" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="214.9276"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6330" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="222.07541"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6332" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="229.22321"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6334" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="236.37102"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6336" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="243.51883"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6338" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="250.66663"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6340" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="257.81445"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6342" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="264.96225"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6344" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="272.11005"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6346" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="279.25787"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6348" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="286.40567"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6350" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="293.55347"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6352" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="300.70129"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6354" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="307.84909"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6356" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="314.99689"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6358" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="322.14468"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6360" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="329.29251"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6362" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="336.44031"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6364" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="343.5881"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6366" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="350.73593"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6368" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="357.88373"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6370" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="365.03152"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6372" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="372.17935"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6374" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="379.32715"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6376" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="386.47495"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6378" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="393.62277"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6380" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="400.77057"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6382" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="407.91837"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6384" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="415.06616"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6386" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="422.21399"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6388" />
+    <rect
+       inkscape:tile-y0="238.10416"
+       inkscape:tile-x0="143.44954"
+       transform="matrix(0,-1,1,0,0,0)"
+       inkscape:export-ydpi="73.848877"
+       inkscape:export-xdpi="73.848877"
+       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
+       style="fill:#969696;fill-opacity:0.75294118;display:inline"
+       y="429.36179"
+       x="-292.62021"
+       height="3.6009099"
+       width="54.516052"
+       id="use6390" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Vrstva 0"
-     style="display:none">
+     style="display:inline">
+    <rect
+       id="rect3004-6"
+       width="182.01605"
+       height="2.1866963"
+       x="143.22112"
+       y="233.49985"
+       style="fill:#969696;fill-opacity:1;display:inline"
+       inkscape:export-filename="/code/octarine/doc/logo/octarine.png"
+       inkscape:export-xdpi="67.834183"
+       inkscape:export-ydpi="67.834183" />
+    <rect
+       id="rect3004"
+       width="289.84985"
+       height="2.1866963"
+       x="143.20399"
+       y="295.12936"
+       style="fill:#969696;fill-opacity:1;display:inline"
+       inkscape:export-filename="/code/octarine/doc/logo/octarine.png"
+       inkscape:export-xdpi="67.834183"
+       inkscape:export-ydpi="67.834183" />
     <text
        xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3798-4-4-6);font-family:Sans"
-       x="346.16498"
-       y="322.39642"
-       id="text3774-9-2"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#969696;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="141.2896"
+       y="320.88721"
+       id="text3012"
        sodipodi:linespacing="125%"
-       inkscape:export-filename="/home/dejv/Data/Projekty/Grafika/Logo - Octarine/text3012.png"
-       inkscape:export-xdpi="92"
-       inkscape:export-ydpi="92"><tspan
+       inkscape:export-xdpi="67.834183"
+       inkscape:export-ydpi="67.834183"
+       inkscape:export-filename="/code/octarine/doc/logo/octarine.png"><tspan
          sodipodi:role="line"
-         id="tspan3776-6-9"
-         x="346.16498"
-         y="322.39642"
-         style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;font-family:Baumans;-inkscape-font-specification:Baumans">E</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3798-4-9);font-family:Sans"
-       x="234.24615"
-       y="322.11646"
-       id="text3774-9"
-       sodipodi:linespacing="125%"
-       inkscape:export-filename="/home/dejv/Data/Projekty/Grafika/Logo - Octarine/text3012.png"
-       inkscape:export-xdpi="92"
-       inkscape:export-ydpi="92"><tspan
-         sodipodi:role="line"
-         id="tspan3776-6"
-         x="234.24615"
-         y="322.11646"
-         style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;font-family:Baumans;-inkscape-font-specification:Baumans">G</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3798-5);font-family:Sans"
-       x="147.33099"
-       y="321.8822"
-       id="text3774"
-       sodipodi:linespacing="125%"
-       inkscape:export-filename="/home/dejv/Data/Projekty/Grafika/Logo - Octarine/text3012.png"
-       inkscape:export-xdpi="92"
-       inkscape:export-ydpi="92"><tspan
-         sodipodi:role="line"
-         id="tspan3776"
-         x="147.33099"
-         y="321.8822"
-         style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;font-family:Baumans;-inkscape-font-specification:Baumans">V</tspan></text>
+         id="tspan3014"
+         x="141.2896"
+         y="320.88721"
+         style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#969696;fill-opacity:1;font-family:Baumans;-inkscape-font-specification:Baumans"><tspan
+   style="font-size:28px;fill:#646464;fill-opacity:1"
+   id="tspan3838">V</tspan>ector  <tspan
+   style="font-size:28px;fill:#646464;fill-opacity:1"
+   id="tspan3840">G</tspan>raphics  <tspan
+   style="font-size:28px;fill:#646464;fill-opacity:1"
+   id="tspan3842">E</tspan>ngine</tspan></text>
+    <rect
+       id="rect3004-6-3"
+       width="81.886093"
+       height="2.1866963"
+       x="351.00671"
+       y="233.49985"
+       style="fill:#969696;fill-opacity:1;display:inline"
+       inkscape:export-filename="/code/octarine/doc/logo/octarine.png"
+       inkscape:export-xdpi="67.834183"
+       inkscape:export-ydpi="67.834183" />
   </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Vrstva 0/1">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot2984-04"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;filter:url(#filter3992-1);font-family:Sans"
+       transform="translate(-28.269616,18.868926)"
+       inkscape:export-filename="/code/octarine/doc/logo/octarine.png"
+       inkscape:export-xdpi="67.834183"
+       inkscape:export-ydpi="67.834183"><flowRegion
+         id="flowRegion2986-2"><rect
+           id="rect2988-7"
+           width="450.26038"
+           height="180.20813"
+           x="174.28572"
+           y="186.6479" /></flowRegion><flowPara
+         id="flowPara2990-9"
+         style="font-size:80px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Baumans;-inkscape-font-specification:Baumans"><flowSpan
+           id="flowSpan3020-7"
+           style="font-size:80px;fill:#800080"><flowSpan
+   style="fill:#ff0080;fill-opacity:1"
+   id="flowSpan4122">o</flowSpan>c</flowSpan><flowSpan
+           style="font-size:80px;fill:#0000ff"
+           id="flowSpan3876-0">t</flowSpan><flowSpan
+           style="font-size:80px;fill:#00ffff"
+           id="flowSpan3878-2">a</flowSpan><flowSpan
+           style="font-size:80px;fill:#00ff00"
+           id="flowSpan3880-1">r</flowSpan><flowSpan
+           style="font-size:80px;fill:#ffff00"
+           id="flowSpan3882-3">i</flowSpan><flowSpan
+           style="font-size:80px;fill:#ff6600"
+           id="flowSpan3884-1">n</flowSpan><flowSpan
+           style="font-size:80px;fill:#ff0000"
+           id="flowSpan3886-4">e</flowSpan></flowPara></flowRoot>  </g>
   <g
      inkscape:label="Vrstva 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     style="display:inline">
     <flowRoot
        xml:space="preserve"
        id="flowRoot2984"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3933);font-family:Sans"
-       transform="translate(-39.569264,18.107348)"
-       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
-       inkscape:export-xdpi="73.848877"
-       inkscape:export-ydpi="73.848877"><flowRegion
+       transform="translate(-29.44568,19.168008)"
+       inkscape:export-filename="/code/octarine/doc/logo/octarine.png"
+       inkscape:export-xdpi="67.834183"
+       inkscape:export-ydpi="67.834183"><flowRegion
          id="flowRegion2986"><rect
            id="rect2988"
            width="450.26038"
@@ -209,17 +836,17 @@
            y="186.6479" /></flowRegion><flowPara
          id="flowPara2990"
          style="font-size:80px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Baumans;-inkscape-font-specification:Baumans"><flowSpan
-           style="font-size:80px;fill:#ff00ff"
-           id="flowSpan3888">O</flowSpan><flowSpan
            id="flowSpan3020"
-           style="font-size:80px;fill:#800080">c</flowSpan><flowSpan
+           style="font-size:80px;fill:#800080"><flowSpan
+   style="fill:#ff0080;fill-opacity:1"
+   id="flowSpan4106">o</flowSpan>c</flowSpan><flowSpan
            style="font-size:80px;fill:#0000ff"
            id="flowSpan3876">t</flowSpan><flowSpan
            style="font-size:80px;fill:#00ffff"
            id="flowSpan3878">a</flowSpan><flowSpan
            style="font-size:80px;fill:#00ff00"
            id="flowSpan3880">r</flowSpan><flowSpan
-           style="font-size:80px;fill:#ffff00"
+           style="font-size:80px;fill:#fff500;fill-opacity:1"
            id="flowSpan3882">i</flowSpan><flowSpan
            style="font-size:80px;fill:#ff6600"
            id="flowSpan3884">n</flowSpan><flowSpan
@@ -235,6 +862,17 @@
          id="tspan3831"
          x="194.64285"
          y="378.79077" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="195.81892"
+       y="309.19522"
+       id="text3829-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3831-5"
+         x="195.81892"
+         y="309.19522" /></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -244,48 +882,18 @@
     <flowRoot
        xml:space="preserve"
        id="flowRoot2984-0"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans"
-       transform="translate(-38.976521,17.965564)"
-       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
-       inkscape:export-xdpi="73.848877"
-       inkscape:export-ydpi="73.848877"><flowRegion
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#969696;stroke-opacity:1;font-family:Sans"
+       transform="translate(-28.852937,19.026224)"
+       inkscape:export-filename="/code/octarine/doc/logo/octarine.png"
+       inkscape:export-xdpi="67.834183"
+       inkscape:export-ydpi="67.834183"><flowRegion
          id="flowRegion2986-8"><rect
            id="rect2988-2"
            width="662.85712"
            height="294.28571"
            x="174.28572"
            y="186.6479"
-           style="fill:#ffffff;fill-opacity:1" /></flowRegion><flowPara
+           style="fill:#ffffff;fill-opacity:1;stroke:#969696;stroke-opacity:1" /></flowRegion><flowPara
          id="flowPara2990-2"
-         style="font-size:80px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;fill-opacity:1;font-family:Baumans;-inkscape-font-specification:Baumans">Octarine</flowPara></flowRoot>    <rect
-       id="rect3004"
-       width="287.37497"
-       height="6.0757837"
-       x="143.44583"
-       y="292.21497"
-       style="fill:#969696;fill-opacity:1"
-       inkscape:export-filename="/code/octarine/doc/logo/text3012.png"
-       inkscape:export-xdpi="73.848877"
-       inkscape:export-ydpi="73.848877" />
-    <text
-       xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#969696;fill-opacity:1;stroke:none;font-family:Sans"
-       x="141.53143"
-       y="322.569"
-       id="text3012"
-       sodipodi:linespacing="125%"
-       inkscape:export-xdpi="73.848877"
-       inkscape:export-ydpi="73.848877"><tspan
-         sodipodi:role="line"
-         id="tspan3014"
-         x="141.53143"
-         y="322.569"
-         style="font-size:29px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#969696;fill-opacity:1;font-family:Baumans;-inkscape-font-specification:Baumans"><tspan
-   style="font-size:29px;fill:#646464;fill-opacity:1"
-   id="tspan3838">V</tspan>ector <tspan
-   style="font-size:29px;fill:#646464;fill-opacity:1"
-   id="tspan3840">G</tspan>raphics <tspan
-   style="font-size:29px;fill:#646464;fill-opacity:1"
-   id="tspan3842">E</tspan>ngine</tspan></text>
-  </g>
+         style="font-size:80px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:#969696;stroke-opacity:1;font-family:Baumans;-inkscape-font-specification:Baumans">octarine</flowPara></flowRoot>  </g>
 </svg>

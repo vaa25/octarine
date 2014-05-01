@@ -37,8 +37,6 @@ public class TranslateRequestHandler
         TranslateRequest translateRequest = (TranslateRequest) request;
 
         translateRequest.setCommand(new TranslateCommand(coords, translateRequest.getDx(), translateRequest.getDy()));
-        //TODO: Přesunout společný kód do předka
-        //TODO: DeleteRequesthandler instalovat až v cílové třídě, ne v abstraktní!
     }
 
 }

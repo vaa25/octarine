@@ -6,6 +6,7 @@
 package info.dejv.octarine.tool.selection.editmode;
 
 import info.dejv.octarine.Octarine;
+import info.dejv.octarine.tool.selection.SelectionTool;
 import info.dejv.octarine.tool.selection.request.TranslateRequest;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
@@ -64,6 +65,7 @@ public class EditModeTranslate
             initialPosition = new Point2D(e.getX(), e.getY());
             // TODO:Add translate feedback
             e.consume();
+            SelectionTool.getInstance().getListeners().stream().forEach((listener) -> listener.onEditStarted());
         }
     }
 
@@ -80,6 +82,7 @@ public class EditModeTranslate
             // TODO: Remove translate feedback, commit new location
             executeOnSelection(new TranslateRequest(e.getX() - initialPosition.getX(), e.getY() - initialPosition.getY()));
             drag = false;
+            SelectionTool.getInstance().getListeners().stream().forEach((listener) -> listener.onEditFinished());
         }
     }
 }

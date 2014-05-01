@@ -30,13 +30,17 @@ import org.slf4j.LoggerFactory;
 public class SelectionTool
         implements Tool, SelectionChangeListener, ExclusivityCoordinator {
 
+    private static SelectionTool instance;
+
     private static final Logger LOG = LoggerFactory.getLogger(SelectionTool.class);
     private static final double SELECTION_BOX_OFFSET = 4.0;
-    private final List<Double> DASH_ARRAY_MULTI_OUTLINE = Arrays.asList(7.0d, 5.0d);
+    private static final List<Double> DASH_ARRAY_MULTI_OUTLINE = Arrays.asList(7.0d, 5.0d);
 
     private final Map<Controller, Shape> selectionOutlines = new HashMap<>();
 
     private final Octarine octarine;
+
+    private final List<SelectionToolListener> listeners = new ArrayList<>();
 
     //Editors, that coexist with each other (ie. Delete, Translate)
     private final List<EditMode> coexistingEditorModes = new ArrayList<>();
@@ -49,7 +53,22 @@ public class SelectionTool
     private boolean initiated = false;
     private boolean active = false;
 
-    public SelectionTool(Octarine octarine) {
+
+    public static void initialize(Octarine octarine) {
+        if (instance == null) {
+            instance = new SelectionTool(octarine);
+        }
+    }
+
+    public static SelectionTool getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("SelectionTool was not yet initialized. Call initialize(octarine)");
+        }
+        return instance;
+    }
+
+
+    private SelectionTool(Octarine octarine) {
         this.octarine = octarine;
         Node pane = octarine.getNode();
 
@@ -58,6 +77,16 @@ public class SelectionTool
         } else {                        //.. otherwise initiate, when it is set
             pane.sceneProperty().addListener((sender, oldValue, newValue) -> initiate());
         }
+    }
+
+
+    public List<SelectionToolListener> getListeners() {
+        return listeners;
+    }
+
+
+    public Octarine getOctarine() {
+        return octarine;
     }
 
 
@@ -198,11 +227,6 @@ public class SelectionTool
 
         updateSelectionBoxCoords(box, view.getBoundsInParent());
         return box;
-    }
-
-
-    public Octarine getOctarine() {
-        return octarine;
     }
 
 

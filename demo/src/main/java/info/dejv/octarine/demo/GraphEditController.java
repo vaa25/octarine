@@ -39,6 +39,7 @@ public class GraphEditController {
         zoom.zoomFactorProperty().bindBidirectional(slider.valueProperty());
 
         final Octarine octarine = new OctarineImpl(zoom);
+        SelectionTool.initialize(octarine);
 
         ShapeContainer canvas = new ShapeContainer();
         octarine.setRootController(new ShapeContainerController(octarine, canvas));
@@ -46,7 +47,7 @@ public class GraphEditController {
         canvas.getChildren().add(new RectangleShape(new Rectangle2D(20.0, 20.0, 100.0, 100.0)));
         canvas.getChildren().add(new RectangleShape(new Rectangle2D(150.0, 10.0, 50.0, 150.0)));
 
-        selectionTool = new SelectionTool(octarine);
+        selectionTool = SelectionTool.getInstance();
 
         bToolSelect.setOnAction((final ActionEvent e) -> {
             octarine.setActiveTool(selectionTool);

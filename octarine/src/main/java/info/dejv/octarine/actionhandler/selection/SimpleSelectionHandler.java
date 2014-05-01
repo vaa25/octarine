@@ -13,6 +13,8 @@ import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionLi
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.request.shape.ShapeRequest;
 import info.dejv.octarine.tool.Tool;
+import info.dejv.octarine.tool.selection.SelectionTool;
+import info.dejv.octarine.tool.selection.SelectionToolListener;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import org.slf4j.Logger;
@@ -25,11 +27,12 @@ import org.slf4j.LoggerFactory;
  */
 public class SimpleSelectionHandler<T extends Tool>
         extends ActionHandler
-        implements IncrementalSelectionListener {
+        implements IncrementalSelectionListener, SelectionToolListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(SimpleSelectionHandler.class);
 
     private final IncrementalSelectionHelper incrementalSelectionHelper;
+    private boolean edited = false;
 
 
     public SimpleSelectionHandler(Class<T> toolClass, Controller controller) {
@@ -42,6 +45,8 @@ public class SimpleSelectionHandler<T extends Tool>
         this.incrementalSelectionHelper = new IncrementalSelectionHelper(getOctarine(), this);
 
         controller.addRequestHandler(SelectableRequestHandler.getInstance());
+
+        SelectionTool.getInstance().getListeners().add(this);
     }
 
     @Override
@@ -104,6 +109,18 @@ public class SimpleSelectionHandler<T extends Tool>
 
 
     private void handleMouseReleased(MouseEvent e) {
+        if (edited) {
+            return;
+        }
         incrementalSelectionHelper.commit(e);
+    }
+
+    @Override
+    public void onEditStarted() {
+        edited = true;
+    }
+
+    @Override
+    public void onEditFinished() {
     }
 }
