@@ -4,9 +4,9 @@ import info.dejv.octarine.actionhandler.selection.SimpleSelectionHandler;
 import info.dejv.octarine.controller.AbstractController;
 import info.dejv.octarine.controller.ContainerController;
 import info.dejv.octarine.demo.model.RectangleShape;
+import info.dejv.octarine.model.BasicProperties;
 import info.dejv.octarine.model.ModelElement;
-import info.dejv.octarine.model.chunk.Coords2D;
-import info.dejv.octarine.model.chunk.Dimension2D;
+import info.dejv.octarine.model.chunk.DoubleTuple;
 import info.dejv.octarine.request.handler.DefaultShapeRequestHandler;
 import info.dejv.octarine.request.handler.TranslateRequestHandler;
 import info.dejv.octarine.tool.selection.SelectionTool;
@@ -22,23 +22,23 @@ public class RectangleShapeController
         super(model, parent);
 
         requestHandlers.add(new DefaultShapeRequestHandler(this::createAndUpdateShape));
-        requestHandlers.add(new TranslateRequestHandler(model.getChunk("Location", Coords2D.class)));
+        requestHandlers.add(new TranslateRequestHandler(model.getChunk(BasicProperties.LOCATION, DoubleTuple.class)));
         actionHandlers.add(new SimpleSelectionHandler<>(SelectionTool.class, this));
     }
 
 
     @Override
     protected Rectangle createView(ModelElement model) {
-        Dimension2D size = model.getChunk("Size", Dimension2D.class);
-        Coords2D location = model.getChunk("Location", Coords2D.class);
+        DoubleTuple location = model.getChunk(BasicProperties.LOCATION, DoubleTuple.class);
+        DoubleTuple size = model.getChunk(BasicProperties.SIZE, DoubleTuple.class);
 
         Rectangle r = new Rectangle();
         r.setFill(Color.ALICEBLUE);
         r.setStroke(Color.BLACK);
         r.setStrokeType(StrokeType.INSIDE);
 
-        r.widthProperty().bind(size.getWidth());
-        r.heightProperty().bind(size.getHeight());
+        r.widthProperty().bind(size.getX());
+        r.heightProperty().bind(size.getY());
 
         r.translateXProperty().bind(location.getX());
         r.translateYProperty().bind(location.getY());

@@ -4,8 +4,9 @@ import info.dejv.octarine.Octarine;
 import info.dejv.octarine.actionhandler.selection.ContainerSelectionHandler;
 import info.dejv.octarine.controller.AbstractContainerController;
 import info.dejv.octarine.demo.model.ShapeContainer;
+import info.dejv.octarine.model.BasicProperties;
 import info.dejv.octarine.model.ModelElement;
-import info.dejv.octarine.model.chunk.Dimension2D;
+import info.dejv.octarine.model.chunk.DoubleTuple;
 import info.dejv.octarine.request.handler.DeleteRequestHandler;
 import info.dejv.octarine.tool.selection.SelectionTool;
 import javafx.scene.Node;
@@ -40,7 +41,7 @@ public class ShapeContainerController
 
     @Override
     protected Node createView(ModelElement model) {
-        Dimension2D size = model.getChunk("Size", Dimension2D.class);
+        DoubleTuple size = model.getChunk(BasicProperties.SIZE, DoubleTuple.class);
         Rectangle r = new Rectangle();
 
         r.setFill(Color.WHITE);
@@ -49,8 +50,8 @@ public class ShapeContainerController
 
         r.setLayoutX(0.0d);
         r.setLayoutY(0.0d);
-        r.widthProperty().bind(size.getWidth());
-        r.heightProperty().bind(size.getHeight());
+        r.widthProperty().bind(size.getX());
+        r.heightProperty().bind(size.getY());
         return r;
     }
 }

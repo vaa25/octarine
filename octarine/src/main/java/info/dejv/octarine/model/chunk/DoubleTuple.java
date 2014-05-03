@@ -9,19 +9,19 @@ import javafx.beans.property.SimpleDoubleProperty;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class Coords2D
+public class DoubleTuple
         extends AbstractObservable {
 
     private final DoubleProperty x = new SimpleDoubleProperty(0.0d);
     private final DoubleProperty y = new SimpleDoubleProperty(0.0d);
 
 
-    public Coords2D() {
+    public DoubleTuple() {
 
     }
 
 
-    public Coords2D(double initialX, double initialY) {
+    public DoubleTuple(double initialX, double initialY) {
         set(initialX, initialY);
     }
 
