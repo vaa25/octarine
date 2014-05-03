@@ -1,6 +1,5 @@
 package info.dejv.octarine.request.handler;
 
-import info.dejv.octarine.controller.RequestHandler;
 import info.dejv.octarine.request.Request;
 import info.dejv.octarine.request.shape.ShapeCreator;
 import info.dejv.octarine.request.shape.ShapeRequest;
@@ -13,7 +12,7 @@ import javafx.scene.shape.Shape;
  * Author: dejv (www.dejv.info)
  */
 public class DefaultShapeRequestHandler
-        implements RequestHandler {
+        extends AbstractRequestHandler {
 
     private final ShapeCreator shapeCreator;
 
@@ -30,13 +29,7 @@ public class DefaultShapeRequestHandler
 
 
     @Override
-    public void request(Request request) {
-        requireNonNull(request, "request is null");
-
-        if (!ShapeRequest.class.equals(request.getClass())) {
-            throw new IllegalArgumentException("Unsupported request: " + request);
-        }
-
+    public void requestChecked(Request request) {
         ShapeRequest shapeRequest = (ShapeRequest) request;
 
         Shape shape = shapeCreator.createAndUpdateShape();

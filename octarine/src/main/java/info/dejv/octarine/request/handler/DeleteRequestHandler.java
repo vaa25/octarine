@@ -2,11 +2,9 @@ package info.dejv.octarine.request.handler;
 
 import info.dejv.octarine.command.DeleteCommand;
 import info.dejv.octarine.controller.ContainerController;
-import info.dejv.octarine.controller.RequestHandler;
 import info.dejv.octarine.model.ModelElement;
 import info.dejv.octarine.request.Request;
 import info.dejv.octarine.tool.selection.request.DeleteRequest;
-import static java.util.Objects.requireNonNull;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
@@ -17,7 +15,7 @@ import javafx.collections.ObservableList;
  * Author: dejv (www.dejv.info)
  */
 public class DeleteRequestHandler
-        implements RequestHandler {
+        extends AbstractRequestHandler {
 
     private final ContainerController target;
 
@@ -33,13 +31,7 @@ public class DeleteRequestHandler
 
 
     @Override
-    public void request(Request request) {
-        requireNonNull(request, "request is null");
-
-        if (!DeleteRequest.class.equals(request.getClass())) {
-            throw new IllegalArgumentException("Unsupported request: " + request);
-        }
-
+    protected void requestChecked(Request request) {
         DeleteRequest deleteRequest = (DeleteRequest) request;
 
         ObservableList<ModelElement> childrenList = target.getModel().getChildren().get();
