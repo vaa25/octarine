@@ -1,7 +1,7 @@
 package info.dejv.octarine.actionhandler.selection;
 
 import info.dejv.octarine.actionhandler.ActionHandler;
-import info.dejv.octarine.actionhandler.selection.command.SelectCommand;
+import info.dejv.octarine.command.SelectCommand;
 import info.dejv.octarine.actionhandler.selection.feedback.MarqueeSelectionDynamicFeedback;
 import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionHelper;
 import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionListener;

@@ -48,11 +48,14 @@ public abstract class AbstractEditMode
 
     private boolean enabled = true;
 
+    private final Octarine octarine;
+
     public AbstractEditMode(Class<? extends Request> requestType, Octarine octarine) {
         Objects.requireNonNull(requestType, "type is NULL");
         Objects.requireNonNull(octarine, "octarine is NULL");
         this.requestType = requestType;
 
+        this.octarine = octarine;
         this.scene = octarine.getNode().getScene();
         this.commandStack = octarine.getCommandStack();
 
@@ -76,6 +79,11 @@ public abstract class AbstractEditMode
 
     protected void notifyTransformationFinished() {
         listeners.stream().forEach(listener -> listener.transformationFinished());
+    }
+
+
+    public Octarine getOctarine() {
+        return octarine;
     }
 
 

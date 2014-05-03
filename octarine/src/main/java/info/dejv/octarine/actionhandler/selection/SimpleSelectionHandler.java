@@ -7,9 +7,9 @@ package info.dejv.octarine.actionhandler.selection;
 
 import info.dejv.octarine.actionhandler.ActionHandler;
 import info.dejv.octarine.actionhandler.feedback.MouseOverDynamicFeedback;
-import info.dejv.octarine.actionhandler.selection.command.SelectCommand;
 import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionHelper;
 import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionListener;
+import info.dejv.octarine.command.SelectCommand;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.request.shape.ShapeRequest;
 import info.dejv.octarine.tool.Tool;
@@ -55,7 +55,7 @@ public class SimpleSelectionHandler<T extends Tool>
         view.addEventHandler(MouseEvent.MOUSE_ENTERED, this::handleMouseEntered);
         view.addEventHandler(MouseEvent.MOUSE_MOVED, this::handleMouseMoved);
         view.addEventHandler(MouseEvent.MOUSE_EXITED, this::handleMouseExited);
-        view.addEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+        view.addEventHandler(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
     }
 
     @Override
@@ -64,11 +64,16 @@ public class SimpleSelectionHandler<T extends Tool>
         view.removeEventHandler(MouseEvent.MOUSE_ENTERED, this::handleMouseEntered);
         view.removeEventHandler(MouseEvent.MOUSE_MOVED, this::handleMouseMoved);
         view.removeEventHandler(MouseEvent.MOUSE_EXITED, this::handleMouseExited);
-        view.removeEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+        view.removeEventHandler(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
     }
 
     @Override
     public void addToSelection() {
+        // Don't try to select again, if already selected
+        if (isAlreadySelected()) {
+            return;
+        }
+
         LOG.debug("Adding to selection");
         final SelectCommand sc = new SelectCommand(getOctarine().getSelectionManager(), SelectCommand.Op.ADD, getController());
         getOctarine().getCommandStack().execute(sc);
@@ -85,6 +90,11 @@ public class SimpleSelectionHandler<T extends Tool>
 
     @Override
     public void replaceSelection() {
+        // Don't try to select again, if already selected
+        if (isAlreadySelected()) {
+            return;
+        }
+
         LOG.debug("Replacing selection");
         final SelectCommand sc = new SelectCommand(getOctarine().getSelectionManager(), SelectCommand.Op.REPLACE, getController());
         getOctarine().getCommandStack().execute(sc);
@@ -108,8 +118,9 @@ public class SimpleSelectionHandler<T extends Tool>
     }
 
 
-    private void handleMouseReleased(MouseEvent e) {
+    private void handleMousePressed(MouseEvent e) {
         if (edited) {
+            edited = false;
             return;
         }
         incrementalSelectionHelper.commit(e);
@@ -122,5 +133,11 @@ public class SimpleSelectionHandler<T extends Tool>
 
     @Override
     public void onEditFinished() {
+        edited = false;
+    }
+
+
+    private boolean isAlreadySelected() {
+        return getOctarine().getSelectionManager().contains(getController());
     }
 }

@@ -1,6 +1,5 @@
-package info.dejv.octarine.actionhandler.selection.command;
+package info.dejv.octarine.command;
 
-import info.dejv.octarine.command.Command;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.selection.SelectionManager;
 import java.util.Arrays;
@@ -45,7 +44,7 @@ public class SelectCommand
 
     @Override
     public void execute() {
-        LOG.info("Executing");
+        LOG.info("Executing {} on {}", op, selectables);
         previousSelection = selection.getSelection();
 
         switch (op) {
