@@ -4,9 +4,12 @@ import info.dejv.octarine.Octarine;
 import info.dejv.octarine.cfg.OctarineProps;
 import info.dejv.octarine.tool.selection.ExclusivityCoordinator;
 import info.dejv.octarine.tool.selection.request.ScaleRequest;
-import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
+import info.dejv.octarine.utils.CompositeBounds;
+import java.util.HashMap;
+import java.util.Map;
+import javafx.collections.ObservableList;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -19,6 +22,23 @@ import javafx.scene.shape.Rectangle;
  */
 public class EditModeScale
         extends AbstractExclusiveEditMode {
+
+    private static final double HANDLE_SIZE_HALF = 3.0d;
+
+    private enum HandlePos {
+
+        N,
+        NE,
+        E,
+        SE,
+        S,
+        SW,
+        W,
+        NW
+    }
+
+    private final CompositeBounds selectionBounds = new CompositeBounds();
+    private final Map<HandlePos, Rectangle> handles = new HashMap<>();
 
     public EditModeScale(Octarine octarine, ExclusivityCoordinator listener) {
         super(ScaleRequest.class, octarine, listener);
@@ -33,95 +53,85 @@ public class EditModeScale
 
     @Override
     public void activate() {
+        handles.clear();
+        selectionBounds.clear();
+
+        selection.stream().forEach((controller) -> {
+            selectionBounds.add(controller.getView().boundsInParentProperty());
+        });
+
+        ObservableList<Node> feedback = getOctarine().getFeedback();
+
+        for (HandlePos h : HandlePos.values()) {
+            Rectangle r = createHandle(h);
+            handles.put(h, r);
+            feedback.add(r);
+        }
+
     }
+
 
     @Override
     public void deactivate() {
+        ObservableList<Node> feedback = getOctarine().getFeedback();
+
+        for (HandlePos h : HandlePos.values()) {
+            Rectangle r = handles.get(h);
+            feedback.remove(r);
+        }
+        handles.clear();
+        selectionBounds.clear();
     }
 
 
-    private interface ScalingHandleListener {
-
-        void scalingStarted();
-
-        void scalingFinished();
+    private Rectangle createHandle(HandlePos h) {
+        Rectangle r = new Rectangle();
+        r.setWidth(HANDLE_SIZE_HALF * 2);
+        r.setHeight(HANDLE_SIZE_HALF * 2);
+        r.setFill(Color.WHITE);
+        r.setStroke(OctarineProps.getInstance().getStaticFeedbackColor());
+        switch (h) {
+            case N:
+                r.xProperty().bind(selectionBounds.centerXProperty().subtract(HANDLE_SIZE_HALF));
+                r.yProperty().bind(selectionBounds.minYProperty().subtract(HANDLE_SIZE_HALF));
+                r.setCursor(Cursor.N_RESIZE);
+                break;
+            case NE:
+                r.xProperty().bind(selectionBounds.maxXProperty().subtract(HANDLE_SIZE_HALF));
+                r.yProperty().bind(selectionBounds.minYProperty().subtract(HANDLE_SIZE_HALF));
+                r.setCursor(Cursor.NE_RESIZE);
+                break;
+            case E:
+                r.xProperty().bind(selectionBounds.maxXProperty().subtract(HANDLE_SIZE_HALF));
+                r.yProperty().bind(selectionBounds.centerYProperty().subtract(HANDLE_SIZE_HALF));
+                r.setCursor(Cursor.E_RESIZE);
+                break;
+            case SE:
+                r.xProperty().bind(selectionBounds.maxXProperty().subtract(HANDLE_SIZE_HALF));
+                r.yProperty().bind(selectionBounds.maxYProperty().subtract(HANDLE_SIZE_HALF));
+                r.setCursor(Cursor.SE_RESIZE);
+                break;
+            case S:
+                r.xProperty().bind(selectionBounds.centerXProperty().subtract(HANDLE_SIZE_HALF));
+                r.yProperty().bind(selectionBounds.maxYProperty().subtract(HANDLE_SIZE_HALF));
+                r.setCursor(Cursor.S_RESIZE);
+                break;
+            case SW:
+                r.xProperty().bind(selectionBounds.minXProperty().subtract(HANDLE_SIZE_HALF));
+                r.yProperty().bind(selectionBounds.maxYProperty().subtract(HANDLE_SIZE_HALF));
+                r.setCursor(Cursor.SW_RESIZE);
+                break;
+            case W:
+                r.xProperty().bind(selectionBounds.minXProperty().subtract(HANDLE_SIZE_HALF));
+                r.yProperty().bind(selectionBounds.centerYProperty().subtract(HANDLE_SIZE_HALF));
+                r.setCursor(Cursor.W_RESIZE);
+                break;
+            case NW:
+                r.xProperty().bind(selectionBounds.minXProperty().subtract(HANDLE_SIZE_HALF));
+                r.yProperty().bind(selectionBounds.minYProperty().subtract(HANDLE_SIZE_HALF));
+                r.setCursor(Cursor.NW_RESIZE);
+                break;
+        }
+        return r;
     }
-
-    private class ScalingHandle {
-
-        private static final double SIZE_HALF = 3.0d;
-        private Bounds totalBounds;
-        private Rectangle node;
-        private Point2D center;
-
-        private ScalingHandle(Bounds totalBounds, HandlePos pos) {
-            this.totalBounds = totalBounds;
-            center = getNodeCenter(totalBounds, pos);
-            node = createNode();
-
-            //node.setOnDragDetected((event) -> {
-            //});
-
-            //node.setOnMouseDragged(this);
-            //node.setOnMouseReleased(this);
-            //node.setCursor(getCursor(pos));
-        }
-
-        private Point2D getNodeCenter(Bounds totalBounds, HandlePos pos) {
-            switch (pos) {
-                case N:
-                    return new Point2D((totalBounds.getMaxX() - totalBounds.getMinX()) / 2.0d, totalBounds.getMinY());
-                case NE:
-                    return new Point2D(totalBounds.getMaxX(), totalBounds.getMinY());
-                case E:
-                    return new Point2D(totalBounds.getMaxX(), (totalBounds.getMaxY() - totalBounds.getMinY()) / 2.0d);
-                case SE:
-                    return new Point2D(totalBounds.getMaxX(), totalBounds.getMinY() / 2.0d);
-                case S:
-                    return new Point2D((totalBounds.getMaxX() - totalBounds.getMinX()) / 2.0d, totalBounds.getMaxY());
-                case SW:
-                    return new Point2D(totalBounds.getMinX(), totalBounds.getMinY() / 2.0d);
-                case W:
-                    return new Point2D(totalBounds.getMinX(), (totalBounds.getMaxY() - totalBounds.getMinY()) / 2.0d);
-                case NW:
-                    return new Point2D(totalBounds.getMinX(), totalBounds.getMinY());
-                default:
-                    throw new IllegalArgumentException("Invalid HandlePos");
-            }
-        }
-
-        private Cursor getCursor(HandlePos pos) {
-            switch (pos) {
-                case N:
-                    return Cursor.N_RESIZE;
-                case NE:
-                    return Cursor.NE_RESIZE;
-                case E:
-                    return Cursor.E_RESIZE;
-                case SE:
-                    return Cursor.SE_RESIZE;
-                case S:
-                    return Cursor.S_RESIZE;
-                case SW:
-                    return Cursor.SW_RESIZE;
-                case W:
-                    return Cursor.W_RESIZE;
-                case NW:
-                    return Cursor.NW_RESIZE;
-                default:
-                    throw new IllegalArgumentException("Invalid HandlePos");
-            }
-        }
-
-        private Rectangle createNode() {
-            Rectangle r = new Rectangle(center.getX() - SIZE_HALF, center.getY() - SIZE_HALF, SIZE_HALF * 2, SIZE_HALF * 2);
-            r.setFill(Color.WHITE);
-            r.setStroke(OctarineProps.getInstance().getStaticFeedbackColor());
-
-            return r;
-        }
-
-
-    }
-
 }

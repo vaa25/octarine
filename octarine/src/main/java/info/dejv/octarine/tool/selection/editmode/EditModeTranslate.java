@@ -39,17 +39,6 @@ public class EditModeTranslate
 
 
     @Override
-    protected void beforeSelectionUpdated() {
-        deactivate();
-    }
-
-    @Override
-    protected void afterSelectionUpdated() {
-        activate();
-    }
-
-
-    @Override
     public void activate() {
         selection.stream().map((item) -> item.getView()).forEach((view) -> {
             LOG.trace("Activating on {}", view);

@@ -12,8 +12,8 @@ import javafx.beans.property.SimpleDoubleProperty;
 public class DoubleTuple
         extends AbstractObservable {
 
-    private final DoubleProperty x = new SimpleDoubleProperty(0.0d);
-    private final DoubleProperty y = new SimpleDoubleProperty(0.0d);
+    private final DoubleProperty x = new SimpleDoubleProperty(this, "x");
+    private final DoubleProperty y = new SimpleDoubleProperty(this, "y");
 
 
     public DoubleTuple() {

@@ -25,18 +25,6 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractEditMode
         implements EditMode {
 
-    protected enum HandlePos {
-
-        N,
-        NE,
-        E,
-        SE,
-        S,
-        SW,
-        W,
-        NW
-    }
-
     protected final Logger LOG;
     protected final Scene scene;
     protected final CommandStack commandStack;
@@ -102,7 +90,7 @@ public abstract class AbstractEditMode
     public void selectionUpdated(List<Controller> newSelection) {
         assert newSelection != null : "newSelection is NULL";
 
-        beforeSelectionUpdated();
+        deactivate();
 
         enabled = (newSelection.size() > 0);
         selection.clear();
@@ -119,23 +107,8 @@ public abstract class AbstractEditMode
             selection.clear();
         }
         LOG.debug("{} on current selection", enabled ? "Enabled" : "Disabled");
-        afterSelectionUpdated();
-    }
 
-
-    /**
-     * Override to react on selection update
-     */
-    protected void beforeSelectionUpdated() {
-        // Blank
-    }
-
-
-    /**
-     * Override to react on selection update
-     */
-    protected void afterSelectionUpdated() {
-        // Blank
+        activate();
     }
 
 

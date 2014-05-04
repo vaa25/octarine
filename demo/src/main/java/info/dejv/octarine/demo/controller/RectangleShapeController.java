@@ -8,6 +8,7 @@ import info.dejv.octarine.model.BasicProperties;
 import info.dejv.octarine.model.ModelElement;
 import info.dejv.octarine.model.chunk.DoubleTuple;
 import info.dejv.octarine.request.handler.DefaultShapeRequestHandler;
+import info.dejv.octarine.request.handler.ScaleRequestHandler;
 import info.dejv.octarine.request.handler.TranslateRequestHandler;
 import info.dejv.octarine.tool.selection.SelectionTool;
 import javafx.scene.paint.Color;
@@ -23,6 +24,7 @@ public class RectangleShapeController
 
         requestHandlers.add(new DefaultShapeRequestHandler(this::createAndUpdateShape));
         requestHandlers.add(new TranslateRequestHandler(model.getChunk(BasicProperties.LOCATION, DoubleTuple.class)));
+        requestHandlers.add(new ScaleRequestHandler());
         actionHandlers.add(new SimpleSelectionHandler<>(SelectionTool.class, this));
     }
 
