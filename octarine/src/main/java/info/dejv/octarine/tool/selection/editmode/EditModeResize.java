@@ -3,7 +3,7 @@ package info.dejv.octarine.tool.selection.editmode;
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.cfg.OctarineProps;
 import info.dejv.octarine.tool.selection.ExclusivityCoordinator;
-import info.dejv.octarine.tool.selection.request.ScaleRequest;
+import info.dejv.octarine.tool.selection.request.ResizeRequest;
 import info.dejv.octarine.utils.CompositeBounds;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ import javafx.scene.shape.Rectangle;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class EditModeScale
+public class EditModeResize
         extends AbstractExclusiveEditMode {
 
     private static final double HANDLE_SIZE_HALF = 3.0d;
@@ -40,8 +40,8 @@ public class EditModeScale
     private final CompositeBounds selectionBounds = new CompositeBounds();
     private final Map<HandlePos, Rectangle> handles = new HashMap<>();
 
-    public EditModeScale(Octarine octarine, ExclusivityCoordinator listener) {
-        super(ScaleRequest.class, octarine, listener);
+    public EditModeResize(Octarine octarine, ExclusivityCoordinator listener) {
+        super(ResizeRequest.class, octarine, listener);
     }
 
 
@@ -52,7 +52,7 @@ public class EditModeScale
 
 
     @Override
-    public void activate() {
+    protected void doActivate() {
         handles.clear();
         selectionBounds.clear();
 
@@ -72,7 +72,7 @@ public class EditModeScale
 
 
     @Override
-    public void deactivate() {
+    protected void doDeactivate() {
         ObservableList<Node> feedback = getOctarine().getFeedback();
 
         for (HandlePos h : HandlePos.values()) {

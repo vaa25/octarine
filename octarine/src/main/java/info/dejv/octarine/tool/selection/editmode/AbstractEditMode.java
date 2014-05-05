@@ -35,6 +35,7 @@ public abstract class AbstractEditMode
     protected final Class<? extends Request> requestType;
 
     private boolean enabled = true;
+    private boolean active = false;
 
     private final Octarine octarine;
 
@@ -60,6 +61,23 @@ public abstract class AbstractEditMode
             listeners.add(listener);
         }
     }
+
+    @Override
+    public final void activate() {
+        if (!active) {
+            doActivate();
+            active = true;
+        }
+    }
+
+    @Override
+    public final void deactivate() {
+        if (active) {
+            doDeactivate();
+            active = false;
+        }
+    }
+
 
     protected void notifyTransformationStarted() {
         listeners.stream().forEach(listener -> listener.transformationStarted());
@@ -105,10 +123,10 @@ public abstract class AbstractEditMode
 
         if (!enabled) {
             selection.clear();
+        } else {
+            activate();
         }
         LOG.debug("{} on current selection", enabled ? "Enabled" : "Disabled");
-
-        activate();
     }
 
 
@@ -137,4 +155,10 @@ public abstract class AbstractEditMode
 
         commandStack.execute(compoundCommand);
     }
+
+
+    protected abstract void doActivate();
+
+    protected abstract void doDeactivate();
+
 }

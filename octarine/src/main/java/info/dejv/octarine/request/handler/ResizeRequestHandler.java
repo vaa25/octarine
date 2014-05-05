@@ -1,19 +1,19 @@
 package info.dejv.octarine.request.handler;
 
 import info.dejv.octarine.request.Request;
-import info.dejv.octarine.tool.selection.request.ScaleRequest;
+import info.dejv.octarine.tool.selection.request.ResizeRequest;
 
 /**
  *
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class ScaleRequestHandler
+public class ResizeRequestHandler
         extends AbstractRequestHandler {
 
     @Override
     public boolean supports(Class<? extends Request> request) {
-        return ScaleRequest.class.equals(request);
+        return ResizeRequest.class.equals(request);
     }
 
     @Override

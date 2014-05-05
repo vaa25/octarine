@@ -39,7 +39,7 @@ public class EditModeTranslate
 
 
     @Override
-    public void activate() {
+    protected void doActivate() {
         selection.stream().map((item) -> item.getView()).forEach((view) -> {
             LOG.trace("Activating on {}", view);
             view.addEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
@@ -49,7 +49,7 @@ public class EditModeTranslate
     }
 
     @Override
-    public void deactivate() {
+    protected void doDeactivate() {
         selection.stream().map((item) -> item.getView()).forEach((view) -> {
             LOG.trace("Deactivating on {}", view);
             view.removeEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);

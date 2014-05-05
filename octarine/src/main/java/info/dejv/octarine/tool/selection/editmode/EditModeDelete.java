@@ -25,12 +25,12 @@ public class EditModeDelete
 
 
     @Override
-    public void activate() {
+    protected void doActivate() {
         scene.addEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
     }
 
     @Override
-    public void deactivate() {
+    protected void doDeactivate() {
         scene.removeEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
     }
 

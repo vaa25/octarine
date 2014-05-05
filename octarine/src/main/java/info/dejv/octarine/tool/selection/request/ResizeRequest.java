@@ -7,7 +7,7 @@ import info.dejv.octarine.request.CommandRequest;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class ScaleRequest
+public class ResizeRequest
         extends CommandRequest {
 
 }

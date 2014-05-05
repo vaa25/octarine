@@ -7,8 +7,8 @@ import info.dejv.octarine.selection.SelectionChangeListener;
 import info.dejv.octarine.selection.SelectionManager;
 import info.dejv.octarine.tool.Tool;
 import info.dejv.octarine.tool.selection.editmode.EditModeDelete;
+import info.dejv.octarine.tool.selection.editmode.EditModeResize;
 import info.dejv.octarine.tool.selection.editmode.EditModeRotate;
-import info.dejv.octarine.tool.selection.editmode.EditModeScale;
 import info.dejv.octarine.tool.selection.editmode.EditModeTranslate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -94,7 +94,7 @@ public class SelectionTool
         coexistingEditorModes.add(new EditModeDelete(octarine));
         coexistingEditorModes.add(new EditModeTranslate(octarine));
 
-        exclusiveEditModes.add(new EditModeScale(octarine, this));
+        exclusiveEditModes.add(new EditModeResize(octarine, this));
         exclusiveEditModes.add(new EditModeRotate(octarine, this));
 
         initiated = true;
@@ -168,7 +168,6 @@ public class SelectionTool
         });
 
         coexistingEditorModes.stream().forEach(editor -> editor.selectionUpdated(selection));
-
         exclusiveEditModes.stream().forEach(editor -> editor.selectionUpdated(selection));
 
         if ((activeExclusiveEditMode == null) || (!activeExclusiveEditMode.isEnabled())) {

@@ -30,12 +30,11 @@ public class EditModeRotate
     }
 
     @Override
-    public void activate() {
+    protected void doActivate() {
     }
 
-
     @Override
-    public void deactivate() {
+    protected void doDeactivate() {
     }
 
 }
