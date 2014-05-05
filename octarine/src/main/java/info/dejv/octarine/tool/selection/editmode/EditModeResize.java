@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 
 /**
  * "Scale" edit mode<br/>
@@ -90,6 +91,8 @@ public class EditModeResize
         r.setHeight(HANDLE_SIZE_HALF * 2);
         r.setFill(Color.WHITE);
         r.setStroke(OctarineProps.getInstance().getStaticFeedbackColor());
+        r.setStrokeWidth(OctarineProps.getInstance().getStaticFeedbackStrokeWidth());
+        r.setStrokeType(StrokeType.OUTSIDE);
         switch (h) {
             case N:
                 r.xProperty().bind(selectionBounds.centerXProperty().subtract(HANDLE_SIZE_HALF));

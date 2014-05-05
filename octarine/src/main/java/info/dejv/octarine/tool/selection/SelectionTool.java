@@ -11,7 +11,6 @@ import info.dejv.octarine.tool.selection.editmode.EditModeResize;
 import info.dejv.octarine.tool.selection.editmode.EditModeRotate;
 import info.dejv.octarine.tool.selection.editmode.EditModeTranslate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,6 @@ public class SelectionTool
 
     private static final Logger LOG = LoggerFactory.getLogger(SelectionTool.class);
     private static final double SELECTION_BOX_OFFSET = 1;
-    private static final List<Double> DASH_ARRAY_MULTI_OUTLINE = Arrays.asList(7.0d, 5.0d);
 
     private final Map<Controller, Shape> selectionOutlines = new HashMap<>();
 
@@ -214,9 +212,8 @@ public class SelectionTool
         box.setMouseTransparent(true);
         box.setFill(null);
         box.setSmooth(false);
-        box.setStrokeWidth(1.0d);
+        box.setStrokeWidth(OctarineProps.getInstance().getStaticFeedbackStrokeWidth());
         box.setStrokeType(StrokeType.OUTSIDE);
-        box.getStrokeDashArray().addAll(DASH_ARRAY_MULTI_OUTLINE);
         box.setStroke(OctarineProps.getInstance().getStaticFeedbackColor());
         box.setId(id);
 
