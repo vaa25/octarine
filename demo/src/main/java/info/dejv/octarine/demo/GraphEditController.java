@@ -24,7 +24,7 @@ public class GraphEditController {
     private Slider slider;
 
     @FXML
-    private ZoomableScrollPane zoom;
+    private ZoomableScrollPane zoomableScrollPane;
 
     @FXML
     private Button bToolSelect;
@@ -36,9 +36,9 @@ public class GraphEditController {
 
     @FXML
     void initialize() {
-        zoom.zoomFactorProperty().bindBidirectional(slider.valueProperty());
+        zoomableScrollPane.zoomFactorProperty().bindBidirectional(slider.valueProperty());
 
-        final Octarine octarine = new OctarineImpl(zoom);
+        final Octarine octarine = new OctarineImpl(zoomableScrollPane);
         SelectionTool.initialize(octarine);
 
         ShapeContainer canvas = new ShapeContainer();

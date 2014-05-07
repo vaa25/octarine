@@ -45,7 +45,7 @@ public abstract class AbstractEditMode
         this.requestType = requestType;
 
         this.octarine = octarine;
-        this.scene = octarine.getNode().getScene();
+        this.scene = octarine.getViewer().getScene();
         this.commandStack = octarine.getCommandStack();
 
         assert this.scene != null : "scene is NULL";

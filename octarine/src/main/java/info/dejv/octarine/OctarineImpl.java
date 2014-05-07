@@ -56,7 +56,7 @@ public class OctarineImpl
     }
 
     @Override
-    public Node getNode() {
+    public ZoomableScrollPane getViewer() {
         return viewer;
     }
 

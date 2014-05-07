@@ -5,6 +5,7 @@
  */
 package info.dejv.octarine;
 
+import info.dejv.common.ui.ZoomableScrollPane;
 import info.dejv.octarine.actionhandler.ActionHandler;
 import info.dejv.octarine.command.CommandStack;
 import info.dejv.octarine.controller.Controller;
@@ -29,7 +30,7 @@ public interface Octarine {
 
     Controller getRootController();
 
-    Node getNode();
+    ZoomableScrollPane getViewer();
 
     long getNextChildSequence();
 

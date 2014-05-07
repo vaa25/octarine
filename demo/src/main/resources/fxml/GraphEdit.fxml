@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import info.dejv.ui.jfx.layout.*?>
+<?import info.dejv.common.ui.*?>
 <?import java.lang.*?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.*?>
@@ -13,7 +13,7 @@
   <children>
     <Button fx:id="bToolSelect" text="Select" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"/>
     <Button fx:id="bToolAdd" text="Add"  AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="10.0"/>
-    <ZoomableScrollPane fx:id="zoom" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="45.0" />
+    <ZoomableScrollPane fx:id="zoomableScrollPane" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="45.0" />
     <Slider fx:id="slider" min="0" max="10.0" value="1.0" majorTickUnit="1" minorTickCount="5" showTickLabels="true" showTickMarks="true" snapToTicks="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
   </children>
 

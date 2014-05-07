@@ -68,7 +68,7 @@ public class SelectionTool
 
     private SelectionTool(Octarine octarine) {
         this.octarine = octarine;
-        Node pane = octarine.getNode();
+        Node pane = octarine.getViewer();
 
         if (pane.getScene() != null) {  // If Scene is already available, initiate now...
             initiate();

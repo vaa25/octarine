@@ -28,7 +28,7 @@ public class IncrementalSelectionHelper {
 
 
     public void activate(MouseEvent e) {
-        Scene scene = editor.getNode().getScene();
+        Scene scene = editor.getViewer().getScene();
         if (scene != null) {
             scene.addEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
             scene.addEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
@@ -61,7 +61,7 @@ public class IncrementalSelectionHelper {
 
     public void deactivate() {
         removeSelectionFeedback();
-        Scene scene = editor.getNode().getScene();
+        Scene scene = editor.getViewer().getScene();
         if (scene != null) {
             scene.removeEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
             scene.removeEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
