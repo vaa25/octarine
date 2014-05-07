@@ -1,5 +1,6 @@
 package info.dejv.octarine;
 
+import info.dejv.common.ui.ZoomableScrollPane;
 import info.dejv.octarine.actionhandler.ActionHandler;
 import info.dejv.octarine.command.CommandStack;
 import info.dejv.octarine.controller.Controller;
@@ -8,7 +9,6 @@ import info.dejv.octarine.layer.LayerManagerImpl;
 import info.dejv.octarine.selection.SelectionManager;
 import info.dejv.octarine.selection.SelectionManagerImpl;
 import info.dejv.octarine.tool.Tool;
-import info.dejv.ui.jfx.layout.ZoomableScrollPaneView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +30,7 @@ public class OctarineImpl
     private final SelectionManager selectionManager = new SelectionManagerImpl();
     private final LayerManager layerManager;
 
-    private final ZoomableScrollPaneView viewer;
+    private final ZoomableScrollPane viewer;
     private Controller rootController;
     private Tool activeTool;
 
@@ -41,7 +41,7 @@ public class OctarineImpl
 
     private long childIdSequence = 0;
 
-    public OctarineImpl(final ZoomableScrollPaneView viewer) {
+    public OctarineImpl(final ZoomableScrollPane viewer) {
         this.viewer = viewer;
         this.layerManager = new LayerManagerImpl(layersGroup.getChildren());
 
@@ -57,7 +57,7 @@ public class OctarineImpl
 
     @Override
     public Node getNode() {
-        return viewer.getNode();
+        return viewer;
     }
 
 

@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>dejv :: Octarine :: POM</name>
+    <name>dejv :: Octarine :: !</name>
     
     <groupId>info.dejv</groupId>
     <artifactId>octarine</artifactId>
@@ -33,8 +33,9 @@
         <slf4j.version>1.7.5</slf4j.version>
         <commons-math.version>3.2</commons-math.version>
 
+        <dejv-common.version>0.5.0-SNAPSHOT</dejv-common.version>
+        
         <octarine.version>0.1.0-SNAPSHOT</octarine.version>
-        <dejv-common.version>0.4.1</dejv-common.version>
     </properties>    
     
     <repositories>
@@ -116,32 +117,25 @@
             </dependency>
 
             <dependency>
-                <groupId>org.osgi</groupId>
-                <artifactId>org.osgi.core</artifactId>
-                <version>${osgi.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>4.0.0.M3</version>
-            </dependency>
-            
-            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
                 <scope>compile</scope>
             </dependency>
-
+            
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
                 <version>${slf4j.version}</version>
                 <scope>compile</scope>
             </dependency>
-
+            
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>4.0.0.M3</version>
+            </dependency>
+            
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-math3</artifactId>
@@ -150,7 +144,7 @@
             </dependency>
 
             <dependency>
-                <groupId>info.dejv.common.utils</groupId>
+                <groupId>info.dejv.common</groupId>
                 <artifactId>geometry</artifactId>
                 <version>${dejv-common.version}</version>
                 <scope>compile</scope>
@@ -158,14 +152,7 @@
 
             <dependency>
                 <groupId>info.dejv.common.ui</groupId>
-                <artifactId>jfx</artifactId>
-                <version>${dejv-common.version}</version>
-                <scope>compile</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>info.dejv.common.ui</groupId>
-                <artifactId>logic</artifactId>
+                <artifactId>ui</artifactId>
                 <version>${dejv-common.version}</version>
                 <scope>compile</scope>
             </dependency>
@@ -193,6 +180,12 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
             </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+            </dependency>
+                        
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>

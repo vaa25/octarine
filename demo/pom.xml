@@ -25,22 +25,17 @@
              
         <dependency>
             <groupId>info.dejv.common.ui</groupId>
-            <artifactId>jfx</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>info.dejv.common.ui</groupId>
-            <artifactId>logic</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>info.dejv.octarine</groupId>
-            <artifactId>octarine</artifactId>
+            <artifactId>ui</artifactId>
         </dependency>
         
          <dependency>
             <groupId>info.dejv.common.ui</groupId>
             <artifactId>spring</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>info.dejv.octarine</groupId>
+            <artifactId>octarine</artifactId>
         </dependency>
   </dependencies>
   

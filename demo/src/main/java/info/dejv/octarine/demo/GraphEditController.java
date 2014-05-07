@@ -1,5 +1,6 @@
 package info.dejv.octarine.demo;
 
+import info.dejv.common.ui.ZoomableScrollPane;
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.OctarineImpl;
 import info.dejv.octarine.demo.controller.ShapeContainerController;
@@ -7,7 +8,6 @@ import info.dejv.octarine.demo.model.RectangleShape;
 import info.dejv.octarine.demo.model.ShapeContainer;
 import info.dejv.octarine.demo.tools.AddRectangleTool;
 import info.dejv.octarine.tool.selection.SelectionTool;
-import info.dejv.ui.jfx.layout.ZoomableScrollPane;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
