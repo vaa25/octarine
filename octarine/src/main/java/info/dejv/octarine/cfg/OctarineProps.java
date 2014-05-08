@@ -24,6 +24,7 @@ public class OctarineProps {
     private static final double DEF_GLOW_OPACITY = 0.5d;
     private static final double DEF_GLOW_SIZE = 3.0d;
     private static final double DEF_STATIC_FEEDBACK_STROKE_WIDTH = 2.0d;
+    private static final double DEF_DYNAMIC_FEEDBACK_STROKE_WIDTH = 1.0d;
 
     private static OctarineProps octarineProps;
 
@@ -47,6 +48,10 @@ public class OctarineProps {
 
     public double getStaticFeedbackStrokeWidth() {
         return DEF_STATIC_FEEDBACK_STROKE_WIDTH;
+    }
+
+    public double getDynamicFeedbackStrokeWidth() {
+        return DEF_DYNAMIC_FEEDBACK_STROKE_WIDTH;
     }
 
     public Color getDynamicFeedbackColor() {

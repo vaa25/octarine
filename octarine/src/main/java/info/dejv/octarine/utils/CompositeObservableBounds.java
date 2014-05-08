@@ -12,21 +12,27 @@ import javafx.geometry.Bounds;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class CompositeBounds
+public class CompositeObservableBounds
         extends AbstractObservableBounds {
 
     private final List<ReadOnlyObjectProperty<Bounds>> sourceBounds = new ArrayList<>();
 
-    public CompositeBounds() {
-        minX.set(10);
-        minY.set(10);
-        minZ.set(10);
-        maxX.set(20);
-        maxY.set(20);
-        maxZ.set(20);
+    public CompositeObservableBounds() {
+        minX.set(0);
+        minY.set(0);
+        minZ.set(0);
+        maxX.set(0);
+        maxY.set(0);
+        maxZ.set(0);
     }
 
-    public final CompositeBounds add(ReadOnlyObjectProperty<Bounds> nodeBounds) {
+
+    public CompositeObservableBounds(ReadOnlyObjectProperty<Bounds> nodeBounds) {
+        add(nodeBounds);
+    }
+
+
+    public final CompositeObservableBounds add(ReadOnlyObjectProperty<Bounds> nodeBounds) {
         requireNonNull(nodeBounds, "nodeBounds is null");
 
         if (!sourceBounds.contains(nodeBounds)) {

@@ -1,7 +1,6 @@
 package info.dejv.octarine.tool.selection;
 
 import info.dejv.octarine.Octarine;
-import info.dejv.octarine.cfg.OctarineProps;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.selection.SelectionChangeListener;
 import info.dejv.octarine.selection.SelectionManager;
@@ -11,17 +10,10 @@ import info.dejv.octarine.tool.selection.editmode.EditModeResize;
 import info.dejv.octarine.tool.selection.editmode.EditModeRotate;
 import info.dejv.octarine.tool.selection.editmode.EditModeTranslate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-import javafx.scene.shape.StrokeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +24,8 @@ public class SelectionTool
     private static SelectionTool instance;
 
     private static final Logger LOG = LoggerFactory.getLogger(SelectionTool.class);
-    private static final double SELECTION_BOX_OFFSET = 1;
 
-    private final Map<Controller, Shape> selectionOutlines = new HashMap<>();
+    private final SelectionOutlines selectionOutlines;
 
     private final Octarine octarine;
 
@@ -68,6 +59,8 @@ public class SelectionTool
 
     private SelectionTool(Octarine octarine) {
         this.octarine = octarine;
+        this.selectionOutlines = new SelectionOutlines(octarine.getFeedback(), octarine.getViewer().zoomFactorProperty());
+
         Node pane = octarine.getViewer();
 
         if (pane.getScene() != null) {  // If Scene is already available, initiate now...
@@ -140,10 +133,6 @@ public class SelectionTool
         coexistingEditorModes.parallelStream().forEach(editor -> editor.deactivate());
 
         final ObservableList<Node> fb = octarine.getFeedback();
-        selectionOutlines.values().stream().forEach((outline) -> {
-            fb.remove(outline);
-        });
-
         selectionOutlines.clear();
     }
 
@@ -152,18 +141,7 @@ public class SelectionTool
     public void selectionChanged(SelectionManager sender, List<Controller> selection, List<Controller> added, List<Controller> removed) {
         LOG.trace("Selection changed: {}", selection.toString());
 
-        selectionOutlines.values().stream().forEach((outline) -> {
-            octarine.getFeedback().remove(outline);
-        });
-
-        selectionOutlines.clear();
-
-        selection.stream().forEach(controller -> {
-            Shape outline = createSelectionBox(controller.getView(), "[" + controller.getId() + "] Selection box");
-            selectionOutlines.put(controller, outline);
-            octarine.getFeedback().add(outline);
-            LOG.trace("Added outline: {}", outline.getId());
-        });
+        selectionOutlines.selectionChanged(added, removed);
 
         coexistingEditorModes.stream().forEach(editor -> editor.selectionUpdated(selection));
         exclusiveEditModes.stream().forEach(editor -> editor.selectionUpdated(selection));
@@ -204,32 +182,5 @@ public class SelectionTool
 
         activeExclusiveEditMode = exclusiveEditMode;
         activeExclusiveEditMode.activate();
-    }
-
-
-    private Rectangle createSelectionBox(Node view, String id) {
-        Rectangle box = new Rectangle();
-        box.setMouseTransparent(true);
-        box.setFill(null);
-        box.setSmooth(false);
-        box.setStrokeWidth(OctarineProps.getInstance().getStaticFeedbackStrokeWidth());
-        box.setStrokeType(StrokeType.OUTSIDE);
-        box.setStroke(OctarineProps.getInstance().getStaticFeedbackColor());
-        box.setId(id);
-
-        view.boundsInParentProperty().addListener((ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) -> {
-            updateSelectionBoxCoords(box, newValue);
-        });
-
-        updateSelectionBoxCoords(box, view.getBoundsInParent());
-        return box;
-    }
-
-
-    private static void updateSelectionBoxCoords(Rectangle r, Bounds viewBounds) {
-        r.setX(viewBounds.getMinX() - SELECTION_BOX_OFFSET);
-        r.setY(viewBounds.getMinY() - SELECTION_BOX_OFFSET);
-        r.setWidth(viewBounds.getWidth() + 2 * SELECTION_BOX_OFFSET);
-        r.setHeight(viewBounds.getHeight() + 2 * SELECTION_BOX_OFFSET);
     }
 }

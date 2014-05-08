@@ -3,7 +3,9 @@ package info.dejv.octarine.actionhandler.feedback;
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.utils.ControllerUtils;
-import info.dejv.octarine.utils.FeedbackFormatter;
+import info.dejv.octarine.utils.FormattingUtils;
+import static info.dejv.octarine.utils.FormattingUtils.formatFeedbackOutline;
+import static info.dejv.octarine.utils.FormattingUtils.getDefaultFeedbackStrokeWidth;
 import javafx.scene.shape.Shape;
 
 /**
@@ -12,6 +14,8 @@ import javafx.scene.shape.Shape;
  */
 public class MouseOverDynamicFeedback
         extends DynamicFeedback {
+
+    private static final double SPACING = 5.0d;
 
     private static MouseOverDynamicFeedback instance;
 
@@ -34,14 +38,16 @@ public class MouseOverDynamicFeedback
 
     private final Shape outline;
 
+
     public MouseOverDynamicFeedback(Octarine editor, Controller controller) {
         super(editor);
 
-        this.outline = FeedbackFormatter.grow(ControllerUtils.getShape(controller), 5.0d);
-        FeedbackFormatter.formatOutline(outline);
+        this.outline = FormattingUtils.grow(ControllerUtils.getShape(controller), SPACING);
+        outline.strokeWidthProperty().bind(getDefaultFeedbackStrokeWidth(FormattingUtils.FeedbackType.DYNAMIC));
+
+        formatFeedbackOutline(outline, FormattingUtils.FeedbackType.DYNAMIC, FormattingUtils.FeedbackOpacity.STRONG, "Mouseover");
 
         getChildren().add(outline);
     }
-
 
 }

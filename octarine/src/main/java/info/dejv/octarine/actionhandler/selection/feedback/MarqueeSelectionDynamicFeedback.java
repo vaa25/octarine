@@ -3,7 +3,7 @@ package info.dejv.octarine.actionhandler.selection.feedback;
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.actionhandler.feedback.DynamicFeedback;
 import info.dejv.octarine.cfg.OctarineProps;
-import info.dejv.octarine.utils.FeedbackFormatter;
+import info.dejv.octarine.utils.FormattingUtils;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
 
@@ -49,7 +49,7 @@ public class MarqueeSelectionDynamicFeedback
 
         rectangle = new Rectangle();
         rectangle.setStroke(props.getDynamicFeedbackColor());
-        rectangle.setFill(FeedbackFormatter.fromColorAndOpacity(props.getDynamicFeedbackColor(), props.getFeedbackOpacityWeak()));
+        rectangle.setFill(FormattingUtils.fromColorAndOpacity(props.getDynamicFeedbackColor(), props.getFeedbackOpacityWeak()));
 
         getChildren().add(rectangle);
     }

@@ -2,7 +2,7 @@ package info.dejv.octarine.actionhandler.selection.feedback;
 
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.actionhandler.feedback.DynamicFeedback;
-import info.dejv.octarine.utils.FeedbackFormatter;
+import info.dejv.octarine.utils.FormattingUtils;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -66,10 +66,10 @@ public class IncrementalSelectionFeedback
 
         symbol = FXMLLoader.load(System.class.getResource(type == Type.ADD ? "/fxml/plus.fxml" : "/fxml/minus.fxml"));
         symbol.getTransforms().add(symbolTranslate);
-        FeedbackFormatter.formatGlow((SVGPath) symbol.lookup("#glowCircle"));
-        FeedbackFormatter.formatGlow((SVGPath) symbol.lookup("#glowSymbol"));
-        FeedbackFormatter.formatSymbol((SVGPath) symbol.lookup("#circle"), false);
-        FeedbackFormatter.formatSymbol((SVGPath) symbol.lookup("#symbol"), true);
+        FormattingUtils.formatGlow((SVGPath) symbol.lookup("#glowCircle"));
+        FormattingUtils.formatGlow((SVGPath) symbol.lookup("#glowSymbol"));
+        FormattingUtils.formatSymbol((SVGPath) symbol.lookup("#circle"), false);
+        FormattingUtils.formatSymbol((SVGPath) symbol.lookup("#symbol"), true);
 
         getChildren().add(symbol);
     }

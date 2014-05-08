@@ -9,6 +9,7 @@ import info.dejv.octarine.layer.LayerManagerImpl;
 import info.dejv.octarine.selection.SelectionManager;
 import info.dejv.octarine.selection.SelectionManagerImpl;
 import info.dejv.octarine.tool.Tool;
+import info.dejv.octarine.utils.FormattingUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +45,8 @@ public class OctarineImpl
     public OctarineImpl(final ZoomableScrollPane viewer) {
         this.viewer = viewer;
         this.layerManager = new LayerManagerImpl(layersGroup.getChildren());
+
+        FormattingUtils.setZoomFactor(viewer.zoomFactorProperty());
 
         layersGroup.setId(ID_LAYERS);
         feedbackGroup.setId(ID_FEEDBACK);
