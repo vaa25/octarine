@@ -30,14 +30,12 @@ public class SelectionOutlines {
 
     private final ObservableList<Node> feedbackLayer;
 
-    private final DoubleProperty zoomFactor;
     private final ConstantZoomDoubleBinding offset;
     private final ConstantZoomDoubleBinding sizeGrowth;
 
 
     public SelectionOutlines(ObservableList<Node> feedbackLayer, DoubleProperty zoomFactor) {
         this.feedbackLayer = feedbackLayer;
-        this.zoomFactor = zoomFactor;
 
         offset = new ConstantZoomDoubleBinding(zoomFactor, SELECTION_BOX_OFFSET);
         sizeGrowth = new ConstantZoomDoubleBinding(zoomFactor, 2 * SELECTION_BOX_OFFSET);

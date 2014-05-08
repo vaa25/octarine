@@ -2,8 +2,11 @@ package info.dejv.octarine.actionhandler.selection.feedback;
 
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.actionhandler.feedback.DynamicFeedback;
-import info.dejv.octarine.cfg.OctarineProps;
 import info.dejv.octarine.utils.FormattingUtils;
+import info.dejv.octarine.utils.FormattingUtils.FeedbackOpacity;
+import info.dejv.octarine.utils.FormattingUtils.FeedbackType;
+import static info.dejv.octarine.utils.FormattingUtils.getDefaultFeedbackStrokeWidth;
+import static info.dejv.octarine.utils.FormattingUtils.getFeedbackColor;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
 
@@ -21,14 +24,14 @@ public class MarqueeSelectionDynamicFeedback
             remove();
         }
         instance = new MarqueeSelectionDynamicFeedback(editor, initialCoords);
-        instance.addToEditor();
+        instance.addToScene();
     }
 
     public static void remove() {
         if (instance == null) {
             return;
         }
-        instance.removeFromEditor();
+        instance.removeFromScene();
         instance = null;
     }
 
@@ -45,11 +48,11 @@ public class MarqueeSelectionDynamicFeedback
 
         this.initialCoords = initialCoords;
         setMouseTransparent(true);
-        OctarineProps props = OctarineProps.getInstance();
 
         rectangle = new Rectangle();
-        rectangle.setStroke(props.getDynamicFeedbackColor());
-        rectangle.setFill(FormattingUtils.fromColorAndOpacity(props.getDynamicFeedbackColor(), props.getFeedbackOpacityWeak()));
+        rectangle.setStroke(getFeedbackColor(FeedbackType.DYNAMIC, FeedbackOpacity.OPAQUE));
+        rectangle.setFill(getFeedbackColor(FeedbackType.DYNAMIC, FeedbackOpacity.WEAK));
+        rectangle.strokeWidthProperty().bind(getDefaultFeedbackStrokeWidth(FormattingUtils.FeedbackType.STATIC));
 
         getChildren().add(rectangle);
     }

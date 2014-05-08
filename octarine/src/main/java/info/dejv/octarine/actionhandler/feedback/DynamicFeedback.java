@@ -10,17 +10,17 @@ import javafx.scene.Group;
 public abstract class DynamicFeedback
         extends Group {
 
-    private final Octarine editor;
+    private final Octarine octarine;
 
-    public DynamicFeedback(Octarine editor) {
-        this.editor = editor;
+    public DynamicFeedback(Octarine octarine) {
+        this.octarine = octarine;
     }
 
-    protected void addToEditor() {
-        editor.getActiveFeedback().add(this);
+    protected void addToScene() {
+        octarine.getActiveFeedback().add(this);
     }
 
-    protected void removeFromEditor() {
-        editor.getActiveFeedback().remove(this);
+    protected void removeFromScene() {
+        octarine.getActiveFeedback().remove(this);
     }
 }

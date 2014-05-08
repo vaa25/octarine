@@ -2,8 +2,10 @@ package info.dejv.octarine.actionhandler.selection.feedback;
 
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.actionhandler.feedback.DynamicFeedback;
+import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
 import info.dejv.octarine.utils.FormattingUtils;
 import java.io.IOException;
+import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -29,7 +31,7 @@ public class IncrementalSelectionFeedback
         }
         try {
             instance = new IncrementalSelectionFeedback(editor, type);
-            instance.addToEditor();
+            instance.addToScene();
         } catch (IOException ex) {
             LOGGER.error("Failed to instantiate IncrementalSelectionFeedback", ex);
         }
@@ -39,7 +41,7 @@ public class IncrementalSelectionFeedback
         if (instance == null) {
             return;
         }
-        instance.removeFromEditor();
+        instance.removeFromScene();
         instance = null;
     }
 
@@ -57,15 +59,22 @@ public class IncrementalSelectionFeedback
     private final Translate symbolTranslate = new Translate();
 
     private final Type type;
-
+    private final ConstantZoomDoubleBinding symbolScale;
 
     public IncrementalSelectionFeedback(Octarine editor, Type type) throws IOException {
         super(editor);
 
         this.type = type;
 
+        DoubleProperty zoomFactor = editor.getViewer().zoomFactorProperty();
+        symbolScale = new ConstantZoomDoubleBinding(zoomFactor, 1.5);
+
         symbol = FXMLLoader.load(System.class.getResource(type == Type.ADD ? "/fxml/plus.fxml" : "/fxml/minus.fxml"));
         symbol.getTransforms().add(symbolTranslate);
+
+        symbol.scaleXProperty().bind(symbolScale);
+        symbol.scaleYProperty().bind(symbolScale);
+
         FormattingUtils.formatGlow((SVGPath) symbol.lookup("#glowCircle"));
         FormattingUtils.formatGlow((SVGPath) symbol.lookup("#glowSymbol"));
         FormattingUtils.formatSymbol((SVGPath) symbol.lookup("#circle"), false);
@@ -84,8 +93,8 @@ public class IncrementalSelectionFeedback
         try {
             Point2D p = screenToLocal(x, y);
             if (p != null) {
-                symbolTranslate.setX(p.getX());
-                symbolTranslate.setY(p.getY() - symbol.getBoundsInLocal().getHeight());
+                symbol.setTranslateX(p.getX());
+                symbol.setTranslateY(p.getY() - symbol.getBoundsInLocal().getHeight());
             }
         } catch (NullPointerException npe) {
             // A workaround for some annoying Java 8 problem in "screenToLocal"

@@ -2,10 +2,13 @@ package info.dejv.octarine.actionhandler.feedback;
 
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.controller.Controller;
+import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
 import info.dejv.octarine.utils.ControllerUtils;
 import info.dejv.octarine.utils.FormattingUtils;
 import static info.dejv.octarine.utils.FormattingUtils.formatFeedbackOutline;
 import static info.dejv.octarine.utils.FormattingUtils.getDefaultFeedbackStrokeWidth;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.DoubleProperty;
 import javafx.scene.shape.Shape;
 
 /**
@@ -19,35 +22,53 @@ public class MouseOverDynamicFeedback
 
     private static MouseOverDynamicFeedback instance;
 
-    public static void add(Octarine editor, Controller controller) {
+    public static void add(Octarine octarine, Controller controller) {
         if (instance != null) {
             remove();
         }
-        instance = new MouseOverDynamicFeedback(editor, controller);
-        instance.addToEditor();
+        instance = new MouseOverDynamicFeedback(octarine, controller);
+        instance.addToScene();
     }
 
     public static void remove() {
         if (instance == null) {
             return;
         }
-        instance.removeFromEditor();
+        instance.removeFromScene();
         instance = null;
     }
 
 
-    private final Shape outline;
+    private final DoubleProperty zoomFactor;
+    private final DoubleBinding spacing;
+    private Shape outline;
+
+    public MouseOverDynamicFeedback(Octarine octarine, Controller controller) {
+        super(octarine);
+        this.zoomFactor = octarine.getViewer().zoomFactorProperty();
+        this.spacing = new ConstantZoomDoubleBinding(zoomFactor, SPACING);
+
+        addOutline(controller);
+
+        zoomFactor.addListener((observable) -> {
+            removeOutline();
+            addOutline(controller);
+        });
+    }
+
+    private void removeOutline() {
+        if ((outline != null) && (getChildren().contains(outline))) {
+            getChildren().remove(outline);
+        }
+    }
 
 
-    public MouseOverDynamicFeedback(Octarine editor, Controller controller) {
-        super(editor);
+    private void addOutline(Controller controller) {
+        outline = FormattingUtils.grow(ControllerUtils.getShape(controller), spacing.get());
 
-        this.outline = FormattingUtils.grow(ControllerUtils.getShape(controller), SPACING);
         outline.strokeWidthProperty().bind(getDefaultFeedbackStrokeWidth(FormattingUtils.FeedbackType.DYNAMIC));
-
         formatFeedbackOutline(outline, FormattingUtils.FeedbackType.DYNAMIC, FormattingUtils.FeedbackOpacity.STRONG, "Mouseover");
 
         getChildren().add(outline);
     }
-
 }
