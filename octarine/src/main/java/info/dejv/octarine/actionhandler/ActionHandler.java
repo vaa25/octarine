@@ -8,9 +8,9 @@ import info.dejv.octarine.tool.Tool;
  * @author dejv
  * @param <T> Tool class
  */
-public abstract class ActionHandler<T extends Tool> {
+public abstract class ActionHandler {
 
-    private final Class<T> toolClass;
+    private final Class<? extends Tool> toolClass;
     private final Controller controller;
     private final Octarine octarine;
 
@@ -19,13 +19,13 @@ public abstract class ActionHandler<T extends Tool> {
      * @param toolClass
      * @param controller
      */
-    public ActionHandler(Class<T> toolClass, Controller controller) {
+    public ActionHandler(Class<? extends Tool> toolClass, Controller controller) {
         this.toolClass = toolClass;
         this.controller = controller;
         this.octarine = controller.getRoot().getOctarine();
     }
 
-    public Class<T> getToolClass() {
+    public Class<? extends Tool> getToolClass() {
         return toolClass;
     }
 
@@ -48,7 +48,7 @@ public abstract class ActionHandler<T extends Tool> {
         octarine.removeActionHandler(toolClass, this);
     }
 
-    public abstract void toolActivated(T tool);
+    public abstract void toolActivated(Tool tool);
 
-    public abstract void toolDeactivated(T tool);
+    public abstract void toolDeactivated(Tool tool);
 }

@@ -1,21 +1,25 @@
 package info.dejv.octarine.actionhandler.selection;
 
 import info.dejv.octarine.actionhandler.ActionHandler;
-import info.dejv.octarine.command.SelectCommand;
 import info.dejv.octarine.actionhandler.selection.feedback.MarqueeSelectionDynamicFeedback;
 import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionHelper;
 import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionListener;
+import info.dejv.octarine.command.SelectCommand;
 import info.dejv.octarine.controller.ContainerController;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.tool.Tool;
+import info.dejv.octarine.tool.selection.SelectionTool;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * @author dejv
  * @param <T>
  */
-public class ContainerSelectionHandler<T extends Tool>
+public class ContainerSelectionHandler
         extends ActionHandler
         implements IncrementalSelectionListener {
 
@@ -36,8 +40,8 @@ public class ContainerSelectionHandler<T extends Tool>
     private final IncrementalSelectionHelper incrementalSelectionHelper;
 
 
-    public ContainerSelectionHandler(Class toolClass, ContainerController controller, ObservableList<Node> nodeList) {
-        super(toolClass, controller);
+    public ContainerSelectionHandler(ContainerController controller, ObservableList<Node> nodeList) {
+        super(SelectionTool.class, controller);
         this.nodeList = nodeList;
         incrementalSelectionHelper = new IncrementalSelectionHelper(getOctarine(), this);
     }

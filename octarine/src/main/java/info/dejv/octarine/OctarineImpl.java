@@ -98,7 +98,7 @@ public class OctarineImpl
 
 
     @Override
-    public <T extends Tool> void addActionHandler(Class<? extends Tool> toolClass, ActionHandler<T> handler) {
+    public void addActionHandler(Class<? extends Tool> toolClass, ActionHandler handler) {
         if (!actionHandlers.containsKey(toolClass)) {
             actionHandlers.put(toolClass, new ArrayList<>());
         }
@@ -108,7 +108,7 @@ public class OctarineImpl
 
 
     @Override
-    public <T extends Tool> void removeActionHandler(Class<? extends Tool> toolClass, ActionHandler<T> handler) {
+    public void removeActionHandler(Class<? extends Tool> toolClass, ActionHandler handler) {
         if (actionHandlers.containsKey(toolClass)) {
             actionHandlers.get(toolClass).remove(handler);
         }

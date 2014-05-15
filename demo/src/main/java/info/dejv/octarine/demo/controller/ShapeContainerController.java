@@ -8,11 +8,11 @@ import info.dejv.octarine.model.BasicProperties;
 import info.dejv.octarine.model.ModelElement;
 import info.dejv.octarine.model.chunk.DoubleTuple;
 import info.dejv.octarine.request.handler.DeleteRequestHandler;
-import info.dejv.octarine.tool.selection.SelectionTool;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,7 @@ public class ShapeContainerController
 
         requestHandlers.add(new DeleteRequestHandler(this));
 
-        actionHandlers.add(new ContainerSelectionHandler<>(SelectionTool.class, this, octarine.getLayerManager().getAllLayers()));
+        actionHandlers.add(new ContainerSelectionHandler(this, octarine.getLayerManager().getAllLayers()));
     }
 
 

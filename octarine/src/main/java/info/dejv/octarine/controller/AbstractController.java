@@ -4,10 +4,13 @@ import info.dejv.octarine.Octarine;
 import info.dejv.octarine.actionhandler.ActionHandler;
 import info.dejv.octarine.model.ModelElement;
 import info.dejv.octarine.request.Request;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import javafx.scene.Node;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

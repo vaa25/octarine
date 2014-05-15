@@ -35,9 +35,9 @@ public interface Octarine {
     long getNextChildSequence();
 
 
-    <T extends Tool> void addActionHandler(Class<? extends Tool> toolClass, ActionHandler<T> handler);
+    void addActionHandler(Class<? extends Tool> toolClass, ActionHandler handler);
 
-    <T extends Tool> void removeActionHandler(Class<? extends Tool> toolClass, ActionHandler<T> handler);
+    void removeActionHandler(Class<? extends Tool> toolClass, ActionHandler handler);
 
 
     CommandStack getCommandStack();

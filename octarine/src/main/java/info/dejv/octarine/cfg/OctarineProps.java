@@ -8,12 +8,19 @@ import javafx.scene.paint.Color;
  */
 public class OctarineProps {
 
-    private static final String PROP_STATIC_FEEDBACK_COLOR = "Static_Feedback_Color";
+    @SuppressWarnings("unused")
+	private static final String PROP_STATIC_FEEDBACK_COLOR = "Static_Feedback_Color";
+    @SuppressWarnings("unused")
     private static final String PROP_DYNAMIC_FEEDBACK_COLOR = "Dynamic_Feedback_Color";
+    @SuppressWarnings("unused")
     private static final String PROP_FEEDBACK_OPACITY_WEAK = "Feedback_Opacity_Weak";
+    @SuppressWarnings("unused")
     private static final String PROP_FEEDBACK_OPACITY_STRONG = "Feedback_Opacity_Strong";
+    @SuppressWarnings("unused")
     private static final String PROP_GLOW_COLOR = "Glow_Color";
+    @SuppressWarnings("unused")
     private static final String PROP_GLOW_OPACITY = "Glow_Opacity";
+    @SuppressWarnings("unused")
     private static final String PROP_GLOW_SIZE = "Glow_Size";
 
     private static final Color DEF_STATIC_FEEDBACK_COLOR = Color.DEEPSKYBLUE;
@@ -28,6 +35,7 @@ public class OctarineProps {
 
     private static OctarineProps octarineProps;
 
+    @SuppressWarnings("unused")
     private Props props;
 
     private OctarineProps() {
