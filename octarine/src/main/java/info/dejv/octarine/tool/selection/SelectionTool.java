@@ -1,5 +1,15 @@
 package info.dejv.octarine.tool.selection;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import javafx.scene.Node;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.selection.SelectionChangeListener;
@@ -9,25 +19,12 @@ import info.dejv.octarine.tool.selection.editmode.EditModeDelete;
 import info.dejv.octarine.tool.selection.editmode.EditModeResize;
 import info.dejv.octarine.tool.selection.editmode.EditModeRotate;
 import info.dejv.octarine.tool.selection.editmode.EditModeTranslate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class SelectionTool
         implements Tool, SelectionChangeListener, ExclusivityCoordinator {
 
-    private static SelectionTool instance;
-
     private static final Logger LOG = LoggerFactory.getLogger(SelectionTool.class);
-
-    private final SelectionOutlines selectionOutlines;
-
-    private final Octarine octarine;
 
     private final List<SelectionToolListener> listeners = new ArrayList<>();
 
@@ -39,35 +36,14 @@ public class SelectionTool
 
     private ExclusiveEditMode activeExclusiveEditMode = null;
 
+    private Octarine octarine;
+    private SelectionOutlines selectionOutlines;
+
     private boolean initiated = false;
     private boolean active = false;
 
 
-    public static void initialize(Octarine octarine) {
-        if (instance == null) {
-            instance = new SelectionTool(octarine);
-        }
-    }
-
-    public static SelectionTool getInstance() {
-        if (instance == null) {
-            throw new IllegalStateException("SelectionTool was not yet initialized. Call initialize(octarine)");
-        }
-        return instance;
-    }
-
-
-    private SelectionTool(Octarine octarine) {
-        this.octarine = octarine;
-        this.selectionOutlines = new SelectionOutlines(octarine.getFeedback(), octarine.getViewer().zoomFactorProperty());
-
-        Node pane = octarine.getViewer();
-
-        if (pane.getScene() != null) {  // If Scene is already available, initiate now...
-            initiate();
-        } else {                        //.. otherwise initiate, when it is set
-            pane.sceneProperty().addListener((sender, oldValue, newValue) -> initiate());
-        }
+    public SelectionTool() {
     }
 
 
@@ -81,16 +57,36 @@ public class SelectionTool
     }
 
 
-    public final void initiate() {
-        coexistingEditorModes.add(new EditModeDelete(octarine));
-        coexistingEditorModes.add(new EditModeTranslate(octarine));
+    public void setOctarine(Octarine octarine) {
+        this.octarine = octarine;
 
-        exclusiveEditModes.add(new EditModeResize(octarine, this));
-        exclusiveEditModes.add(new EditModeRotate(octarine, this));
+        final Node pane = octarine.getViewer();
 
-        initiated = true;
-        if (active) {
-            doActivate();
+        if (pane.getScene() != null) {  // If Scene is already available, initiate now...
+            init();
+        } else {                        //.. otherwise initiate, when it is set
+            pane.sceneProperty().addListener((sender, oldValue, newValue) -> init());
+        }
+
+    }
+
+
+    private void init() {
+        try {
+            coexistingEditorModes.add(new EditModeDelete(octarine));
+            coexistingEditorModes.add(new EditModeTranslate(octarine));
+
+            exclusiveEditModes.add(new EditModeResize(octarine, this));
+            exclusiveEditModes.add(new EditModeRotate(octarine, this));
+
+            selectionOutlines = new SelectionOutlines(octarine.getFeedback(), octarine.getViewer().zoomFactorProperty());
+
+            initiated = true;
+            if (active) {
+                doActivate();
+            }
+        } catch (IOException ex) {
+            LOG.error("Unable to properly initiate SelectionTool", ex);
         }
     }
 
@@ -132,7 +128,6 @@ public class SelectionTool
         exclusiveEditModes.parallelStream().forEach(editor -> editor.uninstallActivationHandlers());
         coexistingEditorModes.parallelStream().forEach(editor -> editor.deactivate());
 
-        final ObservableList<Node> fb = octarine.getFeedback();
         selectionOutlines.clear();
     }
 
@@ -156,6 +151,7 @@ public class SelectionTool
     public void onActivationRequest(ExclusiveEditMode sender) {
         Objects.requireNonNull(sender, "sender is NULL");
 
+        LOG.debug("Activating: {}", sender);
         setActiveExclusiveEditMode(sender);
     }
 

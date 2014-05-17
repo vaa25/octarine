@@ -25,6 +25,11 @@
     
     <dependencies>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>info.dejv.common</groupId>
             <artifactId>geometry</artifactId>
         </dependency>

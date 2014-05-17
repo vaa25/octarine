@@ -1,4 +1,10 @@
+.idea
+lib
 target
 nbactions.xml
 nb-configuration.xml
 scenicView.properties
+.project
+*.iml
+.classpath
+.settings

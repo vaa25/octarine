@@ -28,6 +28,7 @@
         <maven-build-helper-plugin.version>1.8</maven-build-helper-plugin.version>
         <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
 
+        <spring.version>4.0.4.RELEASE</spring.version>
         <junit.version>4.11</junit.version>
         <mockito.version>1.9.5</mockito.version>
         <slf4j.version>1.7.5</slf4j.version>
@@ -36,7 +37,7 @@
         <dejv-common.version>0.5.0-SNAPSHOT</dejv-common.version>
         
         <octarine.version>0.1.0-SNAPSHOT</octarine.version>
-    </properties>    
+    </properties>
     
     <repositories>
         <repository>
@@ -103,6 +104,13 @@
 
         <dependencies>
             <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
@@ -128,12 +136,6 @@
                 <artifactId>slf4j-simple</artifactId>
                 <version>${slf4j.version}</version>
                 <scope>compile</scope>
-            </dependency>
-            
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>4.0.0.M3</version>
             </dependency>
             
             <dependency>

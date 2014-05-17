@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.control.Button?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="info.dejv.octarine.demo.GraphEditController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="info.dejv.octarine.demo.OctarineDemoController">
   <children>
     <Button fx:id="bToolSelect" text="Select" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"/>
     <Button fx:id="bToolAdd" text="Add"  AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="10.0"/>

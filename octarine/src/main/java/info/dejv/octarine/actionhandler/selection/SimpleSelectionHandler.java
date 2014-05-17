@@ -5,6 +5,13 @@
  */
 package info.dejv.octarine.actionhandler.selection;
 
+import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import info.dejv.octarine.actionhandler.ActionHandler;
 import info.dejv.octarine.actionhandler.feedback.MouseOverDynamicFeedback;
 import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionHelper;
@@ -15,10 +22,6 @@ import info.dejv.octarine.request.shape.ShapeRequest;
 import info.dejv.octarine.tool.Tool;
 import info.dejv.octarine.tool.selection.SelectionTool;
 import info.dejv.octarine.tool.selection.SelectionToolListener;
-import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -34,6 +37,9 @@ public class SimpleSelectionHandler<T extends Tool>
     private final IncrementalSelectionHelper incrementalSelectionHelper;
     private boolean edited = false;
 
+    @Autowired
+    private SelectionTool selectionTool;
+
 
     public SimpleSelectionHandler(Class<T> toolClass, Controller controller) {
         super(toolClass, controller);
@@ -46,7 +52,7 @@ public class SimpleSelectionHandler<T extends Tool>
 
         controller.addRequestHandler(SelectableRequestHandler.getInstance());
 
-        SelectionTool.getInstance().getListeners().add(this);
+        selectionTool.getListeners().add(this);
     }
 
     @Override
