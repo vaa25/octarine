@@ -68,13 +68,14 @@ public final class FormattingUtils {
 
 
     public static void formatGlow(SVGPath shape) {
-        shape.setStroke(COLOR_GLOW);
+        shape.setStroke(null);
+        shape.setFill(COLOR_GLOW);
         shape.setMouseTransparent(true);
     }
 
 
     public static void formatSymbol(SVGPath shape, boolean fill) {
-        shape.setStroke(getFeedbackColor(FeedbackType.DYNAMIC, FeedbackOpacity.OPAQUE));
+        shape.setStroke(null);
         shape.setFill(fill ? getFeedbackColor(FeedbackType.DYNAMIC, FeedbackOpacity.OPAQUE) : null);
         shape.setMouseTransparent(true);
     }

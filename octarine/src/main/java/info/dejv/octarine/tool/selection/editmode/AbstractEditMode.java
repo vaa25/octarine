@@ -1,5 +1,16 @@
 package info.dejv.octarine.tool.selection.editmode;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
+import javafx.scene.Scene;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.command.CommandStack;
 import info.dejv.octarine.command.CompoundCommand;
@@ -8,14 +19,6 @@ import info.dejv.octarine.request.CommandRequest;
 import info.dejv.octarine.request.Request;
 import info.dejv.octarine.tool.selection.EditMode;
 import info.dejv.octarine.tool.selection.TransformListener;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import javafx.scene.Scene;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Common code for typical edit modes
@@ -28,16 +31,12 @@ public abstract class AbstractEditMode
     protected final Logger LOG;
     protected final Scene scene;
     protected final CommandStack commandStack;
-
-    private final List<TransformListener> listeners = new ArrayList<>();
     protected final Set<Controller> selection = new HashSet<>();
-
     protected final Class<? extends Request> requestType;
-
+    private final List<TransformListener> listeners = new ArrayList<>();
+    private final Octarine octarine;
     private boolean enabled = true;
     private boolean active = false;
-
-    private final Octarine octarine;
 
     public AbstractEditMode(Class<? extends Request> requestType, Octarine octarine) {
         Objects.requireNonNull(requestType, "type is NULL");
@@ -78,32 +77,6 @@ public abstract class AbstractEditMode
         }
     }
 
-
-    protected void notifyTransformationStarted() {
-        listeners.stream().forEach(listener -> listener.transformationStarted());
-    }
-
-    protected void notifyTransformationFinished() {
-        listeners.stream().forEach(listener -> listener.transformationFinished());
-    }
-
-
-    public Octarine getOctarine() {
-        return octarine;
-    }
-
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-
-    protected void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-
     @Override
     public void selectionUpdated(List<Controller> newSelection) {
         assert newSelection != null : "newSelection is NULL";
@@ -129,6 +102,26 @@ public abstract class AbstractEditMode
         LOG.debug("{} on current selection", enabled ? "Enabled" : "Disabled");
     }
 
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    protected void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    protected void notifyTransformationStarted() {
+        listeners.stream().forEach(TransformListener::transformationStarted);
+    }
+
+    protected void notifyTransformationFinished() {
+        listeners.stream().forEach(TransformListener::transformationFinished);
+    }
+
+    public Octarine getOctarine() {
+        return octarine;
+    }
 
     protected boolean isSelectionItemSupported(Controller controller) {
         return controller.supports(requestType);

@@ -1,7 +1,14 @@
 package info.dejv.octarine.actionhandler.feedback;
 
-import info.dejv.octarine.Octarine;
+import javax.annotation.PostConstruct;
+
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
+import javafx.scene.Node;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import info.dejv.octarine.Octarine;
 
 /**
  *
@@ -10,17 +17,28 @@ import javafx.scene.Group;
 public abstract class DynamicFeedback
         extends Group {
 
-    private final Octarine octarine;
+    @Autowired
+    protected Octarine octarine;
 
-    public DynamicFeedback(Octarine octarine) {
-        this.octarine = octarine;
+    protected ObservableList<Node> feedbackNodes;
+
+
+    @PostConstruct
+    public void initDynamicFeedback() {
+        setMouseTransparent(true);
+        feedbackNodes = octarine.getActiveFeedback();
     }
 
+
     protected void addToScene() {
-        octarine.getActiveFeedback().add(this);
+        if (!feedbackNodes.contains(this)) {
+            feedbackNodes.add(this);
+        }
     }
 
     protected void removeFromScene() {
-        octarine.getActiveFeedback().remove(this);
+        if (feedbackNodes.contains(this)) {
+            feedbackNodes.remove(this);
+        }
     }
 }

@@ -1,9 +1,6 @@
 package info.dejv.octarine.controller;
 
-import info.dejv.octarine.Octarine;
-import info.dejv.octarine.actionhandler.ActionHandler;
-import info.dejv.octarine.model.ModelElement;
-import info.dejv.octarine.request.Request;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +11,18 @@ import javafx.scene.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractController
+import info.dejv.octarine.Octarine;
+import info.dejv.octarine.actionhandler.ToolExtension;
+import info.dejv.octarine.model.ModelElement;
+import info.dejv.octarine.request.Request;
+import info.dejv.octarine.view.ViewFactory;
+
+public class DefaultController
         implements Controller {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractController.class);
-    protected final List<ActionHandler> actionHandlers = new ArrayList<>();
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultController.class);
+
+    protected final List<ToolExtension> toolExtensions = new ArrayList<>();
     protected final List<RequestHandler> requestHandlers = new ArrayList<>();
 
     private final ContainerController parent;
@@ -26,14 +30,15 @@ public abstract class AbstractController
     private final ModelElement model;
     private Node view;
 
+    private ViewFactory viewFactory;
+
     private String id;
 
 
-    public AbstractController(ModelElement model, ContainerController parent) {
+    public DefaultController(ModelElement model, ContainerController parent) {
         this.parent = parent;
         this.model = model;
     }
-
 
     @Override
     public String toString() {
@@ -85,18 +90,29 @@ public abstract class AbstractController
 
     @Override
     public Node getView() {
+        requireNonNull(viewFactory, "viewFactory is null");
+
         if (view == null) {
-            view = createAndUpdateView();
+            view = viewFactory.createView(model);
         }
         return view;
     }
 
 
+    public ViewFactory getViewFactory() {
+        return viewFactory;
+    }
+
+
+    public void setViewFactory(ViewFactory viewFactory) {
+        this.viewFactory = viewFactory;
+    }
+
+
+
     @Override
     public final void onAdded() {
-        actionHandlers.stream().forEach((ah) -> {
-            ah.register();
-        });
+        toolExtensions.forEach(ToolExtension::register);
 
         addViewToScene();
 
@@ -110,9 +126,7 @@ public abstract class AbstractController
 
         removeViewFromScene();
 
-        actionHandlers.stream().forEach((ah) -> {
-            ah.unregister();
-        });
+        toolExtensions.forEach(ToolExtension::unregister);
     }
 
 
@@ -128,6 +142,20 @@ public abstract class AbstractController
     public void removeRequestHandler(RequestHandler requestHandler) {
         if (requestHandlers.contains(requestHandler)) {
             requestHandlers.remove(requestHandler);
+        }
+    }
+
+    @Override
+    public void addToolExtension(ToolExtension toolExtension) {
+        if (!toolExtensions.contains(toolExtension)) {
+            toolExtensions.add(toolExtension);
+        }
+    }
+
+    @Override
+    public void removeToolExtension(ToolExtension toolExtension) {
+        if (toolExtensions.contains(toolExtension)) {
+            toolExtensions.remove(toolExtension);
         }
     }
 
@@ -163,16 +191,6 @@ public abstract class AbstractController
 
     protected void onControllerRemoved() {
     }
-
-
-    protected Node createAndUpdateView() {
-        Node newView = createView(model);
-        updateView(model, newView);
-        return newView;
-    }
-
-
-    protected abstract Node createView(ModelElement model);
 
 
     protected void updateView(ModelElement model, Node view) {

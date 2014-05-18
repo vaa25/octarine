@@ -1,30 +1,33 @@
 package info.dejv.octarine.controller;
 
-import info.dejv.octarine.model.ContainerModelElement;
-import info.dejv.octarine.model.ModelElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+
 import javafx.collections.ListChangeListener.Change;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import info.dejv.octarine.model.ContainerModelElement;
+import info.dejv.octarine.model.ModelElement;
 
 /**
  *
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public abstract class AbstractContainerController
-        extends AbstractController
+public class DefaultContainerController
+        extends DefaultController
         implements ContainerController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractContainerController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultContainerController.class);
     private final List<Controller> children = new ArrayList<>();
     private final ControllerFactory controllerFactory;
     private final ContainerModelElement model;
 
-    public AbstractContainerController(ContainerModelElement model, ContainerController parent, ControllerFactory controllerFactory) {
+    public DefaultContainerController(ContainerModelElement model, ContainerController parent, ControllerFactory controllerFactory) {
         super(model, parent);
         this.model = model;
         this.controllerFactory = controllerFactory;
@@ -48,8 +51,8 @@ public abstract class AbstractContainerController
 
     private void onChildrenListChanged(Change<? extends ModelElement> c) {
         if (c.next()) {
-            c.getRemoved().stream().forEach((addedElement) -> onModelElementRemoved(addedElement));
-            c.getAddedSubList().stream().forEach((addedElement) -> onModelElementAdded(addedElement));
+            c.getRemoved().stream().forEach(this::onModelElementRemoved);
+            c.getAddedSubList().stream().forEach(this::onModelElementAdded);
         }
     }
 

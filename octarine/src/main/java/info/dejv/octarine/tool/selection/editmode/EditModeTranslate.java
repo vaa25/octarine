@@ -5,18 +5,24 @@
  */
 package info.dejv.octarine.tool.selection.editmode;
 
-import info.dejv.octarine.Octarine;
-import info.dejv.octarine.tool.selection.SelectionTool;
-import info.dejv.octarine.tool.selection.request.TranslateRequest;
-import info.dejv.octarine.utils.ControllerUtils;
 import java.util.HashMap;
 import java.util.Map;
+
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Shape;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import info.dejv.octarine.Octarine;
+import info.dejv.octarine.controller.Controller;
+import info.dejv.octarine.tool.selection.SelectionTool;
+import info.dejv.octarine.tool.selection.SelectionToolListener;
+import info.dejv.octarine.tool.selection.request.TranslateRequest;
+import info.dejv.octarine.utils.ControllerUtils;
 
 /**
  * "Translate" edit mode<br/>
@@ -33,6 +39,10 @@ public class EditModeTranslate
 
     private final Map<Shape, Point2D> transformationFeedback = new HashMap<>();
 
+    @Autowired
+    public SelectionTool selectionTool;
+
+
     public EditModeTranslate(Octarine octarine) {
         super(TranslateRequest.class, octarine);
     }
@@ -40,7 +50,7 @@ public class EditModeTranslate
 
     @Override
     protected void doActivate() {
-        selection.stream().map((item) -> item.getView()).forEach((view) -> {
+        selection.stream().map(Controller::getView).forEach((view) -> {
             LOG.trace("Activating on {}", view);
             view.addEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
             view.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
@@ -50,7 +60,7 @@ public class EditModeTranslate
 
     @Override
     protected void doDeactivate() {
-        selection.stream().map((item) -> item.getView()).forEach((view) -> {
+        selection.stream().map(Controller::getView).forEach((view) -> {
             LOG.trace("Deactivating on {}", view);
             view.removeEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
             view.removeEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
@@ -81,7 +91,7 @@ public class EditModeTranslate
             addTransformationFeedback(e.getX(), e.getY());
 
             e.consume();
-            SelectionTool.getInstance().getListeners().stream().forEach((listener) -> listener.onEditStarted());
+            selectionTool.getListeners().stream().forEach(SelectionToolListener::onEditStarted);
         }
     }
 
@@ -98,7 +108,7 @@ public class EditModeTranslate
             removeTransformationFeedback();
             executeOnSelection(new TranslateRequest(e.getX() - initialPosition.getX(), e.getY() - initialPosition.getY()));
             drag = false;
-            SelectionTool.getInstance().getListeners().stream().forEach((listener) -> listener.onEditFinished());
+            selectionTool.getListeners().stream().forEach(SelectionToolListener::onEditFinished);
         }
     }
 
@@ -106,7 +116,7 @@ public class EditModeTranslate
         moveTransformationFeedback(x, y);
 
         ObservableList<Node> activeFeedback = getOctarine().getActiveFeedback();
-        transformationFeedback.keySet().stream().forEach((shape) -> activeFeedback.add(shape));
+        transformationFeedback.keySet().stream().forEach(activeFeedback::add);
     }
 
 
@@ -122,7 +132,7 @@ public class EditModeTranslate
 
     private void removeTransformationFeedback() {
         ObservableList<Node> activeFeedback = getOctarine().getActiveFeedback();
-        transformationFeedback.keySet().stream().forEach((shape) -> activeFeedback.remove(shape));
+        transformationFeedback.keySet().stream().forEach(activeFeedback::remove);
         transformationFeedback.clear();
     }
 

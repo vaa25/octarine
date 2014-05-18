@@ -3,6 +3,7 @@ package info.dejv.octarine.request.handler;
 import info.dejv.octarine.command.TranslateCommand;
 import info.dejv.octarine.model.chunk.DoubleTuple;
 import info.dejv.octarine.request.Request;
+import info.dejv.octarine.stereotype.RequestHandler;
 import info.dejv.octarine.tool.selection.request.TranslateRequest;
 
 /**
@@ -10,6 +11,7 @@ import info.dejv.octarine.tool.selection.request.TranslateRequest;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
+@RequestHandler
 public class TranslateRequestHandler
         extends AbstractRequestHandler {
 

@@ -19,10 +19,11 @@ import info.dejv.common.ui.logic.impl.ZoomableScrollPaneSpringFactory;
  */
 public class App extends Application {
 
+
     public static void main(final String[] args) {
         Application.launch(App.class, (String[]) null);
-
     }
+
 
     @Override
     public void start(final Stage primaryStage) throws Exception {

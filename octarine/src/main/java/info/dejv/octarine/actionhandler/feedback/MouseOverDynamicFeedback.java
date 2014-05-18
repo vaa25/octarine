@@ -1,60 +1,65 @@
 package info.dejv.octarine.actionhandler.feedback;
 
-import info.dejv.octarine.Octarine;
-import info.dejv.octarine.controller.Controller;
-import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
-import info.dejv.octarine.utils.ControllerUtils;
-import info.dejv.octarine.utils.FormattingUtils;
 import static info.dejv.octarine.utils.FormattingUtils.formatFeedbackOutline;
 import static info.dejv.octarine.utils.FormattingUtils.getDefaultFeedbackStrokeWidth;
+
+import javax.annotation.PostConstruct;
+
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.shape.Shape;
 
+import org.springframework.stereotype.Component;
+
+import info.dejv.octarine.controller.Controller;
+import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
+import info.dejv.octarine.utils.ControllerUtils;
+import info.dejv.octarine.utils.FormattingUtils;
+
 /**
- *
- * @author dejv
+ * "Mouse over" dynamic feedback
+ * <br/>
+ * Author: dejv (www.dejv.info)
  */
+@Component
 public class MouseOverDynamicFeedback
         extends DynamicFeedback {
 
     private static final double SPACING = 5.0d;
 
-    private static MouseOverDynamicFeedback instance;
+    private DoubleBinding spacing;
 
-    public static void add(Octarine octarine, Controller controller) {
-        if (instance != null) {
-            remove();
-        }
-        instance = new MouseOverDynamicFeedback(octarine, controller);
-        instance.addToScene();
-    }
-
-    public static void remove() {
-        if (instance == null) {
-            return;
-        }
-        instance.removeFromScene();
-        instance = null;
-    }
-
-
-    private final DoubleProperty zoomFactor;
-    private final DoubleBinding spacing;
+    private Controller controller;
     private Shape outline;
 
-    public MouseOverDynamicFeedback(Octarine octarine, Controller controller) {
-        super(octarine);
-        this.zoomFactor = octarine.getViewer().zoomFactorProperty();
-        this.spacing = new ConstantZoomDoubleBinding(zoomFactor, SPACING);
 
-        addOutline(controller);
+    @PostConstruct
+    public void initMouseOverDynamicFeedback() {
+        final DoubleProperty zoomFactor = octarine.getViewer().zoomFactorProperty();
+        spacing = new ConstantZoomDoubleBinding(zoomFactor, SPACING);
 
         zoomFactor.addListener((observable) -> {
             removeOutline();
-            addOutline(controller);
+            addOutline();
         });
+
     }
+
+    public void add(Controller controller) {
+        if (controller != null) {
+            remove();
+        }
+        this.controller = controller;
+        addOutline();
+        addToScene();
+    }
+
+    public void remove() {
+        removeFromScene();
+        removeOutline();
+        controller = null;
+    }
+
 
     private void removeOutline() {
         if ((outline != null) && (getChildren().contains(outline))) {
@@ -63,7 +68,11 @@ public class MouseOverDynamicFeedback
     }
 
 
-    private void addOutline(Controller controller) {
+    private void addOutline() {
+        if (controller == null) {
+            return;
+        }
+
         outline = FormattingUtils.grow(ControllerUtils.getShape(controller), spacing.get());
 
         outline.strokeWidthProperty().bind(getDefaultFeedbackStrokeWidth(FormattingUtils.FeedbackType.DYNAMIC));

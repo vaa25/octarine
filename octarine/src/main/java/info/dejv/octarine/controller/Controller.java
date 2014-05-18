@@ -1,8 +1,10 @@
 package info.dejv.octarine.controller;
 
-import info.dejv.octarine.Octarine;
-import info.dejv.octarine.model.ModelElement;
 import javafx.scene.Node;
+
+import info.dejv.octarine.Octarine;
+import info.dejv.octarine.actionhandler.ToolExtension;
+import info.dejv.octarine.model.ModelElement;
 
 /**
  * Controller interface<br/>
@@ -32,4 +34,9 @@ public interface Controller
     void addRequestHandler(RequestHandler requestHandler);
 
     void removeRequestHandler(RequestHandler requestHandler);
+
+    void addToolExtension(ToolExtension actionHandler);
+
+    void removeToolExtension(ToolExtension actionHandler);
+
 }

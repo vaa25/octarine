@@ -1,86 +1,89 @@
 package info.dejv.octarine.actionhandler.selection.feedback;
 
-import info.dejv.octarine.Octarine;
-import info.dejv.octarine.actionhandler.feedback.DynamicFeedback;
-import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
-import info.dejv.octarine.utils.FormattingUtils;
 import java.io.IOException;
+import javax.annotation.PostConstruct;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.transform.Translate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import info.dejv.octarine.actionhandler.feedback.DynamicFeedback;
+import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
+import info.dejv.octarine.utils.FormattingUtils;
 
 /**
- *
- * @author dejv
+ * "Increamental selection" dynamic feedback.
+ * Adds "+" or "-" symbol next to the mouse cursor to indicate "Add to selection" / "Remove from selection" scenario.
+ * <br/>
+ * Author: dejv (www.dejv.info)
  */
+@Component
 public class IncrementalSelectionFeedback
         extends DynamicFeedback {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IncrementalSelectionFeedback.class);
-
-    private static IncrementalSelectionFeedback instance;
-
-    public static void add(Type type, Octarine editor) {
-        if (instance != null) {
-            remove();
-        }
-        try {
-            instance = new IncrementalSelectionFeedback(editor, type);
-            instance.addToScene();
-        } catch (IOException ex) {
-            LOGGER.error("Failed to instantiate IncrementalSelectionFeedback", ex);
-        }
-    }
-
-    public static void remove() {
-        if (instance == null) {
-            return;
-        }
-        instance.removeFromScene();
-        instance = null;
-    }
-
-    public static IncrementalSelectionFeedback getInstance() {
-        return instance;
-    }
-
     public enum Type {
-
         ADD,
         REMOVE
     }
 
-    private final Group symbol;
-    private final Translate symbolTranslate = new Translate();
 
-    private final Type type;
-    private final ConstantZoomDoubleBinding symbolScale;
+    private static final Logger LOGGER = LoggerFactory.getLogger(IncrementalSelectionFeedback.class);
+    private Group symbolPlus;
+    private Group symbolMinus;
 
-    public IncrementalSelectionFeedback(Octarine editor, Type type) throws IOException {
-        super(editor);
+    private ConstantZoomDoubleBinding symbolScale;
+    private Translate symbolTranslate = new Translate();
 
-        this.type = type;
+    private Group symbol;
+    private Type type;
 
-        DoubleProperty zoomFactor = editor.getViewer().zoomFactorProperty();
+    @PostConstruct
+    public void initIncrementalSelectionFeedback() throws IOException {
+        DoubleProperty zoomFactor = octarine.getViewer().zoomFactorProperty();
         symbolScale = new ConstantZoomDoubleBinding(zoomFactor, 1.5);
 
-        symbol = FXMLLoader.load(System.class.getResource(type == Type.ADD ? "/fxml/plus.fxml" : "/fxml/minus.fxml"));
-        symbol.getTransforms().add(symbolTranslate);
+        symbolPlus = createAndFormat("/fxml/plus.fxml");
+        symbolMinus = createAndFormat("/fxml/minus.fxml");
+    }
 
-        symbol.scaleXProperty().bind(symbolScale);
-        symbol.scaleYProperty().bind(symbolScale);
 
-        FormattingUtils.formatGlow((SVGPath) symbol.lookup("#glowCircle"));
-        FormattingUtils.formatGlow((SVGPath) symbol.lookup("#glowSymbol"));
-        FormattingUtils.formatSymbol((SVGPath) symbol.lookup("#circle"), false);
-        FormattingUtils.formatSymbol((SVGPath) symbol.lookup("#symbol"), true);
+    public void set(Type type) {
+        if (this.symbol != null) {
+
+            if (this.type.equals(type)) {
+                return;
+            }
+
+            remove();
+        }
+
+        symbol = (type == Type.ADD) ? symbolPlus : symbolMinus;
 
         getChildren().add(symbol);
+        bind();
+        addToScene();
+
+        this.type = type;
+    }
+
+
+    public void remove() {
+        if (symbol != null) {
+
+            removeFromScene();
+            unbind();
+            getChildren().remove(symbol);
+
+            symbol = null;
+            type = null;
+        }
     }
 
 
@@ -101,4 +104,31 @@ public class IncrementalSelectionFeedback
         }
     }
 
+
+    private Group createAndFormat(String path) throws IOException {
+        Group symbol = FXMLLoader.load(System.class.getResource(path));
+
+        FormattingUtils.formatGlow((SVGPath) symbol.lookup("#glowCircle"));
+        FormattingUtils.formatGlow((SVGPath) symbol.lookup("#glowSymbol"));
+        FormattingUtils.formatSymbol((SVGPath) symbol.lookup("#circle"), false);
+        FormattingUtils.formatSymbol((SVGPath) symbol.lookup("#symbol"), true);
+
+        return symbol;
+    }
+
+
+    private void bind() {
+        symbol.getTransforms().add(symbolTranslate);
+
+        symbol.scaleXProperty().bind(symbolScale);
+        symbol.scaleYProperty().bind(symbolScale);
+    }
+
+
+    private void unbind() {
+        symbol.getTransforms().remove(symbolTranslate);
+
+        symbol.scaleXProperty().unbind();
+        symbol.scaleYProperty().unbind();
+    }
 }

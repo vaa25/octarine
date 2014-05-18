@@ -1,5 +1,7 @@
 package info.dejv.octarine.controller;
 
+import info.dejv.octarine.model.ModelElement;
+
 /**
  *
  * <br/>
@@ -9,6 +11,6 @@ package info.dejv.octarine.controller;
 public interface ControllerFactory {
 
 
-    Controller createController(Object model, ContainerController parent);
+    Controller createController(ModelElement modelElement, ContainerController parent);
 
 }
