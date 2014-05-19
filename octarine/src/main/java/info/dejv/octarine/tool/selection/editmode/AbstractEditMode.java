@@ -92,7 +92,7 @@ public abstract class AbstractEditMode
     public void selectionUpdated(List<Controller> newSelection) {
         assert newSelection != null : "newSelection is NULL";
 
-        deactivate();
+        doDeactivate();
 
         enabled = (newSelection.size() > 0);
         selection.clear();
@@ -106,9 +106,10 @@ public abstract class AbstractEditMode
         });
 
         if (!enabled) {
+            active = false;
             selection.clear();
         } else {
-            activate();
+            tryActivate();
         }
         LOG.debug("{} on current selection", enabled ? "Enabled" : "Disabled");
     }
@@ -160,6 +161,11 @@ public abstract class AbstractEditMode
         commandStack.execute(compoundCommand);
     }
 
+    private void tryActivate() {
+        if (active) {
+            doActivate();
+        }
+    }
 
     protected abstract void doActivate();
 

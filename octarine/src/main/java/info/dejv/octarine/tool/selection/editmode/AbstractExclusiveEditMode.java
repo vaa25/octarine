@@ -63,6 +63,9 @@ public abstract class AbstractExclusiveEditMode
 
 
     protected final void requestActivation() {
+        if (!isEnabled()) {
+            return;
+        }
         LOG.debug("Requesting activation: {}", this.getClass().getName());
         exclusivityCoordinator.onActivationRequest(this);
     }

@@ -88,7 +88,7 @@ public class EditModeResize
         handles.clear();
         selectionBounds.clear();
 
-        selection.stream().forEach((controller) -> {
+        selection.forEach((controller) -> {
             selectionBounds.add(controller.getView().boundsInParentProperty());
         });
 

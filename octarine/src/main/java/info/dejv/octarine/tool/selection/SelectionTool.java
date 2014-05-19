@@ -52,6 +52,7 @@ public class SelectionTool
     private final List<ExclusiveEditMode> exclusiveEditModes = new ArrayList<>();
 
     private ExclusiveEditMode activeExclusiveEditMode = null;
+    private ExclusiveEditMode preferredExclusiveEditMode = null;
 
     private SelectionOutlines selectionOutlines;
 
@@ -161,6 +162,8 @@ public class SelectionTool
     public void onActivationRequest(ExclusiveEditMode sender) {
         Objects.requireNonNull(sender, "sender is NULL");
 
+        preferredExclusiveEditMode = sender;
+
         LOG.debug("Activating: {}", sender);
         setActiveExclusiveEditMode(sender);
     }
@@ -168,6 +171,12 @@ public class SelectionTool
 
     private void findEnabledExclusiveEditMode() {
         activeExclusiveEditMode = null;
+
+        if ((preferredExclusiveEditMode != null) &&(preferredExclusiveEditMode.isEnabled())) {
+            setActiveExclusiveEditMode(preferredExclusiveEditMode);
+            return;
+        }
+
         for (ExclusiveEditMode mode : exclusiveEditModes) {
             if (mode.isEnabled()) {
                 setActiveExclusiveEditMode(mode);
