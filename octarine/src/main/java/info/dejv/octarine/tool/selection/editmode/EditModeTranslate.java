@@ -16,8 +16,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Shape;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import info.dejv.octarine.Octarine;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.tool.selection.SelectionTool;
 import info.dejv.octarine.tool.selection.SelectionToolListener;
@@ -30,6 +30,7 @@ import info.dejv.octarine.utils.ControllerUtils;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
+@Component
 public class EditModeTranslate
         extends AbstractEditMode {
 
@@ -43,8 +44,8 @@ public class EditModeTranslate
     public SelectionTool selectionTool;
 
 
-    public EditModeTranslate(Octarine octarine) {
-        super(TranslateRequest.class, octarine);
+    public EditModeTranslate() {
+        super(TranslateRequest.class);
     }
 
 
@@ -91,7 +92,8 @@ public class EditModeTranslate
             addTransformationFeedback(e.getX(), e.getY());
 
             e.consume();
-            selectionTool.getListeners().stream().forEach(SelectionToolListener::onEditStarted);
+
+            selectionTool.getListeners().forEach(SelectionToolListener::onEditStarted);
         }
     }
 
@@ -108,7 +110,7 @@ public class EditModeTranslate
             removeTransformationFeedback();
             executeOnSelection(new TranslateRequest(e.getX() - initialPosition.getX(), e.getY() - initialPosition.getY()));
             drag = false;
-            selectionTool.getListeners().stream().forEach(SelectionToolListener::onEditFinished);
+            selectionTool.getListeners().forEach(SelectionToolListener::onEditFinished);
         }
     }
 

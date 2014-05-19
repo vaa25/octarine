@@ -15,12 +15,13 @@ import javafx.scene.input.MouseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import info.dejv.octarine.actionhandler.ToolExtension;
 import info.dejv.octarine.actionhandler.feedback.MouseOverDynamicFeedback;
-import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionManager;
 import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionListener;
+import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionManager;
 import info.dejv.octarine.command.SelectCommand;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.request.shape.ShapeRequest;
@@ -34,6 +35,7 @@ import info.dejv.octarine.tool.selection.SelectionToolListener;
  * Author: dejv (www.dejv.info)
  */
 @Component
+@Scope("prototype")
 public class SingleSelectionToolExtension
         extends ToolExtension
         implements IncrementalSelectionListener, SelectionToolListener {
@@ -61,15 +63,9 @@ public class SingleSelectionToolExtension
     }
 
 
-    @PostConstruct
-    public void initSingleSelectionToolExtension() {
-        incrementalSelectionManager.setListener(this);
-        selectionTool.getListeners().add(this);
-    }
-
-
     @Override
     public SingleSelectionToolExtension setController(Controller controller) {
+
         if (!controller.supports(ShapeRequest.class)) {
             throw new IllegalArgumentException("Controller has to support ShapeRequest for SingleSelectionToolExtension to work properly with it");
         }
@@ -79,6 +75,13 @@ public class SingleSelectionToolExtension
         super.setController(controller);
         return this;
     }
+
+
+    @PostConstruct
+    public void initSingleSelectionToolExtension() {
+        selectionTool.getListeners().add(this);
+    }
+
 
     @Override
     public void toolActivated(Tool tool) {
@@ -145,7 +148,7 @@ public class SingleSelectionToolExtension
     private void handleMouseEntered(MouseEvent e) {
         requireNonNull(controller, "controller is null");
 
-        incrementalSelectionManager.activate(e);
+        incrementalSelectionManager.activate(e, this);
         mouseOverDynamicFeedback.add(controller);
     }
 

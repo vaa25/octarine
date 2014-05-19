@@ -66,6 +66,7 @@ public class OctarineDemoController {
 
     @PostConstruct
     public void init() {
+
         octarine.setRootController((ContainerController) demoControllerFactory.createController(shapeContainer, null));
 
         shapeContainer.getChildren().add(new RectangleShape(new Rectangle2D(20, 50, 100, 200)));

@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.command.CommandStack;
@@ -29,30 +30,40 @@ public abstract class AbstractEditMode
         implements EditMode {
 
     protected final Logger LOG;
-    protected final Scene scene;
-    protected final CommandStack commandStack;
     protected final Set<Controller> selection = new HashSet<>();
-    protected final Class<? extends Request> requestType;
     private final List<TransformListener> listeners = new ArrayList<>();
-    private final Octarine octarine;
+
+    protected final Class<? extends Request> requestType;
+
+    protected Scene scene;
+    protected CommandStack commandStack;
+
     private boolean enabled = true;
     private boolean active = false;
 
-    public AbstractEditMode(Class<? extends Request> requestType, Octarine octarine) {
+    @Autowired
+    private Octarine octarine;
+
+    public AbstractEditMode(Class<? extends Request> requestType) {
         Objects.requireNonNull(requestType, "type is NULL");
-        Objects.requireNonNull(octarine, "octarine is NULL");
+
         this.requestType = requestType;
 
-        this.octarine = octarine;
+        LOG = LoggerFactory.getLogger(getClass());
+    }
+
+
+    /**
+     * Initailize the Edit Mode.
+     * Call this method when "Scene" is available, not sooner!
+     */
+    public void init() {
         this.scene = octarine.getViewer().getScene();
         this.commandStack = octarine.getCommandStack();
 
         assert this.scene != null : "scene is NULL";
         assert this.commandStack != null : "commandStack is NULL";
-
-        LOG = LoggerFactory.getLogger(getClass());
     }
-
 
     @Override
     public void addListener(TransformListener listener) {

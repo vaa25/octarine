@@ -26,9 +26,9 @@ public abstract class ToolExtension {
     }
 
 
-    public info.dejv.octarine.actionhandler.selection.SingleSelectionToolExtension setController(Controller controller) {
+    public ToolExtension setController(Controller controller) {
         this.controller = controller;
-        return null;
+        return this;
     }
 
 

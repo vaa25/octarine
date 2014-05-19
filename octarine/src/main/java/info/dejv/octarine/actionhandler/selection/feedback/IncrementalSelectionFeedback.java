@@ -30,7 +30,7 @@ import info.dejv.octarine.utils.FormattingUtils;
 public class IncrementalSelectionFeedback
         extends DynamicFeedback {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(IncrementalSelectionFeedback.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IncrementalSelectionFeedback.class);
     private Group symbolPlus;
     private Group symbolMinus;
     private ConstantZoomDoubleBinding symbolScale;
@@ -43,8 +43,8 @@ public class IncrementalSelectionFeedback
         DoubleProperty zoomFactor = octarine.getViewer().zoomFactorProperty();
         symbolScale = new ConstantZoomDoubleBinding(zoomFactor, 1.5);
 
-        createAndFormat("/fxml/plus.fxml");
-        createAndFormat("/fxml/minus.fxml");
+        symbolPlus = createAndFormat("/fxml/plus.fxml");
+        symbolMinus = createAndFormat("/fxml/minus.fxml");
     }
 
     public void set(Type type) {

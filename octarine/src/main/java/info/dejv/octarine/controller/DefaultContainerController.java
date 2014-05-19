@@ -65,8 +65,12 @@ public class DefaultContainerController
 
     private void onChildrenListChanged(Change<? extends ModelElement> c) {
         if (c.next()) {
-            c.getRemoved().stream().forEach(this::onModelElementRemoved);
-            c.getAddedSubList().stream().forEach(this::onModelElementAdded);
+            if (c.wasRemoved()) {
+                c.getRemoved().forEach(this::onModelElementRemoved);
+            }
+            if (c.wasAdded()) {
+                c.getAddedSubList().forEach(this::onModelElementAdded);
+            }
         }
     }
 

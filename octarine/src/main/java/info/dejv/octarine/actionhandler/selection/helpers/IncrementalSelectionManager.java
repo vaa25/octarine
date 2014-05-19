@@ -1,5 +1,7 @@
 package info.dejv.octarine.actionhandler.selection.helpers;
 
+import static java.util.Objects.requireNonNull;
+
 import java.awt.*;
 
 import javafx.scene.Scene;
@@ -31,18 +33,17 @@ public class IncrementalSelectionManager {
     private IncrementalSelectionFeedback incrementalSelectionFeedback;
 
 
-    public void activate(MouseEvent e) {
+    public void activate(MouseEvent e, IncrementalSelectionListener listener) {
+        requireNonNull(listener, "listener is null");
+
+        this.listener = listener;
+
         Scene scene = editor.getViewer().getScene();
         if (scene != null) {
             scene.addEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
             scene.addEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
         }
         updateSelectionFeedback(e.isShortcutDown(), e.isAltDown(), e.getScreenX(), e.getScreenY());
-    }
-
-
-    public void setListener(IncrementalSelectionListener listener) {
-        this.listener = listener;
     }
 
 
@@ -64,7 +65,7 @@ public class IncrementalSelectionManager {
                     break;
 
                 case REMOVE:
-                    listener.addToSelection();
+                    listener.removeFromSelection();
                     break;
             }
         }
@@ -73,6 +74,8 @@ public class IncrementalSelectionManager {
 
     public void deactivate() {
         incrementalSelectionFeedback.remove();
+        listener = null;
+
         Scene scene = editor.getViewer().getScene();
         if (scene != null) {
             scene.removeEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyPressed);

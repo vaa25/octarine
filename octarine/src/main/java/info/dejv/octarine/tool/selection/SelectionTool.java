@@ -1,14 +1,15 @@
 package info.dejv.octarine.tool.selection;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.PostConstruct;
 
 import javafx.scene.Node;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import info.dejv.octarine.Octarine;
@@ -29,6 +30,21 @@ public class SelectionTool
 
     private final List<SelectionToolListener> listeners = new ArrayList<>();
 
+    @Autowired
+    private EditModeDelete editModeDelete;
+
+    @Autowired
+    private EditModeTranslate editModeTranslate;
+
+    @Autowired
+    private EditModeResize editModeResize;
+
+    @Autowired
+    private EditModeRotate editModeRotate;
+
+    @Autowired
+    private Octarine octarine;
+
     //Editors, that coexist with each other (ie. Delete, Translate)
     private final List<EditMode> coexistingEditorModes = new ArrayList<>();
 
@@ -37,7 +53,6 @@ public class SelectionTool
 
     private ExclusiveEditMode activeExclusiveEditMode = null;
 
-    private Octarine octarine;
     private SelectionOutlines selectionOutlines;
 
     private boolean initiated = false;
@@ -48,42 +63,30 @@ public class SelectionTool
         return listeners;
     }
 
-
-    public Octarine getOctarine() {
-        return octarine;
-    }
-
-
-    public void setOctarine(Octarine octarine) {
-        this.octarine = octarine;
-
+    @PostConstruct
+    public void initSelectionTool() {
         final Node pane = octarine.getViewer();
 
         if (pane.getScene() != null) {  // If Scene is already available, initiate now...
-            init();
+            initInternal();
         } else {                        //.. otherwise initiate, when it is set
-            pane.sceneProperty().addListener((sender, oldValue, newValue) -> init());
+            pane.sceneProperty().addListener((sender, oldValue, newValue) -> initInternal());
         }
 
     }
 
+    private void initInternal() {
+        coexistingEditorModes.add(editModeDelete);
+        coexistingEditorModes.add(editModeTranslate);
 
-    private void init() {
-        try {
-            coexistingEditorModes.add(new EditModeDelete(octarine));
-            coexistingEditorModes.add(new EditModeTranslate(octarine));
+        exclusiveEditModes.add(editModeResize.setExclusivityCoordinator(this));
+        exclusiveEditModes.add(editModeRotate.setExclusivityCoordinator(this));
 
-            exclusiveEditModes.add(new EditModeResize(octarine, this));
-            exclusiveEditModes.add(new EditModeRotate(octarine, this));
+        selectionOutlines = new SelectionOutlines(octarine.getFeedback(), octarine.getViewer().zoomFactorProperty());
 
-            selectionOutlines = new SelectionOutlines(octarine.getFeedback(), octarine.getViewer().zoomFactorProperty());
-
-            initiated = true;
-            if (active) {
-                doActivate();
-            }
-        } catch (IOException ex) {
-            LOG.error("Unable to properly initiate SelectionTool", ex);
+        initiated = true;
+        if (active) {
+            doActivate();
         }
     }
 
@@ -109,10 +112,19 @@ public class SelectionTool
 
 
     private void doActivate() {
+        if (!initiated)
+            return;
+
         octarine.getSelectionManager().addSelectionChangeListener(this);
 
-        coexistingEditorModes.parallelStream().forEach(EditMode::activate);
-        exclusiveEditModes.parallelStream().forEach(ExclusiveEditMode::installActivationHandlers);
+        coexistingEditorModes.parallelStream().forEach(editMode -> {
+            editMode.init();
+            editMode.activate();
+        });
+        exclusiveEditModes.parallelStream().forEach(editMode -> {
+            editMode.init();
+            editMode.installActivationHandlers();
+        });
 
         SelectionManager selectionManager = octarine.getSelectionManager();
         List<Controller> currentSelection = selectionManager.getSelection();

@@ -1,13 +1,16 @@
 package info.dejv.octarine.tool.selection.editmode;
 
-import info.dejv.octarine.Octarine;
-import info.dejv.octarine.controller.Controller;
-import info.dejv.octarine.tool.selection.request.DeleteRequest;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
+import org.springframework.stereotype.Component;
+
+import info.dejv.octarine.controller.Controller;
+import info.dejv.octarine.tool.selection.request.DeleteRequest;
 
 /**
  * "Delete" edit mode<br/>
@@ -15,12 +18,13 @@ import javafx.scene.input.KeyEvent;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
+@Component
 public class EditModeDelete
         extends AbstractEditMode {
 
 
-    public EditModeDelete(Octarine octarine) {
-        super(DeleteRequest.class, octarine);
+    public EditModeDelete() {
+        super(DeleteRequest.class);
     }
 
 
@@ -52,7 +56,7 @@ public class EditModeDelete
         e.consume();
 
         Set<Controller> selectionParents = selection.stream()
-                .map((controller) -> controller.getParent())
+                .map(Controller::getParent)
                 .distinct()
                 .collect(Collectors.toSet());
 

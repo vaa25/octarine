@@ -1,17 +1,12 @@
 package info.dejv.octarine.tool.selection.editmode;
 
-import info.dejv.octarine.Octarine;
-import info.dejv.octarine.tool.selection.ExclusivityCoordinator;
-import info.dejv.octarine.tool.selection.request.ResizeRequest;
-import info.dejv.octarine.utils.CompositeObservableBounds;
-import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
-import info.dejv.octarine.utils.FormattingUtils;
-import info.dejv.octarine.utils.FormattingUtils.FeedbackOpacity;
-import info.dejv.octarine.utils.FormattingUtils.FeedbackType;
 import static info.dejv.octarine.utils.FormattingUtils.getDefaultFeedbackStrokeWidth;
 import static info.dejv.octarine.utils.FormattingUtils.getFeedbackColor;
+
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.PostConstruct;
+
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.collections.ObservableList;
@@ -22,12 +17,23 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
+import org.springframework.stereotype.Component;
+
+import info.dejv.octarine.tool.selection.ExclusivityCoordinator;
+import info.dejv.octarine.tool.selection.request.ResizeRequest;
+import info.dejv.octarine.utils.CompositeObservableBounds;
+import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
+import info.dejv.octarine.utils.FormattingUtils;
+import info.dejv.octarine.utils.FormattingUtils.FeedbackOpacity;
+import info.dejv.octarine.utils.FormattingUtils.FeedbackType;
+
 /**
  * "Scale" edit mode<br/>
  * On handle drag it scales the selection in appropriate direction
  * <br/>
  * Author: dejv (www.dejv.info)
  */
+@Component
 public class EditModeResize
         extends AbstractExclusiveEditMode {
 
@@ -47,18 +53,29 @@ public class EditModeResize
 
     private final CompositeObservableBounds selectionBounds = new CompositeObservableBounds();
     private final Map<HandlePos, Rectangle> handles = new HashMap<>();
-    private final DoubleBinding size;
-    private final DoubleBinding sizeHalf;
+
+    private DoubleBinding size;
+    private DoubleBinding sizeHalf;
 
 
-    public EditModeResize(Octarine octarine, ExclusivityCoordinator listener) {
-        super(ResizeRequest.class, octarine, listener);
+    public EditModeResize() {
+        super(ResizeRequest.class);
 
+    }
+
+
+    @PostConstruct
+    public void initEditModeResize() {
         DoubleProperty zoom = getOctarine().getViewer().zoomFactorProperty();
         sizeHalf = new ConstantZoomDoubleBinding(zoom, HANDLE_SIZE_HALF);
         size = new ConstantZoomDoubleBinding(zoom, HANDLE_SIZE_HALF * 2);
     }
 
+
+    @Override
+    public EditModeResize setExclusivityCoordinator(ExclusivityCoordinator exclusivityCoordinator) {
+        return (EditModeResize) super.setExclusivityCoordinator(exclusivityCoordinator);
+    }
 
     @Override
     protected KeyCode getActivationKey() {

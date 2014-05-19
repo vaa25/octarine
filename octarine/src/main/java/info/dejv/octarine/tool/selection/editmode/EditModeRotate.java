@@ -6,6 +6,7 @@
 package info.dejv.octarine.tool.selection.editmode;
 
 import java.io.IOException;
+import javax.annotation.PostConstruct;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.collections.ObservableList;
@@ -15,7 +16,8 @@ import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.SVGPath;
 
-import info.dejv.octarine.Octarine;
+import org.springframework.stereotype.Component;
+
 import info.dejv.octarine.tool.selection.ExclusivityCoordinator;
 import info.dejv.octarine.tool.selection.request.RotateRequest;
 import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
@@ -27,28 +29,39 @@ import info.dejv.octarine.utils.FormattingUtils;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
+@Component
 public class EditModeRotate
         extends AbstractExclusiveEditMode {
 
-    private final Group pivotCross;
-    private final ConstantZoomDoubleBinding pivotCrossScale;
+    private Group pivotCross;
 
-    private final ObservableList<Node> feedback;
+    private ObservableList<Node> feedback;
 
 
-    public EditModeRotate(Octarine octarine, ExclusivityCoordinator listener) throws IOException {
-        super(RotateRequest.class, octarine, listener);
+    public EditModeRotate() {
+        super(RotateRequest.class);
 
+    }
+
+
+    @PostConstruct
+    public void initEditModeResize() throws IOException {
         this.pivotCross = FXMLLoader.load(System.class.getResource("/fxml/rotpivot.fxml"));
-        this.feedback = octarine.getFeedback();
+        this.feedback = getOctarine().getFeedback();
 
-        DoubleProperty zoomFactor = octarine.getViewer().zoomFactorProperty();
-        pivotCrossScale = new ConstantZoomDoubleBinding(zoomFactor, 1.0);
+        DoubleProperty zoomFactor = getOctarine().getViewer().zoomFactorProperty();
+        ConstantZoomDoubleBinding pivotCrossScale = new ConstantZoomDoubleBinding(zoomFactor, 1.0);
         pivotCross.scaleXProperty().bind(pivotCrossScale);
         pivotCross.scaleYProperty().bind(pivotCrossScale);
 
         FormattingUtils.formatGlow((SVGPath) pivotCross.lookup("#glow"));
         FormattingUtils.formatSymbol((SVGPath) pivotCross.lookup("#symbol"), true);
+    }
+
+
+    @Override
+    public EditModeRotate setExclusivityCoordinator(ExclusivityCoordinator exclusivityCoordinator) {
+        return (EditModeRotate) super.setExclusivityCoordinator(exclusivityCoordinator);
     }
 
 

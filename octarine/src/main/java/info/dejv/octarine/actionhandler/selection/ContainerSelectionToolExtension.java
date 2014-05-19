@@ -72,7 +72,6 @@ public class ContainerSelectionToolExtension
 
     @PostConstruct
     public void initContainerSelectionToolExtension() {
-        incrementalSelectionManager.setListener(this);
     }
 
     @Override
@@ -116,7 +115,7 @@ public class ContainerSelectionToolExtension
         if (e.isPrimaryButtonDown()) {
             drag = true;
             marqueeSelectionDynamicFeedback.add(new Point2D(e.getX(), e.getY()));
-            incrementalSelectionManager.activate(e);
+            incrementalSelectionManager.activate(e, this);
             e.consume();
         }
     }

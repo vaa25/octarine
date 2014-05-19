@@ -1,7 +1,8 @@
 package info.dejv.octarine.tool.selection;
 
-import info.dejv.octarine.controller.Controller;
 import java.util.List;
+
+import info.dejv.octarine.controller.Controller;
 
 /**
  * Edit modes API<br/>
@@ -10,6 +11,8 @@ import java.util.List;
  * Author: dejv (www.dejv.info)
  */
 public interface EditMode {
+
+    void init();
 
     void addListener(TransformListener listener);
 

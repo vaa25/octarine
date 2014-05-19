@@ -1,21 +1,27 @@
 package info.dejv.octarine.tool.selection;
 
+import static info.dejv.octarine.utils.FormattingUtils.formatFeedbackOutline;
+import static info.dejv.octarine.utils.FormattingUtils.getDefaultFeedbackStrokeWidth;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javafx.beans.property.DoubleProperty;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.utils.CompositeObservableBounds;
 import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
 import info.dejv.octarine.utils.FormattingUtils;
 import info.dejv.octarine.utils.FormattingUtils.FeedbackOpacity;
 import info.dejv.octarine.utils.FormattingUtils.FeedbackType;
-import static info.dejv.octarine.utils.FormattingUtils.formatFeedbackOutline;
-import static info.dejv.octarine.utils.FormattingUtils.getDefaultFeedbackStrokeWidth;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javafx.beans.property.DoubleProperty;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 /**
  *
@@ -24,6 +30,7 @@ import javafx.scene.shape.Shape;
  */
 public class SelectionOutlines {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SelectionOutlines.class);
     private static final double SELECTION_BOX_OFFSET = 1.0d;
 
     private final Map<Controller, Shape> activeOutlines = new HashMap<>();
@@ -43,24 +50,24 @@ public class SelectionOutlines {
 
 
     void clear() {
-        activeOutlines.keySet().forEach((controller) -> removeOutline(controller));
+        activeOutlines.keySet().forEach(this::removeOutline);
     }
 
 
     public void selectionChanged(List<Controller> added, List<Controller> removed) {
 
         if (removed != null) {
-            removed.forEach((controller) -> removeOutline(controller));
+            removed.forEach(this::removeOutline);
         }
 
         if (added != null) {
-            added.forEach((controller) -> addOutline(controller));
+            added.forEach(this::addOutline);
         }
     }
 
 
     private void removeOutline(Controller controller) {
-
+        LOG.debug("Outline remove {}", controller.getId());
         assert activeOutlines.containsKey(controller) : "Controller was reported to be removed from selection, but doesn't have an outline";
 
         Shape outline = activeOutlines.get(controller);
@@ -71,6 +78,7 @@ public class SelectionOutlines {
 
 
     private void addOutline(Controller controller) {
+        LOG.debug("Outline add {}", controller.getId());
 
         assert !activeOutlines.containsKey(controller) : "Controller was reported to be added to selection, but already has an outline";
 
