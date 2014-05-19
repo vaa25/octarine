@@ -5,15 +5,16 @@
  */
 package info.dejv.octarine;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+
 import info.dejv.common.ui.ZoomableScrollPane;
-import info.dejv.octarine.actionhandler.ActionHandler;
+import info.dejv.octarine.actionhandler.ToolExtension;
 import info.dejv.octarine.command.CommandStack;
-import info.dejv.octarine.controller.Controller;
+import info.dejv.octarine.controller.ContainerController;
 import info.dejv.octarine.layer.LayerManager;
 import info.dejv.octarine.selection.SelectionManager;
 import info.dejv.octarine.tool.Tool;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 
 /**
  *
@@ -26,18 +27,18 @@ public interface Octarine {
     Tool getActiveTool();
 
 
-    void setRootController(Controller root);
+    void setRootController(ContainerController root);
 
-    Controller getRootController();
+    ContainerController getRootController();
 
     ZoomableScrollPane getViewer();
 
     long getNextChildSequence();
 
 
-    void addActionHandler(Class<? extends Tool> toolClass, ActionHandler handler);
+    void addActionHandler(Class<? extends Tool> toolClass, ToolExtension handler);
 
-    void removeActionHandler(Class<? extends Tool> toolClass, ActionHandler handler);
+    void removeActionHandler(Class<? extends Tool> toolClass, ToolExtension handler);
 
 
     CommandStack getCommandStack();

@@ -10,6 +10,8 @@ import javafx.collections.ListChangeListener.Change;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import info.dejv.octarine.Octarine;
+import info.dejv.octarine.OctarineImpl;
 import info.dejv.octarine.model.ContainerModelElement;
 import info.dejv.octarine.model.ModelElement;
 
@@ -26,6 +28,7 @@ public class DefaultContainerController
     private final List<Controller> children = new ArrayList<>();
     private final ControllerFactory controllerFactory;
     private final ContainerModelElement model;
+    private Octarine octarine;
 
     public DefaultContainerController(ContainerModelElement model, ContainerController parent, ControllerFactory controllerFactory) {
         super(model, parent);
@@ -34,6 +37,17 @@ public class DefaultContainerController
 
         this.model.getChildren().addListener(this::onChildrenListChanged);
 
+    }
+
+
+    @Override
+    public void setOctarine(OctarineImpl octarine) {
+        this.octarine = octarine;
+    }
+
+    @Override
+    public Octarine getOctarine() {
+        return octarine;
     }
 
 

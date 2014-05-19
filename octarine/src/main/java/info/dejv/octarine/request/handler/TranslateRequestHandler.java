@@ -15,10 +15,11 @@ import info.dejv.octarine.tool.selection.request.TranslateRequest;
 public class TranslateRequestHandler
         extends AbstractRequestHandler {
 
-    private final DoubleTuple coords;
+    private DoubleTuple coords;
 
-    public TranslateRequestHandler(DoubleTuple coords) {
+    public TranslateRequestHandler setCoords(DoubleTuple coords) {
         this.coords = coords;
+        return this;
     }
 
     @Override

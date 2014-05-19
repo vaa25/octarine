@@ -1,8 +1,10 @@
 package info.dejv.octarine.controller;
 
-import info.dejv.octarine.model.ContainerModelElement;
 import java.util.List;
 import java.util.function.Predicate;
+
+import info.dejv.octarine.OctarineImpl;
+import info.dejv.octarine.model.ContainerModelElement;
 
 /**
  * A special type of controller, that can contain children controllers
@@ -11,6 +13,8 @@ import java.util.function.Predicate;
  */
 public interface ContainerController
         extends Controller {
+
+    void setOctarine(OctarineImpl octarine);
 
     /**
      * @return The model element associated with current ContainerController
@@ -32,4 +36,5 @@ public interface ContainerController
      * or null if the predicate doesn't apply to either this controller, or to any controller within its children hierarchy
      */
     Controller lookup(Predicate<Controller> predicate);
+
 }

@@ -5,6 +5,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 
+import org.springframework.context.annotation.Configuration;
+
 import info.dejv.octarine.model.BasicProperties;
 import info.dejv.octarine.model.ModelElement;
 import info.dejv.octarine.model.chunk.DoubleTuple;
@@ -14,6 +16,7 @@ import info.dejv.octarine.view.AbstractShapeFactory;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
+@Configuration
 public class RectangleViewFactory
         extends AbstractShapeFactory {
 

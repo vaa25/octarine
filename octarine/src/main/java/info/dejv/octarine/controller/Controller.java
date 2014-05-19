@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.actionhandler.ToolExtension;
 import info.dejv.octarine.model.ModelElement;
+import info.dejv.octarine.view.ViewFactory;
 
 /**
  * Controller interface<br/>
@@ -20,6 +21,10 @@ public interface Controller
     ModelElement getModel();
 
     Node getView();
+
+    ViewFactory getViewFactory();
+
+    void setViewFactory(ViewFactory viewFactory);
 
     Octarine getOctarine();
 
@@ -38,5 +43,6 @@ public interface Controller
     void addToolExtension(ToolExtension actionHandler);
 
     void removeToolExtension(ToolExtension actionHandler);
+
 
 }

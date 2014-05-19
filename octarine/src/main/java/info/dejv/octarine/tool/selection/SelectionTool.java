@@ -9,6 +9,7 @@ import javafx.scene.Node;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.controller.Controller;
@@ -20,7 +21,7 @@ import info.dejv.octarine.tool.selection.editmode.EditModeResize;
 import info.dejv.octarine.tool.selection.editmode.EditModeRotate;
 import info.dejv.octarine.tool.selection.editmode.EditModeTranslate;
 
-
+@Component
 public class SelectionTool
         implements Tool, SelectionChangeListener, ExclusivityCoordinator {
 
@@ -41,10 +42,6 @@ public class SelectionTool
 
     private boolean initiated = false;
     private boolean active = false;
-
-
-    public SelectionTool() {
-    }
 
 
     public List<SelectionToolListener> getListeners() {
@@ -114,19 +111,20 @@ public class SelectionTool
     private void doActivate() {
         octarine.getSelectionManager().addSelectionChangeListener(this);
 
-        coexistingEditorModes.parallelStream().forEach(editor -> editor.activate());
-        exclusiveEditModes.parallelStream().forEach(editor -> editor.installActivationHandlers());
+        coexistingEditorModes.parallelStream().forEach(EditMode::activate);
+        exclusiveEditModes.parallelStream().forEach(ExclusiveEditMode::installActivationHandlers);
 
         SelectionManager selectionManager = octarine.getSelectionManager();
         List<Controller> currentSelection = selectionManager.getSelection();
         selectionChanged(selectionManager, currentSelection, currentSelection, new ArrayList<>());
     }
 
+
     private void doDeactivate() {
         octarine.getSelectionManager().removeSelectionChangeListener(this);
 
-        exclusiveEditModes.parallelStream().forEach(editor -> editor.uninstallActivationHandlers());
-        coexistingEditorModes.parallelStream().forEach(editor -> editor.deactivate());
+        exclusiveEditModes.parallelStream().forEach(ExclusiveEditMode::uninstallActivationHandlers);
+        coexistingEditorModes.parallelStream().forEach(EditMode::deactivate);
 
         selectionOutlines.clear();
     }

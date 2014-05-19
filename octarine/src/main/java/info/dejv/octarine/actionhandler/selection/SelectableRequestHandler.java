@@ -1,27 +1,18 @@
 package info.dejv.octarine.actionhandler.selection;
 
-import info.dejv.octarine.controller.RequestHandler;
 import info.dejv.octarine.request.Request;
+import info.dejv.octarine.request.handler.AbstractRequestHandler;
+import info.dejv.octarine.stereotype.RequestHandler;
 
 /**
  *
  * <br/>
  * Author: dejv (www.dejv.info)
  */
+
+@RequestHandler
 public class SelectableRequestHandler
-        implements RequestHandler {
-
-    private static SelectableRequestHandler instance;
-
-    public static SelectableRequestHandler getInstance() {
-        if (instance == null) {
-            instance = new SelectableRequestHandler();
-        }
-        return instance;
-    }
-
-    private SelectableRequestHandler() {
-    }
+        extends AbstractRequestHandler {
 
     @Override
     public boolean supports(Class<? extends Request> request) {
@@ -29,8 +20,7 @@ public class SelectableRequestHandler
     }
 
     @Override
-    public void request(Request request) {
-        //Nothing, here...
+    protected void requestChecked(Request request) {
+        //This handler does actually nothing
     }
-
 }

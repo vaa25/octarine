@@ -1,23 +1,32 @@
 package info.dejv.octarine;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+
+import javafx.collections.ObservableList;
+import javafx.scene.Group;
+import javafx.scene.Node;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import info.dejv.common.ui.ZoomableScrollPane;
-import info.dejv.octarine.actionhandler.ActionHandler;
+import info.dejv.octarine.actionhandler.ToolExtension;
 import info.dejv.octarine.command.CommandStack;
-import info.dejv.octarine.controller.Controller;
+import info.dejv.octarine.controller.ContainerController;
 import info.dejv.octarine.layer.LayerManager;
 import info.dejv.octarine.layer.LayerManagerImpl;
 import info.dejv.octarine.selection.SelectionManager;
 import info.dejv.octarine.selection.SelectionManagerImpl;
 import info.dejv.octarine.tool.Tool;
 import info.dejv.octarine.utils.FormattingUtils;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javafx.collections.ObservableList;
-import javafx.scene.Group;
-import javafx.scene.Node;
 
+@Component
 public class OctarineImpl
         implements Octarine {
 
@@ -26,13 +35,15 @@ public class OctarineImpl
     private static final String ID_ACTIVEFEEDBACK = "ActiveFeedback";
     private static final String ID_HANDLES = "Handles";
 
-    private final Map<Class<? extends Tool>, List<ActionHandler>> actionHandlers = new HashMap<>();
+    private final Map<Class<? extends Tool>, List<ToolExtension>> toolExtensions = new HashMap<>();
     private final CommandStack commandStack = new CommandStack();
     private final SelectionManager selectionManager = new SelectionManagerImpl();
-    private final LayerManager layerManager;
+    private LayerManager layerManager;
 
-    private final ZoomableScrollPane viewer;
-    private Controller rootController;
+    @Autowired
+    private ZoomableScrollPane viewer;
+
+    private ContainerController rootController;
     private Tool activeTool;
 
     private final Group layersGroup = new Group();
@@ -42,8 +53,10 @@ public class OctarineImpl
 
     private long childIdSequence = 0;
 
-    public OctarineImpl(final ZoomableScrollPane viewer) {
-        this.viewer = viewer;
+
+
+    @PostConstruct
+    public void initOctarine() {
         this.layerManager = new LayerManagerImpl(layersGroup.getChildren());
 
         FormattingUtils.setZoomFactor(viewer.zoomFactorProperty());
@@ -52,6 +65,7 @@ public class OctarineImpl
         feedbackGroup.setId(ID_FEEDBACK);
         activeFeedbackGroup.setId(ID_ACTIVEFEEDBACK);
         handlesGroup.setId(ID_HANDLES);
+
         viewer.getContent().add(layersGroup);
         viewer.getContent().add(feedbackGroup);
         viewer.getContent().add(activeFeedbackGroup);
@@ -79,14 +93,18 @@ public class OctarineImpl
 
 
     @Override
-    public Controller getRootController() {
+    public ContainerController getRootController() {
         return rootController;
     }
 
 
     @Override
-    public void setRootController(final Controller root) {
+    public void setRootController(final ContainerController root) {
+        requireNonNull(root, "root is null");
+
         this.rootController = root;
+
+        this.rootController.setOctarine(this);
         this.rootController.onAdded();
     }
 
@@ -98,19 +116,19 @@ public class OctarineImpl
 
 
     @Override
-    public void addActionHandler(Class<? extends Tool> toolClass, ActionHandler handler) {
-        if (!actionHandlers.containsKey(toolClass)) {
-            actionHandlers.put(toolClass, new ArrayList<>());
+    public void addActionHandler(Class<? extends Tool> toolClass, ToolExtension handler) {
+        if (!toolExtensions.containsKey(toolClass)) {
+            toolExtensions.put(toolClass, new ArrayList<>());
         }
-        actionHandlers.get(toolClass).add(handler);
+        toolExtensions.get(toolClass).add(handler);
 
     }
 
 
     @Override
-    public void removeActionHandler(Class<? extends Tool> toolClass, ActionHandler handler) {
-        if (actionHandlers.containsKey(toolClass)) {
-            actionHandlers.get(toolClass).remove(handler);
+    public void removeActionHandler(Class<? extends Tool> toolClass, ToolExtension handler) {
+        if (toolExtensions.containsKey(toolClass)) {
+            toolExtensions.get(toolClass).remove(handler);
         }
     }
 
@@ -122,20 +140,16 @@ public class OctarineImpl
 
 
     private void notifyToolDeactivated() {
-        if ((activeTool != null) && (actionHandlers.containsKey(activeTool.getClass()))) {
-            actionHandlers.get(activeTool.getClass()).stream().forEach((ah) -> {
-                ah.toolDeactivated(activeTool);
-            });
+        if ((activeTool != null) && (toolExtensions.containsKey(activeTool.getClass()))) {
+            toolExtensions.get(activeTool.getClass()).stream().forEach((ah) -> ah.toolDeactivated(activeTool));
             activeTool.deactivate();
         }
     }
 
 
     private void notifyToolActivated() {
-        if ((activeTool != null) && (actionHandlers.containsKey(activeTool.getClass()))) {
-            actionHandlers.get(activeTool.getClass()).stream().forEach((ah) -> {
-                ah.toolActivated(activeTool);
-            });
+        if ((activeTool != null) && (toolExtensions.containsKey(activeTool.getClass()))) {
+            toolExtensions.get(activeTool.getClass()).stream().forEach((ah) -> ah.toolActivated(activeTool));
             activeTool.activate();
         }
     }

@@ -1,6 +1,7 @@
 package info.dejv.octarine.actionhandler.selection.feedback;
 
 import java.io.IOException;
+import java.net.URL;
 import javax.annotation.PostConstruct;
 
 import javafx.beans.property.DoubleProperty;
@@ -12,6 +13,7 @@ import javafx.scene.transform.Translate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import info.dejv.octarine.actionhandler.feedback.DynamicFeedback;
@@ -28,19 +30,11 @@ import info.dejv.octarine.utils.FormattingUtils;
 public class IncrementalSelectionFeedback
         extends DynamicFeedback {
 
-    public enum Type {
-        ADD,
-        REMOVE
-    }
-
-
     private static final Logger LOGGER = LoggerFactory.getLogger(IncrementalSelectionFeedback.class);
     private Group symbolPlus;
     private Group symbolMinus;
-
     private ConstantZoomDoubleBinding symbolScale;
     private Translate symbolTranslate = new Translate();
-
     private Group symbol;
     private Type type;
 
@@ -49,10 +43,9 @@ public class IncrementalSelectionFeedback
         DoubleProperty zoomFactor = octarine.getViewer().zoomFactorProperty();
         symbolScale = new ConstantZoomDoubleBinding(zoomFactor, 1.5);
 
-        symbolPlus = createAndFormat("/fxml/plus.fxml");
-        symbolMinus = createAndFormat("/fxml/minus.fxml");
+        createAndFormat("/fxml/plus.fxml");
+        createAndFormat("/fxml/minus.fxml");
     }
-
 
     public void set(Type type) {
         if (this.symbol != null) {
@@ -73,7 +66,6 @@ public class IncrementalSelectionFeedback
         this.type = type;
     }
 
-
     public void remove() {
         if (symbol != null) {
 
@@ -86,11 +78,9 @@ public class IncrementalSelectionFeedback
         }
     }
 
-
     public Type getType() {
         return type;
     }
-
 
     public void setMouseLocation(double x, double y) {
         try {
@@ -104,9 +94,9 @@ public class IncrementalSelectionFeedback
         }
     }
 
-
     private Group createAndFormat(String path) throws IOException {
-        Group symbol = FXMLLoader.load(System.class.getResource(path));
+        final URL url = new ClassPathResource(path).getURL();
+        final Group symbol = FXMLLoader.load(url);
 
         FormattingUtils.formatGlow((SVGPath) symbol.lookup("#glowCircle"));
         FormattingUtils.formatGlow((SVGPath) symbol.lookup("#glowSymbol"));
@@ -116,7 +106,6 @@ public class IncrementalSelectionFeedback
         return symbol;
     }
 
-
     private void bind() {
         symbol.getTransforms().add(symbolTranslate);
 
@@ -124,11 +113,16 @@ public class IncrementalSelectionFeedback
         symbol.scaleYProperty().bind(symbolScale);
     }
 
-
     private void unbind() {
         symbol.getTransforms().remove(symbolTranslate);
 
         symbol.scaleXProperty().unbind();
         symbol.scaleYProperty().unbind();
+    }
+
+
+    public enum Type {
+        ADD,
+        REMOVE
     }
 }
