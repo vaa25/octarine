@@ -14,8 +14,6 @@ public interface EditMode {
 
     void init();
 
-    void addListener(TransformListener listener);
-
     void activate();
 
     void deactivate();

@@ -16,5 +16,6 @@ public interface SelectionChangeListener {
      @param added Elements selected since last notification
      @param removed Elements deselected since last notification
      */
+    @SuppressWarnings("UnusedParameters")
     void selectionChanged(SelectionManager sender, List<Controller> selection, List<Controller> added, List<Controller> removed);
 }

@@ -1,14 +1,17 @@
 package info.dejv.octarine.command;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import javafx.collections.ObservableList;
+
 import info.dejv.octarine.controller.ContainerController;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.model.ModelElement;
 import info.dejv.octarine.selection.SelectionManager;
-import java.util.ArrayList;
-import java.util.List;
-import static java.util.Objects.requireNonNull;
-import java.util.Set;
-import javafx.collections.ObservableList;
 
 /**
  *
@@ -37,7 +40,7 @@ public class DeleteCommand
     public void execute() {
         selectionManager.deselectAll();
         modelElementsToDelete.stream()
-                .forEach((model) -> targetChildrenList.remove(model));
+                .forEach(targetChildrenList::remove);
     }
 
     @Override

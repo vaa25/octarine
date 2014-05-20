@@ -40,7 +40,9 @@ public abstract class ToolExtension {
         octarine.removeActionHandler(toolClass, this);
     }
 
+    @SuppressWarnings("UnusedParameters")
     public abstract void toolActivated(Tool tool);
 
+    @SuppressWarnings("UnusedParameters")
     public abstract void toolDeactivated(Tool tool);
 }

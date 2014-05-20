@@ -1,9 +1,7 @@
 package info.dejv.octarine.utils;
 
-import javafx.beans.InvalidationListener;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.value.ChangeListener;
 
 /**
  *
@@ -26,26 +24,4 @@ public class ConstantZoomDoubleBinding
     protected double computeValue() {
         return value / zoomFactor.get();
     }
-
-    @Override
-    public void addListener(ChangeListener<? super Number> listener) {
-        super.addListener(listener); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void addListener(InvalidationListener listener) {
-        super.addListener(listener); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void removeListener(ChangeListener<? super Number> listener) {
-        super.removeListener(listener); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void removeListener(InvalidationListener listener) {
-        super.removeListener(listener); //To change body of generated methods, choose Tools | Templates.
-    }
-
-
 }

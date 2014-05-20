@@ -1,6 +1,5 @@
 package info.dejv.octarine.tool.selection.editmode;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +18,6 @@ import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.request.CommandRequest;
 import info.dejv.octarine.request.Request;
 import info.dejv.octarine.tool.selection.EditMode;
-import info.dejv.octarine.tool.selection.TransformListener;
 
 /**
  * Common code for typical edit modes
@@ -31,7 +29,6 @@ public abstract class AbstractEditMode
 
     protected final Logger LOG;
     protected final Set<Controller> selection = new HashSet<>();
-    private final List<TransformListener> listeners = new ArrayList<>();
 
     protected final Class<? extends Request> requestType;
 
@@ -63,13 +60,6 @@ public abstract class AbstractEditMode
 
         assert this.scene != null : "scene is NULL";
         assert this.commandStack != null : "commandStack is NULL";
-    }
-
-    @Override
-    public void addListener(TransformListener listener) {
-        if (!listeners.contains(listener)) {
-            listeners.add(listener);
-        }
     }
 
     @Override
@@ -121,18 +111,6 @@ public abstract class AbstractEditMode
 
     public boolean isActive() {
         return active;
-    }
-
-    protected void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    protected void notifyTransformationStarted() {
-        listeners.stream().forEach(TransformListener::transformationStarted);
-    }
-
-    protected void notifyTransformationFinished() {
-        listeners.stream().forEach(TransformListener::transformationFinished);
     }
 
     public Octarine getOctarine() {

@@ -71,7 +71,6 @@ public class EditModeTranslate
 
 
     private void handleDragDetected(MouseEvent e) {
-        LOG.debug("Drag");
         if (drag) {
             return;
         }

@@ -158,6 +158,7 @@ public class SingleSelectionToolExtension
     }
 
 
+    @SuppressWarnings("UnusedParameters")
     private void handleMouseExited(MouseEvent e) {
         incrementalSelectionManager.deactivate();
         mouseOverDynamicFeedback.remove();

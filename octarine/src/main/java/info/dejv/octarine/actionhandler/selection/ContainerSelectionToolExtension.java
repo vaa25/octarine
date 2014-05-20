@@ -5,8 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -70,9 +68,6 @@ public class ContainerSelectionToolExtension
         return this;
     }
 
-    @PostConstruct
-    public void initContainerSelectionToolExtension() {
-    }
 
     @Override
     public void toolActivated(Tool tool) {

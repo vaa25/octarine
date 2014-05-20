@@ -23,19 +23,11 @@ public class DefaultShapeRequestHandler
     private ModelElement modelElement;
 
 
-    public ShapeFactory getShapeFactory() {
-        return shapeFactory;
-    }
-
     public DefaultShapeRequestHandler setShapeFactory(ShapeFactory shapeFactory) {
         this.shapeFactory = shapeFactory;
         return this;
     }
 
-
-    public ModelElement getModelElement() {
-        return modelElement;
-    }
 
     public DefaultShapeRequestHandler setModelElement(ModelElement modelElement) {
         this.modelElement = modelElement;
@@ -59,7 +51,7 @@ public class DefaultShapeRequestHandler
         final Shape shape = shapeFactory.createShape(modelElement);
         requireNonNull(shape, "shapeCreator.createAndUpdateShape() returned null");
 
-        shapeRequest.setShape((Shape) shape);
+        shapeRequest.setShape(shape);
     }
 
 

@@ -1,16 +1,15 @@
 package info.dejv.octarine.selection;
 
-import info.dejv.octarine.controller.Controller;
-import info.dejv.octarine.model.AbstractObservable;
 import java.util.ArrayList;
 import java.util.List;
+
+import info.dejv.octarine.controller.Controller;
 
 /**
  *
  * @author dejv
  */
 public class SelectionManagerImpl
-        extends AbstractObservable
         implements SelectionManager {
 
     private final List<SelectionChangeListener> listeners = new ArrayList<>();
@@ -94,9 +93,7 @@ public class SelectionManagerImpl
         updateCounter--;
 
         if (updateCounter == 0) {
-            listeners.stream().forEach((listener) -> {
-                listener.selectionChanged(this, new ArrayList<>(selection), new ArrayList<>(selected), new ArrayList<>(deselected));
-            });
+            listeners.stream().forEach((listener) -> listener.selectionChanged(this, new ArrayList<>(selection), new ArrayList<>(selected), new ArrayList<>(deselected)));
 
             deselected.clear();
             selected.clear();

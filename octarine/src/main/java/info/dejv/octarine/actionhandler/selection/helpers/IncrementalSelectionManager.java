@@ -52,6 +52,7 @@ public class IncrementalSelectionManager {
     }
 
 
+    @SuppressWarnings("UnusedParameters")
     public void commit(MouseEvent e) {
         Type currentType = incrementalSelectionFeedback.getType();
 

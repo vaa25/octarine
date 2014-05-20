@@ -186,14 +186,13 @@ public class DefaultController
         getRoot().getOctarine().getLayerManager().getCurrentLayer().remove(getView());
     }
 
+    @SuppressWarnings("EmptyMethod")
     protected void onControllerAdded() {
+        // Empty, override to use...
     }
 
+    @SuppressWarnings("EmptyMethod")
     protected void onControllerRemoved() {
-    }
-
-
-    protected void updateView(ModelElement model, Node view) {
-
+        // Empty, override to use...
     }
 }

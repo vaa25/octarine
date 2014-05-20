@@ -1,6 +1,5 @@
 package info.dejv.octarine.model.chunk;
 
-import info.dejv.octarine.model.AbstractObservable;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -9,16 +8,10 @@ import javafx.beans.property.SimpleDoubleProperty;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class DoubleTuple
-        extends AbstractObservable {
+public class DoubleTuple {
 
     private final DoubleProperty x = new SimpleDoubleProperty(this, "x");
     private final DoubleProperty y = new SimpleDoubleProperty(this, "y");
-
-
-    public DoubleTuple() {
-
-    }
 
 
     public DoubleTuple(double initialX, double initialY) {

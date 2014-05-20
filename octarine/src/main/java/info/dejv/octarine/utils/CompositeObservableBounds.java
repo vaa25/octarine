@@ -1,8 +1,10 @@
 package info.dejv.octarine.utils;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.List;
-import static java.util.Objects.requireNonNull;
+
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
@@ -32,6 +34,7 @@ public class CompositeObservableBounds
     }
 
 
+    @SuppressWarnings("UnusedReturnValue")
     public final CompositeObservableBounds add(ReadOnlyObjectProperty<Bounds> nodeBounds) {
         requireNonNull(nodeBounds, "nodeBounds is null");
 
@@ -76,6 +79,6 @@ public class CompositeObservableBounds
                 maxY.set(Double.max(maxY.get(), bounds.getMaxY()));
                 maxZ.set(Double.max(maxZ.get(), bounds.getMaxZ()));
             }
-        };
+        }
     }
 }

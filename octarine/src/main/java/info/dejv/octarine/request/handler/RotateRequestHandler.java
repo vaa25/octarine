@@ -20,6 +20,7 @@ public class RotateRequestHandler
 
     @Override
     protected void requestChecked(Request request) {
+        @SuppressWarnings("UnusedAssignment")
         final RotateRequest rotateRequest = (RotateRequest) request;
     }
 

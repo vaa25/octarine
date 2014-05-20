@@ -14,6 +14,7 @@ import javafx.geometry.Point3D;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class AbstractObservableBounds {
 
     protected final DoubleProperty minX = new SimpleDoubleProperty(this, "minX");

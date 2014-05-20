@@ -18,10 +18,8 @@ public class CommandStack
 
         final int top = commands.size() - 1;
 
-        if (pointerCurrent < top) {
-            for (int i = pointerCurrent; i == top; i++) {
-                commands.remove(pointerCurrent);
-            }
+        for (int i = pointerCurrent; i <= top; i++) {
+            commands.remove(pointerCurrent);
         }
 
         commands.add(command);
@@ -46,7 +44,7 @@ public class CommandStack
         }
 
         pointerCurrent--;
-        commands.get(pointerCurrent).execute();
+        commands.get(pointerCurrent).undo();
         setChanged();
     }
 

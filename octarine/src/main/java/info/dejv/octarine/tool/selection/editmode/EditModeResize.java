@@ -88,9 +88,7 @@ public class EditModeResize
         handles.clear();
         selectionBounds.clear();
 
-        selection.forEach((controller) -> {
-            selectionBounds.add(controller.getView().boundsInParentProperty());
-        });
+        selection.forEach((controller) -> selectionBounds.add(controller.getView().boundsInParentProperty()));
 
         ObservableList<Node> feedback = getOctarine().getFeedback();
 

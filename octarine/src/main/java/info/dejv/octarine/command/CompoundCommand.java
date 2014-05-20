@@ -17,9 +17,7 @@ public class CompoundCommand
 
     @Override
     public void execute() {
-        commands.stream().forEach((command) -> {
-            command.execute();
-        });
+        commands.stream().forEach(Command::execute);
     }
 
 
