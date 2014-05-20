@@ -23,4 +23,6 @@ public interface EditMode {
     void selectionUpdated(List<Controller> newSelection);
 
     boolean isEnabled();
+
+    boolean isActive();
 }

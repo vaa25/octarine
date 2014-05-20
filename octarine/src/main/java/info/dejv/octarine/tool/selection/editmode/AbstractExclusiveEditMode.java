@@ -32,19 +32,30 @@ public abstract class AbstractExclusiveEditMode
         return this;
     }
 
+
+    @Override
+    protected void tryActivate() {
+        if (isActive()) {
+            doActivate();
+        }
+    }
+
     @Override
     public void installActivationHandlers() {
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
+        LOG.trace("Installing activation handler on: {}", scene);
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
     }
 
 
     @Override
     public void uninstallActivationHandlers() {
-        scene.removeEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
+        LOG.trace("Uninstalling activation handler from: {}", scene);
+        scene.removeEventFilter(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
     }
 
 
-    protected final void handleKeyReleased(KeyEvent e) {
+    protected final void handleKeyPressed(KeyEvent e) {
+        LOG.debug("Key pressed: {}", e.getCode());
         final KeyCode code = getActivationKey();
         requireNonNull(code, "getActivationKey() returns NULL");
 
@@ -66,7 +77,7 @@ public abstract class AbstractExclusiveEditMode
         if (!isEnabled()) {
             return;
         }
-        LOG.debug("Requesting activation: {}", this.getClass().getName());
+        LOG.debug("Requesting activation: {}", this.getClass().getSimpleName());
         exclusivityCoordinator.onActivationRequest(this);
     }
 

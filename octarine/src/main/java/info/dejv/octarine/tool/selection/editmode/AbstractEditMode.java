@@ -119,6 +119,10 @@ public abstract class AbstractEditMode
         return enabled;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
     protected void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
@@ -161,10 +165,8 @@ public abstract class AbstractEditMode
         commandStack.execute(compoundCommand);
     }
 
-    private void tryActivate() {
-        if (active) {
+    protected void tryActivate() {
             doActivate();
-        }
     }
 
     protected abstract void doActivate();

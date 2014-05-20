@@ -118,11 +118,11 @@ public class SelectionTool
 
         octarine.getSelectionManager().addSelectionChangeListener(this);
 
-        coexistingEditorModes.parallelStream().forEach(editMode -> {
+        coexistingEditorModes.forEach(editMode -> {
             editMode.init();
             editMode.activate();
         });
-        exclusiveEditModes.parallelStream().forEach(editMode -> {
+        exclusiveEditModes.forEach(editMode -> {
             editMode.init();
             editMode.installActivationHandlers();
         });
@@ -164,7 +164,7 @@ public class SelectionTool
 
         preferredExclusiveEditMode = sender;
 
-        LOG.debug("Activating: {}", sender);
+        LOG.debug("Activating: {}", sender.getClass().getSimpleName());
         setActiveExclusiveEditMode(sender);
     }
 

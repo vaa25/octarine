@@ -54,8 +54,7 @@ public class EditModeRotate
         pivotCross.scaleXProperty().bind(pivotCrossScale);
         pivotCross.scaleYProperty().bind(pivotCrossScale);
 
-        FormattingUtils.formatGlow((SVGPath) pivotCross.lookup("#glow"));
-        FormattingUtils.formatSymbol((SVGPath) pivotCross.lookup("#symbol"), true);
+        FormattingUtils.formatSymbol((SVGPath) pivotCross.lookup("#symbol"));
     }
 
 
