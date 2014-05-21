@@ -1,6 +1,5 @@
 package info.dejv.octarine.utils;
 
-import info.dejv.octarine.cfg.OctarineProps;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.paint.Color;
@@ -10,6 +9,8 @@ import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.shape.StrokeLineJoin;
 import javafx.scene.shape.StrokeType;
+
+import info.dejv.octarine.cfg.OctarineProps;
 
 /**
  *
@@ -67,16 +68,11 @@ public final class FormattingUtils {
     }
 
 
-    public static void formatGlow(SVGPath shape) {
-        shape.setStroke(null);
-        shape.setFill(COLOR_GLOW);
-        shape.setMouseTransparent(true);
-    }
-
-
-    public static void formatSymbol(SVGPath shape, boolean fill) {
-        shape.setStroke(null);
-        shape.setFill(fill ? getFeedbackColor(FeedbackType.DYNAMIC, FeedbackOpacity.OPAQUE) : null);
+    public static void formatSymbol(SVGPath shape) {
+        shape.setStroke(COLOR_GLOW);
+        shape.setStrokeType(StrokeType.OUTSIDE);
+        shape.strokeWidthProperty().bind(WIDTH_FB_STROKE_STATIC);
+        shape.setFill(getFeedbackColor(FeedbackType.STATIC, FeedbackOpacity.OPAQUE));
         shape.setMouseTransparent(true);
     }
 

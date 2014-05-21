@@ -1,68 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.transform.*?>
-<?import javafx.scene.effect.*?>
-
+<?import javafx.scene.Group?>
+<?import javafx.scene.shape.SVGPath?>
+<!--suppress XmlUnusedNamespaceDeclaration -->
 <Group id='_root' xmlns:fx="http://javafx.com/fxml" xmlns:fxsvg="http://efxclipse.org/fxml-svg">
-    <children>
-        <SVGPath id="glowCircle" opacity="1" strokeWidth="3.0"
-                 content="m 11.133024,6.3219153 c 0,2.66 -2.1564257,4.8164997 -4.8165116,4.8164997 C 3.656426,11.138415 1.5,8.9819153 1.5,6.3219153 c 0,-2.6601 2.156426,-4.81655 4.8165124,-4.81655 2.6600859,0 4.8165116,2.15645 4.8165116,4.81655 z">
-            
-            <fill>
-                TRANSPARENT
-            </fill>
-            
-            <stroke>
-                <Color red="1" green="1" blue="1" opacity="1"/>
-            </stroke>
-        </SVGPath>
-        
-        <SVGPath id="glowSymbol" opacity="1" strokeWidth="2.0"
-                 content="m 9.462199,1045.5088 0,0.8301 -6.2597657,0 0,-0.8301 z">
-            
-            <fill>
-                <Color red="0" green="0" blue="0" opacity="1"/>
-            </fill>
-
-            <stroke>
-                <Color red="1" green="1" blue="1" opacity="1"/>
-            </stroke>
-
-            <transforms>
-                <Translate x="-0.05857241" y="-1039.6652"/>
-            </transforms>
-        </SVGPath>
-        
-        <SVGPath opacity="1" id="circle"
-                 content="m 11.133024,6.3219153 c 0,2.66 -2.1564257,4.8164997 -4.8165116,4.8164997 C 3.656426,11.138415 1.5,8.9819153 1.5,6.3219153 c 0,-2.6601 2.156426,-4.81655 4.8165124,-4.81655 2.6600859,0 4.8165116,2.15645 4.8165116,4.81655 z">
-
-            <fill>
-                TRANSPARENT
-            </fill>
-            <stroke>
-                <Color red="0" green="0" blue="0" opacity="1"/>
-            </stroke>
-        </SVGPath>
-        
-        <SVGPath id="symbol" opacity="1" strokeWidth="0.5"       
-                 content="m 9.462199,1045.5088 0,0.8301 -6.2597657,0 0,-0.8301 z">
-
-            <fill>
-                <Color red="0" green="0" blue="0" opacity="1"/>
-            </fill>
-
-            <stroke>
-                <Color red="0" green="0" blue="0" opacity="1"/>
-            </stroke>
-
-            <transforms>
-                <Translate x="-0.05857241" y="-1039.6652"/>
-            </transforms>
-        </SVGPath>
-    </children>
+    <SVGPath id="symbol" content="m 0 -11.96875 C -6.6653464 -11.96875 -12.03125 -6.5699955 -12.03125 0 C -12.03125 6.5699955 -6.6653464 11.96875 0 11.96875 C 6.6653464 11.96875 12.03125 6.5699955 12.03125 0 C 12.03125 -6.5699955 6.6653464 -11.96875 0 -11.96875 z M 0 -10.03125 C 5.4849176 -10.03125 9.96875 -5.5802687 9.96875 0 C 9.96875 5.5802687 5.4849176 10.03125 0 10.03125 C -5.4849176 10.03125 -9.96875 5.5802687 -9.96875 0 C -9.96875 -5.5802687 -5.4849176 -10.03125 0 -10.03125 z M -5.875 -1 L -5.875 1 L -4.875 1 L 4.875 1 L 5.875 1 L 5.875 -1 L 4.875 -1 L -4.875 -1 L -5.875 -1 z"/>
 </Group>
