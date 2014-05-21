@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import info.dejv.octarine.Octarine;
-import info.dejv.octarine.actionhandler.ToolExtension;
+import info.dejv.octarine.tool.ToolExtension;
 import info.dejv.octarine.model.ModelElement;
 import info.dejv.octarine.request.Request;
 import info.dejv.octarine.view.ViewFactory;

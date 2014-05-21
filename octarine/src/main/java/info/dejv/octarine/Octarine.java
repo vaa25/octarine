@@ -9,7 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 
 import info.dejv.common.ui.ZoomableScrollPane;
-import info.dejv.octarine.actionhandler.ToolExtension;
+import info.dejv.octarine.tool.ToolExtension;
 import info.dejv.octarine.command.CommandStack;
 import info.dejv.octarine.controller.ContainerController;
 import info.dejv.octarine.layer.LayerManager;

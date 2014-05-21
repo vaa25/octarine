@@ -1,4 +1,4 @@
-package info.dejv.octarine.actionhandler.feedback;
+package info.dejv.octarine.feedback;
 
 import javax.annotation.PostConstruct;
 

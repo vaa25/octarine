@@ -1,4 +1,4 @@
-package info.dejv.octarine.tool.selection;
+package info.dejv.octarine.tool.selection.editmode;
 
 /**
  * Edit mode, that requires exclusive activation (not cooperable with other exclusive edit modes)

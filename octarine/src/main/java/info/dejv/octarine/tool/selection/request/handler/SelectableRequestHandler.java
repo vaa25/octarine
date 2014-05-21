@@ -1,8 +1,9 @@
-package info.dejv.octarine.actionhandler.selection;
+package info.dejv.octarine.tool.selection.request.handler;
 
 import info.dejv.octarine.request.Request;
 import info.dejv.octarine.request.handler.AbstractRequestHandler;
 import info.dejv.octarine.stereotype.RequestHandler;
+import info.dejv.octarine.tool.selection.request.SelectableRequest;
 
 /**
  *
@@ -16,7 +17,7 @@ public class SelectableRequestHandler
 
     @Override
     public boolean supports(Class<? extends Request> request) {
-        return (Selectable.class.isAssignableFrom(request));
+        return (SelectableRequest.class.isAssignableFrom(request));
     }
 
     @Override

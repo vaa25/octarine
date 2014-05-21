@@ -18,7 +18,6 @@ import javafx.scene.shape.SVGPath;
 
 import org.springframework.stereotype.Component;
 
-import info.dejv.octarine.tool.selection.ExclusivityCoordinator;
 import info.dejv.octarine.tool.selection.request.RotateRequest;
 import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
 import info.dejv.octarine.utils.FormattingUtils;

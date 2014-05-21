@@ -1,4 +1,4 @@
-package info.dejv.octarine.tool.selection;
+package info.dejv.octarine.tool.selection.editmode;
 
 import java.util.List;
 

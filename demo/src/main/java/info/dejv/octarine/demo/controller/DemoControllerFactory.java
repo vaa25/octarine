@@ -5,8 +5,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import info.dejv.octarine.Octarine;
-import info.dejv.octarine.actionhandler.selection.ContainerSelectionToolExtension;
-import info.dejv.octarine.actionhandler.selection.SingleSelectionToolExtension;
+import info.dejv.octarine.tool.selection.extension.ContainerSelectionToolExtension;
+import info.dejv.octarine.tool.selection.extension.SingleSelectionToolExtension;
 import info.dejv.octarine.controller.ContainerController;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.controller.ControllerFactory;

@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
 
-import info.dejv.octarine.command.DeleteCommand;
+import info.dejv.octarine.tool.selection.command.DeleteCommand;
 import info.dejv.octarine.controller.ContainerController;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.model.ModelElement;

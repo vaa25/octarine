@@ -1,4 +1,4 @@
-package info.dejv.octarine.actionhandler.feedback;
+package info.dejv.octarine.tool.selection.extension.feedback;
 
 import static info.dejv.octarine.utils.FormattingUtils.formatFeedbackOutline;
 import static info.dejv.octarine.utils.FormattingUtils.getDefaultFeedbackStrokeWidth;
@@ -12,6 +12,7 @@ import javafx.scene.shape.Shape;
 import org.springframework.stereotype.Component;
 
 import info.dejv.octarine.controller.Controller;
+import info.dejv.octarine.feedback.DynamicFeedback;
 import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
 import info.dejv.octarine.utils.ControllerUtils;
 import info.dejv.octarine.utils.FormattingUtils;

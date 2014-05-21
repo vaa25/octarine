@@ -1,4 +1,4 @@
-package info.dejv.octarine.actionhandler.selection.helpers;
+package info.dejv.octarine.tool.selection.extension.helper;
 
 /**
  *

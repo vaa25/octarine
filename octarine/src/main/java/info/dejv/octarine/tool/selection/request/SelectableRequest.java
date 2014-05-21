@@ -1,4 +1,4 @@
-package info.dejv.octarine.actionhandler.selection;
+package info.dejv.octarine.tool.selection.request;
 
 import info.dejv.octarine.request.Request;
 
@@ -7,7 +7,7 @@ import info.dejv.octarine.request.Request;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class Selectable
+public class SelectableRequest
         implements Request {
 
 }

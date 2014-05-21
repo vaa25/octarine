@@ -1,6 +1,6 @@
 package info.dejv.octarine.request.handler;
 
-import info.dejv.octarine.command.TranslateCommand;
+import info.dejv.octarine.tool.selection.command.TranslateCommand;
 import info.dejv.octarine.model.chunk.DoubleTuple;
 import info.dejv.octarine.request.Request;
 import info.dejv.octarine.stereotype.RequestHandler;

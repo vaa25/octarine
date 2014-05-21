@@ -1,4 +1,4 @@
-package info.dejv.octarine.actionhandler.selection.helpers;
+package info.dejv.octarine.tool.selection.extension.helper;
 
 import static java.util.Objects.requireNonNull;
 
@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import info.dejv.octarine.Octarine;
-import info.dejv.octarine.actionhandler.selection.feedback.IncrementalSelectionFeedback;
-import info.dejv.octarine.actionhandler.selection.feedback.IncrementalSelectionFeedback.Type;
+import info.dejv.octarine.tool.selection.extension.feedback.IncrementalSelectionFeedback;
+import info.dejv.octarine.tool.selection.extension.feedback.IncrementalSelectionFeedback.Type;
 
 /**
  * "Increamental selection" manager.

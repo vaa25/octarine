@@ -6,8 +6,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import info.dejv.octarine.request.Request;
-import info.dejv.octarine.tool.selection.ExclusiveEditMode;
-import info.dejv.octarine.tool.selection.ExclusivityCoordinator;
 
 /**
  * Common code for "exclusive" edit modes

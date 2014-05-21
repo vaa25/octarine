@@ -17,7 +17,6 @@ import info.dejv.octarine.command.CompoundCommand;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.request.CommandRequest;
 import info.dejv.octarine.request.Request;
-import info.dejv.octarine.tool.selection.EditMode;
 
 /**
  * Common code for typical edit modes

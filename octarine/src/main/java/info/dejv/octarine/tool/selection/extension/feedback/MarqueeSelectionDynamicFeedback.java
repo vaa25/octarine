@@ -1,4 +1,4 @@
-package info.dejv.octarine.actionhandler.selection.feedback;
+package info.dejv.octarine.tool.selection.extension.feedback;
 
 import static info.dejv.octarine.utils.FormattingUtils.getDefaultFeedbackStrokeWidth;
 import static info.dejv.octarine.utils.FormattingUtils.getFeedbackColor;
@@ -8,7 +8,7 @@ import javafx.scene.shape.Rectangle;
 
 import org.springframework.stereotype.Component;
 
-import info.dejv.octarine.actionhandler.feedback.DynamicFeedback;
+import info.dejv.octarine.feedback.DynamicFeedback;
 import info.dejv.octarine.utils.FormattingUtils;
 import info.dejv.octarine.utils.FormattingUtils.FeedbackOpacity;
 import info.dejv.octarine.utils.FormattingUtils.FeedbackType;

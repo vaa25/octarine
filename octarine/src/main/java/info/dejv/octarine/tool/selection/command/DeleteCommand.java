@@ -1,4 +1,4 @@
-package info.dejv.octarine.command;
+package info.dejv.octarine.tool.selection.command;
 
 import static java.util.Objects.requireNonNull;
 
@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javafx.collections.ObservableList;
 
+import info.dejv.octarine.command.Command;
 import info.dejv.octarine.controller.ContainerController;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.model.ModelElement;

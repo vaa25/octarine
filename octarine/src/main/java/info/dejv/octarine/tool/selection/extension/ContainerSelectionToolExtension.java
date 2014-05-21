@@ -1,4 +1,4 @@
-package info.dejv.octarine.actionhandler.selection;
+package info.dejv.octarine.tool.selection.extension;
 
 import static java.util.Objects.requireNonNull;
 
@@ -17,15 +17,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import info.dejv.octarine.actionhandler.ToolExtension;
-import info.dejv.octarine.actionhandler.selection.feedback.MarqueeSelectionDynamicFeedback;
-import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionListener;
-import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionManager;
-import info.dejv.octarine.command.SelectCommand;
+import info.dejv.octarine.tool.ToolExtension;
+import info.dejv.octarine.tool.selection.extension.feedback.MarqueeSelectionDynamicFeedback;
+import info.dejv.octarine.tool.selection.command.SelectCommand;
 import info.dejv.octarine.controller.ContainerController;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.tool.Tool;
 import info.dejv.octarine.tool.selection.SelectionTool;
+import info.dejv.octarine.tool.selection.extension.helper.IncrementalSelectionListener;
+import info.dejv.octarine.tool.selection.extension.helper.IncrementalSelectionManager;
+import info.dejv.octarine.tool.selection.request.SelectableRequest;
 
 /**
  * Selection tool extension to enable proper "marquee selection" handling of container controllers.
@@ -154,7 +155,7 @@ public class ContainerSelectionToolExtension
 
             Controller candidate = controller.lookup(c -> node.equals(c.getView()));
 
-            if ((candidate != null) && (candidate.supports(Selectable.class))) {
+            if ((candidate != null) && (candidate.supports(SelectableRequest.class))) {
                 result.add(candidate);
             }
         });

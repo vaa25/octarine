@@ -3,7 +3,7 @@ package info.dejv.octarine.controller;
 import javafx.scene.Node;
 
 import info.dejv.octarine.Octarine;
-import info.dejv.octarine.actionhandler.ToolExtension;
+import info.dejv.octarine.tool.ToolExtension;
 import info.dejv.octarine.model.ModelElement;
 import info.dejv.octarine.view.ViewFactory;
 

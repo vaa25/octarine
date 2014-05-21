@@ -17,10 +17,13 @@ import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.selection.SelectionChangeListener;
 import info.dejv.octarine.selection.SelectionManager;
 import info.dejv.octarine.tool.Tool;
+import info.dejv.octarine.tool.selection.editmode.EditMode;
 import info.dejv.octarine.tool.selection.editmode.EditModeDelete;
 import info.dejv.octarine.tool.selection.editmode.EditModeResize;
 import info.dejv.octarine.tool.selection.editmode.EditModeRotate;
 import info.dejv.octarine.tool.selection.editmode.EditModeTranslate;
+import info.dejv.octarine.tool.selection.editmode.ExclusiveEditMode;
+import info.dejv.octarine.tool.selection.editmode.ExclusivityCoordinator;
 
 @Component
 public class SelectionTool

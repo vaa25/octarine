@@ -1,4 +1,4 @@
-package info.dejv.octarine.actionhandler.selection.feedback;
+package info.dejv.octarine.tool.selection.extension.feedback;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import info.dejv.octarine.actionhandler.feedback.DynamicFeedback;
+import info.dejv.octarine.feedback.DynamicFeedback;
 import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
 import info.dejv.octarine.utils.FormattingUtils;
 
@@ -34,7 +34,7 @@ public class IncrementalSelectionFeedback
     private Group symbolPlus;
     private Group symbolMinus;
     private ConstantZoomDoubleBinding symbolScale;
-    private Translate symbolTranslate = new Translate();
+    private final Translate symbolTranslate = new Translate();
     private Group symbol;
     private Type type;
 
@@ -98,10 +98,7 @@ public class IncrementalSelectionFeedback
         final URL url = new ClassPathResource(path).getURL();
         final Group symbol = FXMLLoader.load(url);
 
-        FormattingUtils.formatGlow((SVGPath) symbol.lookup("#glowCircle"));
-        FormattingUtils.formatGlow((SVGPath) symbol.lookup("#glowSymbol"));
-        FormattingUtils.formatSymbol((SVGPath) symbol.lookup("#circle"), false);
-        FormattingUtils.formatSymbol((SVGPath) symbol.lookup("#symbol"), true);
+        FormattingUtils.formatSymbol((SVGPath) symbol.lookup("#symbol"));
 
         return symbol;
     }

@@ -1,5 +1,6 @@
-package info.dejv.octarine.command;
+package info.dejv.octarine.tool.selection.command;
 
+import info.dejv.octarine.command.Command;
 import info.dejv.octarine.model.chunk.DoubleTuple;
 
 /**

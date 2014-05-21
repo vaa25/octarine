@@ -19,7 +19,6 @@ import javafx.scene.shape.StrokeType;
 
 import org.springframework.stereotype.Component;
 
-import info.dejv.octarine.tool.selection.ExclusivityCoordinator;
 import info.dejv.octarine.tool.selection.request.ResizeRequest;
 import info.dejv.octarine.utils.CompositeObservableBounds;
 import info.dejv.octarine.utils.ConstantZoomDoubleBinding;

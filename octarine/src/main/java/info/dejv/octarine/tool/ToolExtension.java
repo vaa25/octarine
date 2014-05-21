@@ -1,10 +1,9 @@
-package info.dejv.octarine.actionhandler;
+package info.dejv.octarine.tool;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.controller.Controller;
-import info.dejv.octarine.tool.Tool;
 
 /**
  * Controller-side tool extension.

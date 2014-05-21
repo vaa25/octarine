@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package info.dejv.octarine.actionhandler.selection;
+package info.dejv.octarine.tool.selection.extension;
 
 import static java.util.Objects.requireNonNull;
 
@@ -18,16 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import info.dejv.octarine.actionhandler.ToolExtension;
-import info.dejv.octarine.actionhandler.feedback.MouseOverDynamicFeedback;
-import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionListener;
-import info.dejv.octarine.actionhandler.selection.helpers.IncrementalSelectionManager;
-import info.dejv.octarine.command.SelectCommand;
+import info.dejv.octarine.tool.ToolExtension;
+import info.dejv.octarine.tool.selection.extension.feedback.MouseOverDynamicFeedback;
+import info.dejv.octarine.tool.selection.command.SelectCommand;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.request.shape.ShapeRequest;
 import info.dejv.octarine.tool.Tool;
 import info.dejv.octarine.tool.selection.SelectionTool;
 import info.dejv.octarine.tool.selection.SelectionToolListener;
+import info.dejv.octarine.tool.selection.extension.helper.IncrementalSelectionListener;
+import info.dejv.octarine.tool.selection.extension.helper.IncrementalSelectionManager;
+import info.dejv.octarine.tool.selection.request.handler.SelectableRequestHandler;
 
 /**
  * Selection tool extension to enable proper "single selection" handling of selectable controllers.
