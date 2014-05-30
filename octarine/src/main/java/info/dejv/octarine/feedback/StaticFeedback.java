@@ -5,19 +5,19 @@ import static java.util.Objects.requireNonNull;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 
-
 /**
- * Abstract ancestor for dynamic feedback classes.
+ * Abstract ancestor for static feedback classes.
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public abstract class DynamicFeedback
+public class StaticFeedback
         extends AbstractFeedback {
 
     @Override
     protected ObservableList<Node> selectFeedbackNodes() {
         requireNonNull(octarine, "octarine is null");
 
-        return octarine.getActiveFeedback();
+        return octarine.getFeedback();
     }
+
 }
