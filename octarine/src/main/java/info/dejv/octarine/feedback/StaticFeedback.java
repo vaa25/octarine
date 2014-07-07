@@ -10,7 +10,7 @@ import javafx.scene.Node;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class StaticFeedback
+public abstract class StaticFeedback
         extends AbstractFeedback {
 
     @Override

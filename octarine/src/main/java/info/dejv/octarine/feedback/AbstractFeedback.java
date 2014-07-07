@@ -28,18 +28,28 @@ public abstract class AbstractFeedback extends Group {
         feedbackNodes = selectFeedbackNodes();
     }
 
-    protected void addToScene() {
+    public void hide() {
+        removeFromScene();
+    }
+
+    protected final void addToScene() {
+        beforeAddToScene();
+
         if (!feedbackNodes.contains(this)) {
             feedbackNodes.add(this);
         }
     }
 
-    protected void removeFromScene() {
+    protected final void removeFromScene() {
         if (feedbackNodes.contains(this)) {
             feedbackNodes.remove(this);
         }
+        afterRemoveFromScene();
     }
 
     protected abstract ObservableList<Node> selectFeedbackNodes();
 
+    protected abstract void beforeAddToScene();
+
+    protected abstract void afterRemoveFromScene();
 }

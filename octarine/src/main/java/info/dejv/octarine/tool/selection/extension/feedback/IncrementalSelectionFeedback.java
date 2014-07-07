@@ -47,6 +47,18 @@ public class IncrementalSelectionFeedback
         symbolMinus = createAndFormat("/fxml/minus.fxml");
     }
 
+
+    @Override
+    protected void beforeAddToScene() {
+
+    }
+
+    @Override
+    protected void afterRemoveFromScene() {
+
+    }
+
+
     public void set(Type type) {
         if (this.symbol != null) {
 

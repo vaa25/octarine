@@ -5,4 +5,13 @@ package info.dejv.octarine.tool.selection.editmode.feedback;
  * Author: dejv (www.dejv.info)
  */
 public enum HandlePos {
+
+    N,
+    NE,
+    E,
+    SE,
+    S,
+    SW,
+    W,
+    NW
 }
