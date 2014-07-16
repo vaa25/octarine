@@ -1,13 +1,17 @@
 package info.dejv.octarine.tool.selection.editmode;
 
+import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.geometry.Bounds;
 import javafx.scene.input.KeyCode;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import info.dejv.octarine.tool.selection.editmode.feedback.ResizeStaticFeedback;
 import info.dejv.octarine.tool.selection.request.ResizeRequest;
-import info.dejv.octarine.utils.CompositeObservableBounds;
 
 /**
  * "Scale" edit mode<br/>
@@ -19,12 +23,12 @@ import info.dejv.octarine.utils.CompositeObservableBounds;
 public class EditModeResize
         extends AbstractExclusiveEditMode {
 
-    private final CompositeObservableBounds selectionBounds = new CompositeObservableBounds();
+    @Autowired
+    private ResizeStaticFeedback staticFeedback;
 
 
     public EditModeResize() {
         super(ResizeRequest.class);
-
     }
 
 
@@ -46,14 +50,15 @@ public class EditModeResize
 
     @Override
     protected void doActivate() {
-        selectionBounds.clear();
+        final Stream<ReadOnlyObjectProperty<Bounds>> boundsStream = selection.stream()
+                .map((controller) -> controller.getView().boundsInParentProperty());
 
-        selection.forEach((controller) -> selectionBounds.add(controller.getView().boundsInParentProperty()));
+        staticFeedback.show(boundsStream);
     }
 
 
     @Override
     protected void doDeactivate() {
-        selectionBounds.clear();
+        staticFeedback.hide();
     }
 }

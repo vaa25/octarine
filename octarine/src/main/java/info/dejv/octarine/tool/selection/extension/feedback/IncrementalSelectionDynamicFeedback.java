@@ -27,10 +27,10 @@ import info.dejv.octarine.utils.FormattingUtils;
  * Author: dejv (www.dejv.info)
  */
 @Component
-public class IncrementalSelectionFeedback
+public class IncrementalSelectionDynamicFeedback
         extends DynamicFeedback {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IncrementalSelectionFeedback.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IncrementalSelectionDynamicFeedback.class);
     private Group symbolPlus;
     private Group symbolMinus;
     private ConstantZoomDoubleBinding symbolScale;
@@ -47,16 +47,6 @@ public class IncrementalSelectionFeedback
         symbolMinus = createAndFormat("/fxml/minus.fxml");
     }
 
-
-    @Override
-    protected void beforeAddToScene() {
-
-    }
-
-    @Override
-    protected void afterRemoveFromScene() {
-
-    }
 
 
     public void set(Type type) {

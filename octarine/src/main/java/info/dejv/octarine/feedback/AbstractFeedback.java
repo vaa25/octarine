@@ -49,7 +49,13 @@ public abstract class AbstractFeedback extends Group {
 
     protected abstract ObservableList<Node> selectFeedbackNodes();
 
-    protected abstract void beforeAddToScene();
 
-    protected abstract void afterRemoveFromScene();
+    protected void beforeAddToScene() {
+        //Override when necessary
+    }
+
+
+    protected void afterRemoveFromScene() {
+        //Override when necessary
+    }
 }

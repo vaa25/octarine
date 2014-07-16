@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import info.dejv.octarine.Octarine;
-import info.dejv.octarine.tool.selection.extension.feedback.IncrementalSelectionFeedback;
-import info.dejv.octarine.tool.selection.extension.feedback.IncrementalSelectionFeedback.Type;
+import info.dejv.octarine.tool.selection.extension.feedback.IncrementalSelectionDynamicFeedback;
+import info.dejv.octarine.tool.selection.extension.feedback.IncrementalSelectionDynamicFeedback.Type;
 
 /**
  * "Increamental selection" manager.
@@ -30,7 +30,7 @@ public class IncrementalSelectionManager {
     private IncrementalSelectionListener listener;
 
     @Autowired
-    private IncrementalSelectionFeedback incrementalSelectionFeedback;
+    private IncrementalSelectionDynamicFeedback incrementalSelectionDynamicFeedback;
 
 
     public void activate(MouseEvent e, IncrementalSelectionListener listener) {
@@ -54,7 +54,7 @@ public class IncrementalSelectionManager {
 
     @SuppressWarnings("UnusedParameters")
     public void commit(MouseEvent e) {
-        Type currentType = incrementalSelectionFeedback.getType();
+        Type currentType = incrementalSelectionDynamicFeedback.getType();
 
         if (currentType == null) {
             listener.replaceSelection();
@@ -74,7 +74,7 @@ public class IncrementalSelectionManager {
 
 
     public void deactivate() {
-        incrementalSelectionFeedback.remove();
+        incrementalSelectionDynamicFeedback.remove();
         listener = null;
 
         Scene scene = editor.getViewer().getScene();
@@ -99,25 +99,25 @@ public class IncrementalSelectionManager {
 
 
     private void updateSelectionFeedback(boolean ctrl, boolean alt, double x, double y) {
-        Type currentType = incrementalSelectionFeedback.getType();
+        Type currentType = incrementalSelectionDynamicFeedback.getType();
 
         if ((ctrl) && (!Type.ADD.equals(currentType))) {
-            incrementalSelectionFeedback.set(Type.ADD);
+            incrementalSelectionDynamicFeedback.set(Type.ADD);
             return;
         }
 
         if ((alt) && (!Type.REMOVE.equals(currentType))) {
-            incrementalSelectionFeedback.set(Type.REMOVE);
+            incrementalSelectionDynamicFeedback.set(Type.REMOVE);
             return;
         }
 
         if ((!alt) && (!ctrl) && (currentType != null)) {
-            incrementalSelectionFeedback.remove();
+            incrementalSelectionDynamicFeedback.remove();
             return;
         }
 
         if (currentType != null) {
-            incrementalSelectionFeedback.setMouseLocation(x, y);
+            incrementalSelectionDynamicFeedback.setMouseLocation(x, y);
         }
     }
 }

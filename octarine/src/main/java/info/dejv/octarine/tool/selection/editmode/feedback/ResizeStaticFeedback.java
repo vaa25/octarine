@@ -3,6 +3,10 @@ package info.dejv.octarine.tool.selection.editmode.feedback;
 import static info.dejv.octarine.utils.FormattingUtils.getDefaultFeedbackStrokeWidth;
 import static info.dejv.octarine.utils.FormattingUtils.getFeedbackColor;
 
+import java.util.stream.Stream;
+
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.geometry.Bounds;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -11,7 +15,6 @@ import javafx.scene.shape.StrokeType;
 
 import org.springframework.stereotype.Component;
 
-import info.dejv.octarine.utils.CompositeObservableBounds;
 import info.dejv.octarine.utils.FormattingUtils;
 import info.dejv.octarine.utils.FormattingUtils.FeedbackOpacity;
 import info.dejv.octarine.utils.FormattingUtils.FeedbackType;
@@ -24,11 +27,9 @@ import info.dejv.octarine.utils.FormattingUtils.FeedbackType;
 public class ResizeStaticFeedback
         extends CorneredStaticFeedback {
 
-    private CompositeObservableBounds selectionBounds;
 
-
-    public void show(CompositeObservableBounds selectionBounds) {
-        this.selectionBounds = selectionBounds;
+    public void show(Stream<ReadOnlyObjectProperty<Bounds>> boundsStream) {
+        updateBounds(boundsStream);
         initHandles();
     }
 

@@ -41,16 +41,6 @@ public class MarqueeSelectionDynamicFeedback
     }
 
 
-    @Override
-    protected void beforeAddToScene() {
-
-    }
-
-    @Override
-    protected void afterRemoveFromScene() {
-
-    }
-
     public void setCurrentCoords(Point2D currentCoords) {
         setRectCoords(initialCoords.getX(), currentCoords.getX(), initialCoords.getY(), currentCoords.getY());
     }

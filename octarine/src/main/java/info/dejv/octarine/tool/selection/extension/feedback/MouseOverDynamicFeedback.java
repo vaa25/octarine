@@ -47,15 +47,6 @@ public class MouseOverDynamicFeedback
     }
 
 
-    @Override
-    protected void beforeAddToScene() {
-        
-    }
-
-    @Override
-    protected void afterRemoveFromScene() {
-
-    }
 
     public void add(Controller controller) {
         if (controller != null) {

@@ -7,10 +7,13 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -22,7 +25,6 @@ import javafx.scene.shape.StrokeType;
 
 import org.springframework.stereotype.Component;
 
-import info.dejv.octarine.utils.CompositeObservableBounds;
 import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
 import info.dejv.octarine.utils.FormattingUtils;
 import info.dejv.octarine.utils.FormattingUtils.FeedbackOpacity;
@@ -37,8 +39,6 @@ import info.dejv.octarine.utils.FormattingUtils.FeedbackType;
 public class RotateStaticFeedback
         extends CorneredStaticFeedback {
 
-    private CompositeObservableBounds selectionBounds;
-
     private HandlePos[] handlePositions = {HandlePos.NE, HandlePos.NW, HandlePos.SE, HandlePos.SW};
     private Group pivotCross;
 
@@ -49,9 +49,10 @@ public class RotateStaticFeedback
     }
 
 
-    public void show(Point2D pivot, CompositeObservableBounds selectionBounds) {
-        this.selectionBounds = selectionBounds;
+    public void show(Point2D pivot, Stream<ReadOnlyObjectProperty<Bounds>> boundsStream) {
+        updateBounds(boundsStream);
         bindPivotCross();
+        initHandles();
     }
 
 
@@ -59,14 +60,14 @@ public class RotateStaticFeedback
     protected Set<HandlePos> defineHandleSet() {
         final Set<HandlePos> handlePosSet = new HashSet<>();
         Collections.addAll(handlePosSet, handlePositions);
-        return super.defineHandleSet();
+        return handlePosSet;
     }
 
     @Override
     protected Shape createHandle(HandlePos handlePos) {
         Circle circle = new Circle();
 
-        circle.radiusProperty().bind(size);
+        circle.radiusProperty().bind(sizeHalf);
         circle.strokeWidthProperty().bind(getDefaultFeedbackStrokeWidth(FormattingUtils.FeedbackType.STATIC));
 
         circle.setFill(Color.WHITE);

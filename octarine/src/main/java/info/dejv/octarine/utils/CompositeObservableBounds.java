@@ -9,11 +9,14 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 
+import org.springframework.stereotype.Component;
+
 /**
  *
  * <br/>
  * Author: dejv (www.dejv.info)
  */
+@Component
 public class CompositeObservableBounds
         extends AbstractObservableBounds {
 
