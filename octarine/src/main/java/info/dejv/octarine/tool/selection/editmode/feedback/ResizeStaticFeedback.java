@@ -3,10 +3,6 @@ package info.dejv.octarine.tool.selection.editmode.feedback;
 import static info.dejv.octarine.utils.FormattingUtils.getDefaultFeedbackStrokeWidth;
 import static info.dejv.octarine.utils.FormattingUtils.getFeedbackColor;
 
-import java.util.stream.Stream;
-
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.geometry.Bounds;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -26,12 +22,6 @@ import info.dejv.octarine.utils.FormattingUtils.FeedbackType;
 @Component
 public class ResizeStaticFeedback
         extends CorneredStaticFeedback {
-
-
-    public void show(Stream<ReadOnlyObjectProperty<Bounds>> boundsStream) {
-        updateBounds(boundsStream);
-        initHandles();
-    }
 
 
     @Override
@@ -90,6 +80,7 @@ public class ResizeStaticFeedback
         }
         return rectangle;
     }
+
 
     @Override
     protected void unbindHandle(Shape handle) {

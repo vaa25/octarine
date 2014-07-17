@@ -3,18 +3,12 @@ package info.dejv.octarine.tool.selection.editmode.feedback;
 import static info.dejv.octarine.utils.FormattingUtils.getDefaultFeedbackStrokeWidth;
 import static info.dejv.octarine.utils.FormattingUtils.getFeedbackColor;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
-import javax.annotation.PostConstruct;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -25,6 +19,7 @@ import javafx.scene.shape.StrokeType;
 
 import org.springframework.stereotype.Component;
 
+import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.utils.ConstantZoomDoubleBinding;
 import info.dejv.octarine.utils.FormattingUtils;
 import info.dejv.octarine.utils.FormattingUtils.FeedbackOpacity;
@@ -42,17 +37,21 @@ public class RotateStaticFeedback
     private HandlePos[] handlePositions = {HandlePos.NE, HandlePos.NW, HandlePos.SE, HandlePos.SW};
     private Group pivotCross;
 
-    @PostConstruct
-    public void initRotateStaticFeedback() throws IOException {
+
+
+    @Override
+    public void init() throws Exception {
+        super.init();
+
         this.pivotCross = FXMLLoader.load(System.class.getResource("/fxml/rotpivot.fxml"));
         FormattingUtils.formatSymbol((SVGPath) pivotCross.lookup("#symbol"));
+        bindPivotCross();
     }
 
 
-    public void show(Point2D pivot, Stream<ReadOnlyObjectProperty<Bounds>> boundsStream) {
-        updateBounds(boundsStream);
-        bindPivotCross();
-        initHandles();
+    @Override
+    public void show(Set<Controller> selection) {
+        super.show(selection);
     }
 
 
@@ -62,6 +61,7 @@ public class RotateStaticFeedback
         Collections.addAll(handlePosSet, handlePositions);
         return handlePosSet;
     }
+
 
     @Override
     protected Shape createHandle(HandlePos handlePos) {
@@ -94,6 +94,11 @@ public class RotateStaticFeedback
                 break;
         }
         return circle;
+    }
+
+    @Override
+    protected void beforeAddToScene() {
+        super.beforeAddToScene();
     }
 
     @Override

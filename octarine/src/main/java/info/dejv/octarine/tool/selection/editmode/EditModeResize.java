@@ -1,10 +1,7 @@
 package info.dejv.octarine.tool.selection.editmode;
 
-import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.geometry.Bounds;
 import javafx.scene.input.KeyCode;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,10 +47,7 @@ public class EditModeResize
 
     @Override
     protected void doActivate() {
-        final Stream<ReadOnlyObjectProperty<Bounds>> boundsStream = selection.stream()
-                .map((controller) -> controller.getView().boundsInParentProperty());
-
-        staticFeedback.show(boundsStream);
+        staticFeedback.show(selection);
     }
 
 

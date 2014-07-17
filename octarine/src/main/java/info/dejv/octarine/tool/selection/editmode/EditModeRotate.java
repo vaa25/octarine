@@ -5,11 +5,8 @@
  */
 package info.dejv.octarine.tool.selection.editmode;
 
-import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.geometry.Bounds;
 import javafx.scene.input.KeyCode;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import info.dejv.octarine.tool.selection.editmode.feedback.RotateStaticFeedback;
 import info.dejv.octarine.tool.selection.request.RotateRequest;
-import info.dejv.octarine.utils.CompositeObservableBounds;
 
 /**
  * "Rotate" edit mode<br/>
@@ -28,9 +24,6 @@ import info.dejv.octarine.utils.CompositeObservableBounds;
 @Component
 public class EditModeRotate
         extends AbstractExclusiveEditMode {
-
-    @Autowired
-    private CompositeObservableBounds selectionBounds;
 
     @Autowired
     private RotateStaticFeedback staticFeedback;
@@ -59,18 +52,12 @@ public class EditModeRotate
 
     @Override
     protected void doActivate() {
-        selectionBounds.clear();
-
-        final Stream<ReadOnlyObjectProperty<Bounds>> boundsStream = selection.stream()
-                .map((controller) -> controller.getView().boundsInParentProperty());
-
-        staticFeedback.show(null, boundsStream);
+        staticFeedback.show(selection);
     }
 
     @Override
     protected void doDeactivate() {
         staticFeedback.hide();
-        selectionBounds.clear();
     }
 
 }
