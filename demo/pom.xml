@@ -33,11 +33,6 @@
             <artifactId>ui</artifactId>
         </dependency>
         
-         <dependency>
-            <groupId>info.dejv.common.ui</groupId>
-            <artifactId>spring</artifactId>
-        </dependency>
-        
         <dependency>
             <groupId>info.dejv.octarine</groupId>
             <artifactId>octarine</artifactId>

@@ -23,7 +23,7 @@ public abstract class AbstractFeedback extends Group {
     private ObservableList<Node> feedbackNodes;
 
     @PostConstruct
-    public void init() throws Exception {
+    public void postConstruct() throws Exception {
         setMouseTransparent(true);
         feedbackNodes = selectFeedbackNodes();
     }

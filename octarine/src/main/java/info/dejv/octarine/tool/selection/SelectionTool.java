@@ -122,11 +122,11 @@ public class SelectionTool
         octarine.getSelectionManager().addSelectionChangeListener(this);
 
         coexistingEditorModes.forEach(editMode -> {
-            editMode.init();
+            editMode.initWithSceneAvailable();
             editMode.activate();
         });
         exclusiveEditModes.forEach(editMode -> {
-            editMode.init();
+            editMode.initWithSceneAvailable();
             editMode.installActivationHandlers();
         });
 

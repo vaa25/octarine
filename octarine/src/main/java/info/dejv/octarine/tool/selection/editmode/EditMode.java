@@ -12,7 +12,11 @@ import info.dejv.octarine.controller.Controller;
  */
 public interface EditMode {
 
-    void init();
+    /**
+     * Initialize the Edit Mode.
+     * Call this method when "Scene" is available, not sooner!
+     */
+    void initWithSceneAvailable();
 
     void activate();
 

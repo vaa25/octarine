@@ -35,11 +35,11 @@ public abstract class CorneredStaticFeedback
     protected DoubleBinding sizeHalf;
     protected Set<HandlePos> handleSet;
 
-    private HandlePos[] handlePositions = HandlePos.values();
+    private final HandlePos[] handlePositions = HandlePos.values();
 
     @Override
-    public void init() throws Exception {
-        super.init();
+    public void postConstruct() throws Exception {
+        super.postConstruct();
 
         DoubleProperty zoom = octarine.getViewer().zoomFactorProperty();
         sizeHalf = new ConstantZoomDoubleBinding(zoom, HANDLE_SIZE_HALF);
@@ -83,7 +83,7 @@ public abstract class CorneredStaticFeedback
 
 
     protected Set<HandlePos> defineHandleSet() {
-        final Set<HandlePos> handlePosSet = new HashSet<HandlePos>();
+        final Set<HandlePos> handlePosSet = new HashSet<>();
         Collections.addAll(handlePosSet, handlePositions);
         return handlePosSet;
     }

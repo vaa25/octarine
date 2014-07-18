@@ -5,8 +5,6 @@
  */
 package info.dejv.octarine.tool.selection.editmode;
 
-import javax.annotation.PostConstruct;
-
 import javafx.scene.input.KeyCode;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +29,6 @@ public class EditModeRotate
 
     public EditModeRotate() {
         super(RotateRequest.class);
-    }
-
-
-    @PostConstruct
-    public void initEditModeRotate() {
     }
 
 

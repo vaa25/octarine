@@ -49,11 +49,8 @@ public abstract class AbstractEditMode
     }
 
 
-    /**
-     * Initailize the Edit Mode.
-     * Call this method when "Scene" is available, not sooner!
-     */
-    public void init() {
+    @Override
+    public void initWithSceneAvailable() {
         this.scene = octarine.getViewer().getScene();
         this.commandStack = octarine.getCommandStack();
 

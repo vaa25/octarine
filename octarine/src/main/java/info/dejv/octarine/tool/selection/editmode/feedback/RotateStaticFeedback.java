@@ -34,14 +34,14 @@ import info.dejv.octarine.utils.FormattingUtils.FeedbackType;
 public class RotateStaticFeedback
         extends CorneredStaticFeedback {
 
-    private HandlePos[] handlePositions = {HandlePos.NE, HandlePos.NW, HandlePos.SE, HandlePos.SW};
+    private final HandlePos[] handlePositions = {HandlePos.NE, HandlePos.NW, HandlePos.SE, HandlePos.SW};
     private Group pivotCross;
 
 
 
     @Override
-    public void init() throws Exception {
-        super.init();
+    public void postConstruct() throws Exception {
+        super.postConstruct();
 
         this.pivotCross = FXMLLoader.load(System.class.getResource("/fxml/rotpivot.fxml"));
         FormattingUtils.formatSymbol((SVGPath) pivotCross.lookup("#symbol"));

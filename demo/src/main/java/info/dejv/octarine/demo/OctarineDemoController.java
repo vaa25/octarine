@@ -1,6 +1,5 @@
 package info.dejv.octarine.demo;
 
-import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 
 import javafx.event.ActionEvent;
@@ -10,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import info.dejv.common.ui.ZoomableScrollPane;
 import info.dejv.octarine.Octarine;
@@ -20,10 +20,13 @@ import info.dejv.octarine.demo.model.ShapeContainer;
 import info.dejv.octarine.demo.tools.AddRectangleTool;
 import info.dejv.octarine.tool.selection.SelectionTool;
 
+@Component
 public class OctarineDemoController {
 
-    @FXML
-    private ResourceBundle resources;
+// --Commented out by Inspection START (18.7.14 1:54):
+//    @FXML
+//    private ResourceBundle resources;
+// --Commented out by Inspection STOP (18.7.14 1:54)
 
     @FXML
     private Slider slider;
@@ -49,23 +52,8 @@ public class OctarineDemoController {
     @Autowired
     private DemoControllerFactory demoControllerFactory;
 
-    @FXML
-    void initialize() {
-        zoomableScrollPane.zoomFactorProperty().bindBidirectional(slider.valueProperty());
-
-        bToolSelect.setOnAction((final ActionEvent e) -> {
-            octarine.setActiveTool(selectionTool);
-        });
-
-        bToolAdd.setOnAction((final ActionEvent e) -> {
-            octarine.setActiveTool(new AddRectangleTool());
-        });
-
-        bToolSelect.fire();
-    }
-
     @PostConstruct
-    public void init() {
+    public void postConstruct() {
 
         octarine.setRootController((ContainerController) demoControllerFactory.createController(shapeContainer, null));
 
@@ -73,4 +61,17 @@ public class OctarineDemoController {
         shapeContainer.getChildren().add(new RectangleShape(new Rectangle2D(130, 80, 100, 120)));
         shapeContainer.getChildren().add(new RectangleShape(new Rectangle2D(200, 300, 150, 70)));
     }
+
+
+    @FXML
+    public void initialize() {
+        zoomableScrollPane.zoomFactorProperty().bindBidirectional(slider.valueProperty());
+
+        bToolSelect.setOnAction((final ActionEvent e) -> octarine.setActiveTool(selectionTool));
+
+        bToolAdd.setOnAction((final ActionEvent e) -> octarine.setActiveTool(new AddRectangleTool()));
+
+        bToolSelect.fire();
+    }
+
 }

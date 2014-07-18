@@ -1,7 +1,5 @@
 package info.dejv.octarine.tool.selection.editmode;
 
-import javax.annotation.PostConstruct;
-
 import javafx.scene.input.KeyCode;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +24,6 @@ public class EditModeResize
 
     public EditModeResize() {
         super(ResizeRequest.class);
-    }
-
-
-    @PostConstruct
-    public void initEditModeResize() {
     }
 
 

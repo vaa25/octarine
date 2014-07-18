@@ -42,7 +42,7 @@ public class App extends Application {
 
             });
 
-            final AnchorPane page = (AnchorPane) fxmlLoader.load();
+            final AnchorPane page = fxmlLoader.load();
             final Scene scene = new Scene(page);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Octarine demo [0.1.0]");
