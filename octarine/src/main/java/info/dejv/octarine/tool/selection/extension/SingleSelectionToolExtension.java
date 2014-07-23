@@ -25,7 +25,7 @@ import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.request.shape.ShapeRequest;
 import info.dejv.octarine.tool.Tool;
 import info.dejv.octarine.tool.selection.SelectionTool;
-import info.dejv.octarine.tool.selection.SelectionToolListener;
+import info.dejv.octarine.tool.selection.EditationListener;
 import info.dejv.octarine.tool.selection.extension.helper.IncrementalSelectionListener;
 import info.dejv.octarine.tool.selection.extension.helper.IncrementalSelectionManager;
 import info.dejv.octarine.tool.selection.request.handler.SelectableRequestHandler;
@@ -39,7 +39,7 @@ import info.dejv.octarine.tool.selection.request.handler.SelectableRequestHandle
 @Scope("prototype")
 public class SingleSelectionToolExtension
         extends ToolExtension
-        implements IncrementalSelectionListener, SelectionToolListener {
+        implements IncrementalSelectionListener, EditationListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(SingleSelectionToolExtension.class);
 
@@ -51,9 +51,6 @@ public class SingleSelectionToolExtension
 
     @Autowired
     private SelectableRequestHandler selectableRequestHandler;
-
-    @Autowired
-    private SelectionTool selectionTool;
 
     private boolean edited = false;
 
@@ -80,7 +77,7 @@ public class SingleSelectionToolExtension
 
     @PostConstruct
     public void initSingleSelectionToolExtension() {
-        selectionTool.getListeners().add(this);
+        octarine.getEditationListeners().add(this);
     }
 
 

@@ -15,12 +15,10 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Shape;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import info.dejv.octarine.controller.Controller;
-import info.dejv.octarine.tool.selection.SelectionTool;
-import info.dejv.octarine.tool.selection.SelectionToolListener;
+import info.dejv.octarine.tool.selection.EditationListener;
 import info.dejv.octarine.tool.selection.request.TranslateRequest;
 import info.dejv.octarine.utils.ControllerUtils;
 
@@ -39,9 +37,6 @@ public class EditModeTranslate
     private Point2D initialPosition;
 
     private final Map<Shape, Point2D> transformationFeedback = new HashMap<>();
-
-    @Autowired
-    public SelectionTool selectionTool;
 
 
     public EditModeTranslate() {
@@ -93,7 +88,7 @@ public class EditModeTranslate
 
             e.consume();
 
-            selectionTool.getListeners().forEach(SelectionToolListener::onEditStarted);
+            getOctarine().getEditationListeners().forEach(EditationListener::onEditStarted);
         }
     }
 
@@ -110,7 +105,7 @@ public class EditModeTranslate
             removeTransformationFeedback();
             executeOnSelection(new TranslateRequest(e.getX() - initialPosition.getX(), e.getY() - initialPosition.getY()));
             drag = false;
-            selectionTool.getListeners().forEach(SelectionToolListener::onEditFinished);
+            getOctarine().getEditationListeners().forEach(EditationListener::onEditFinished);
         }
     }
 

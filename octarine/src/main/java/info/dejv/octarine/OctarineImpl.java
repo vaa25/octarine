@@ -24,6 +24,7 @@ import info.dejv.octarine.layer.LayerManagerImpl;
 import info.dejv.octarine.selection.SelectionManager;
 import info.dejv.octarine.selection.SelectionManagerImpl;
 import info.dejv.octarine.tool.Tool;
+import info.dejv.octarine.tool.selection.EditationListener;
 import info.dejv.octarine.utils.FormattingUtils;
 
 @Component
@@ -36,6 +37,9 @@ public class OctarineImpl
     private static final String ID_HANDLES = "Handles";
 
     private final Map<Class<? extends Tool>, List<ToolExtension>> toolExtensions = new HashMap<>();
+
+    private final List<EditationListener> editationListeners = new ArrayList<>();
+
     private final CommandStack commandStack = new CommandStack();
     private final SelectionManager selectionManager = new SelectionManagerImpl();
     private LayerManager layerManager;
@@ -152,6 +156,10 @@ public class OctarineImpl
             toolExtensions.get(activeTool.getClass()).stream().forEach((ah) -> ah.toolActivated(activeTool));
             activeTool.activate();
         }
+    }
+
+    public List<EditationListener> getEditationListeners() {
+        return editationListeners;
     }
 
 

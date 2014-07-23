@@ -5,16 +5,19 @@
  */
 package info.dejv.octarine;
 
+import java.util.List;
+
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 
 import info.dejv.common.ui.ZoomableScrollPane;
-import info.dejv.octarine.tool.ToolExtension;
 import info.dejv.octarine.command.CommandStack;
 import info.dejv.octarine.controller.ContainerController;
 import info.dejv.octarine.layer.LayerManager;
 import info.dejv.octarine.selection.SelectionManager;
 import info.dejv.octarine.tool.Tool;
+import info.dejv.octarine.tool.ToolExtension;
+import info.dejv.octarine.tool.selection.EditationListener;
 
 /**
  *
@@ -40,13 +43,13 @@ public interface Octarine {
 
     void removeActionHandler(Class<? extends Tool> toolClass, ToolExtension handler);
 
+    List<EditationListener> getEditationListeners();
 
     CommandStack getCommandStack();
 
     SelectionManager getSelectionManager();
 
     LayerManager getLayerManager();
-
 
     ObservableList<Node> getFeedback();
 

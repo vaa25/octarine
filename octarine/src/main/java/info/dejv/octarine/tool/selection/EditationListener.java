@@ -6,7 +6,7 @@ package info.dejv.octarine.tool.selection;
  * Author: dejv (www.dejv.info)
  */
 
-public interface SelectionToolListener {
+public interface EditationListener {
 
     void onEditStarted();
 

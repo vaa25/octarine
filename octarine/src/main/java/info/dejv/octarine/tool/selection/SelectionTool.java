@@ -3,7 +3,6 @@ package info.dejv.octarine.tool.selection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.annotation.PostConstruct;
 
 import javafx.scene.Node;
 
@@ -18,10 +17,6 @@ import info.dejv.octarine.selection.SelectionChangeListener;
 import info.dejv.octarine.selection.SelectionManager;
 import info.dejv.octarine.tool.Tool;
 import info.dejv.octarine.tool.selection.editmode.EditMode;
-import info.dejv.octarine.tool.selection.editmode.EditModeDelete;
-import info.dejv.octarine.tool.selection.editmode.EditModeResize;
-import info.dejv.octarine.tool.selection.editmode.EditModeRotate;
-import info.dejv.octarine.tool.selection.editmode.EditModeTranslate;
 import info.dejv.octarine.tool.selection.editmode.ExclusiveEditMode;
 import info.dejv.octarine.tool.selection.editmode.ExclusivityCoordinator;
 
@@ -31,28 +26,13 @@ public class SelectionTool
 
     private static final Logger LOG = LoggerFactory.getLogger(SelectionTool.class);
 
-    private final List<SelectionToolListener> listeners = new ArrayList<>();
-
-    @Autowired
-    private EditModeDelete editModeDelete;
-
-    @Autowired
-    private EditModeTranslate editModeTranslate;
-
-    @Autowired
-    private EditModeResize editModeResize;
-
-    @Autowired
-    private EditModeRotate editModeRotate;
-
-    @Autowired
     private Octarine octarine;
 
     //Editors, that coexist with each other (ie. Delete, Translate)
-    private final List<EditMode> coexistingEditorModes = new ArrayList<>();
+    private final List<EditMode> coexistingEditorModes;
 
     //Editors, that can only be selected one at a time (ie. Scale, Rotate)
-    private final List<ExclusiveEditMode> exclusiveEditModes = new ArrayList<>();
+    private final List<ExclusiveEditMode> exclusiveEditorModes;
 
     private ExclusiveEditMode activeExclusiveEditMode = null;
     private ExclusiveEditMode preferredExclusiveEditMode = null;
@@ -63,34 +43,18 @@ public class SelectionTool
     private boolean active = false;
 
 
-    public List<SelectionToolListener> getListeners() {
-        return listeners;
-    }
+    @Autowired
+    public SelectionTool(Octarine octarine, List<EditMode> coexistingEditorModes, List<ExclusiveEditMode> exclusiveEditorModes) {
+        this.octarine = octarine;
+        this.coexistingEditorModes = coexistingEditorModes;
+        this.exclusiveEditorModes = exclusiveEditorModes;
 
-    @PostConstruct
-    public void initSelectionTool() {
         final Node pane = octarine.getViewer();
 
         if (pane.getScene() != null) {  // If Scene is already available, initiate now...
-            initInternal();
+            initWithSceneAvailable();
         } else {                        //.. otherwise initiate, when it is set
-            pane.sceneProperty().addListener((sender, oldValue, newValue) -> initInternal());
-        }
-
-    }
-
-    private void initInternal() {
-        coexistingEditorModes.add(editModeDelete);
-        coexistingEditorModes.add(editModeTranslate);
-
-        exclusiveEditModes.add(editModeResize.setExclusivityCoordinator(this));
-        exclusiveEditModes.add(editModeRotate.setExclusivityCoordinator(this));
-
-        selectionOutlines = new SelectionOutlines(octarine.getFeedback(), octarine.getViewer().zoomFactorProperty());
-
-        initiated = true;
-        if (active) {
-            doActivate();
+            pane.sceneProperty().addListener((sender, oldValue, newValue) -> initWithSceneAvailable());
         }
     }
 
@@ -115,6 +79,17 @@ public class SelectionTool
     }
 
 
+
+    private void initWithSceneAvailable() {
+        selectionOutlines = new SelectionOutlines(octarine.getFeedback(), octarine.getViewer().zoomFactorProperty());
+
+        initiated = true;
+        if (active) {
+            doActivate();
+        }
+    }
+
+
     private void doActivate() {
         if (!initiated)
             return;
@@ -125,7 +100,7 @@ public class SelectionTool
             editMode.initWithSceneAvailable();
             editMode.activate();
         });
-        exclusiveEditModes.forEach(editMode -> {
+        exclusiveEditorModes.forEach(editMode -> {
             editMode.initWithSceneAvailable();
             editMode.installActivationHandlers();
         });
@@ -139,7 +114,7 @@ public class SelectionTool
     private void doDeactivate() {
         octarine.getSelectionManager().removeSelectionChangeListener(this);
 
-        exclusiveEditModes.parallelStream().forEach(ExclusiveEditMode::uninstallActivationHandlers);
+        exclusiveEditorModes.parallelStream().forEach(ExclusiveEditMode::uninstallActivationHandlers);
         coexistingEditorModes.parallelStream().forEach(EditMode::deactivate);
 
         selectionOutlines.clear();
@@ -153,7 +128,7 @@ public class SelectionTool
         selectionOutlines.selectionChanged(added, removed);
 
         coexistingEditorModes.stream().forEach(editor -> editor.selectionUpdated(selection));
-        exclusiveEditModes.stream().forEach(editor -> editor.selectionUpdated(selection));
+        exclusiveEditorModes.stream().forEach(editor -> editor.selectionUpdated(selection));
 
         if ((activeExclusiveEditMode == null) || (!activeExclusiveEditMode.isEnabled())) {
             findEnabledExclusiveEditMode();
@@ -180,7 +155,7 @@ public class SelectionTool
             return;
         }
 
-        for (ExclusiveEditMode mode : exclusiveEditModes) {
+        for (ExclusiveEditMode mode : exclusiveEditorModes) {
             if (mode.isEnabled()) {
                 setActiveExclusiveEditMode(mode);
                 break;
