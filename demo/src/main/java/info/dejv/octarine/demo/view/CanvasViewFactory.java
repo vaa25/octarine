@@ -5,6 +5,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import info.dejv.octarine.model.BasicProperties;
@@ -19,8 +21,11 @@ import info.dejv.octarine.view.AbstractShapeFactory;
 @Component
 public class CanvasViewFactory extends AbstractShapeFactory {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CanvasViewFactory.class);
+
     @Override
     public Shape createShape(ModelElement modelElement) {
+        LOGGER.info("----- CREATING CANVAS ----- ");
         DoubleTuple size = modelElement.getChunk(BasicProperties.SIZE, DoubleTuple.class);
         Rectangle r = new Rectangle();
 

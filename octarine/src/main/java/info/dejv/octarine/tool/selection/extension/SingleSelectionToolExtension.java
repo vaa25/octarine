@@ -7,28 +7,26 @@ package info.dejv.octarine.tool.selection.extension;
 
 import static java.util.Objects.requireNonNull;
 
-import javax.annotation.PostConstruct;
-
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import info.dejv.octarine.tool.ToolExtension;
-import info.dejv.octarine.tool.selection.extension.feedback.MouseOverDynamicFeedback;
-import info.dejv.octarine.tool.selection.command.SelectCommand;
+import info.dejv.octarine.Octarine;
 import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.request.shape.ShapeRequest;
 import info.dejv.octarine.tool.Tool;
-import info.dejv.octarine.tool.selection.SelectionTool;
+import info.dejv.octarine.tool.ToolExtension;
 import info.dejv.octarine.tool.selection.EditationListener;
+import info.dejv.octarine.tool.selection.SelectionTool;
+import info.dejv.octarine.tool.selection.command.SelectCommand;
+import info.dejv.octarine.tool.selection.extension.feedback.MouseOverDynamicFeedback;
 import info.dejv.octarine.tool.selection.extension.helper.IncrementalSelectionListener;
 import info.dejv.octarine.tool.selection.extension.helper.IncrementalSelectionManager;
-import info.dejv.octarine.tool.selection.request.handler.SelectableRequestHandler;
+import info.dejv.octarine.tool.selection.request.SelectRequest;
 
 /**
  * Selection tool extension to enable proper "single selection" handling of selectable controllers.
@@ -43,48 +41,36 @@ public class SingleSelectionToolExtension
 
     private static final Logger LOG = LoggerFactory.getLogger(SingleSelectionToolExtension.class);
 
-    @Autowired
-    private MouseOverDynamicFeedback mouseOverDynamicFeedback;
-
-    @Autowired
-    private IncrementalSelectionManager incrementalSelectionManager;
-
-    @Autowired
-    private SelectableRequestHandler selectableRequestHandler;
+    private final MouseOverDynamicFeedback mouseOverDynamicFeedback;
+    private final IncrementalSelectionManager incrementalSelectionManager;
 
     private boolean edited = false;
 
 
+    public SingleSelectionToolExtension(
+            Controller controller,
+            Octarine octarine,  MouseOverDynamicFeedback mouseOverDynamicFeedback, IncrementalSelectionManager incrementalSelectionManager) {
 
-    public SingleSelectionToolExtension() {
-        super(SelectionTool.class);
-    }
+        super(SelectionTool.class, controller, octarine);
 
+        requireNonNull(mouseOverDynamicFeedback);
+        requireNonNull(incrementalSelectionManager);
 
-    @Override
-    public SingleSelectionToolExtension setController(Controller controller) {
+        this.mouseOverDynamicFeedback = mouseOverDynamicFeedback;
+        this.incrementalSelectionManager = incrementalSelectionManager;
 
         if (!controller.supports(ShapeRequest.class)) {
             throw new IllegalArgumentException("Controller has to support ShapeRequest for SingleSelectionToolExtension to work properly with it");
         }
 
-        controller.addRequestHandler(selectableRequestHandler);
+        supportedRequests.add(SelectRequest.class);
 
-        super.setController(controller);
-        return this;
-    }
-
-
-    @PostConstruct
-    public void initSingleSelectionToolExtension() {
         octarine.getEditationListeners().add(this);
     }
 
 
     @Override
     public void toolActivated(Tool tool) {
-        requireNonNull(controller, "controller is null");
-
         Node view = controller.getView();
         view.addEventHandler(MouseEvent.MOUSE_ENTERED, this::handleMouseEntered);
         view.addEventHandler(MouseEvent.MOUSE_MOVED, this::handleMouseMoved);
@@ -94,8 +80,6 @@ public class SingleSelectionToolExtension
 
     @Override
     public void toolDeactivated(Tool tool) {
-        requireNonNull(controller, "controller is null");
-
         Node view = controller.getView();
         view.removeEventHandler(MouseEvent.MOUSE_ENTERED, this::handleMouseEntered);
         view.removeEventHandler(MouseEvent.MOUSE_MOVED, this::handleMouseMoved);
@@ -105,7 +89,6 @@ public class SingleSelectionToolExtension
 
     @Override
     public void addToSelection() {
-        requireNonNull(controller, "controller is null");
 
         // Don't try to select again, if already selected
         if (isAlreadySelected()) {
@@ -113,6 +96,7 @@ public class SingleSelectionToolExtension
         }
 
         LOG.debug("Adding to selection");
+
         final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), SelectCommand.Op.ADD, controller);
         octarine.getCommandStack().execute(sc);
     }
@@ -120,9 +104,8 @@ public class SingleSelectionToolExtension
 
     @Override
     public void removeFromSelection() {
-        requireNonNull(controller, "controller is null");
-
         LOG.debug("Removing from selection");
+
         final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), SelectCommand.Op.REMOVE, controller);
         octarine.getCommandStack().execute(sc);
     }
@@ -130,7 +113,6 @@ public class SingleSelectionToolExtension
 
     @Override
     public void replaceSelection() {
-        requireNonNull(controller, "controller is null");
 
         // Don't try to select again, if already selected
         if (isAlreadySelected()) {
@@ -138,14 +120,13 @@ public class SingleSelectionToolExtension
         }
 
         LOG.debug("Replacing selection");
+
         final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), SelectCommand.Op.REPLACE, controller);
         octarine.getCommandStack().execute(sc);
     }
 
 
     private void handleMouseEntered(MouseEvent e) {
-        requireNonNull(controller, "controller is null");
-
         incrementalSelectionManager.activate(e, this);
         mouseOverDynamicFeedback.add(controller);
     }

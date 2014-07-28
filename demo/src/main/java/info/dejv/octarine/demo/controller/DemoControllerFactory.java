@@ -49,9 +49,8 @@ public class DemoControllerFactory
 
             controller.addRequestHandler((appContext.getBean(DeleteRequestHandler.class)).setTarget(controller));
 
-            controller.addToolExtension((appContext.getBean(ContainerSelectionToolExtension.class))
-                    .setController(controller)
-                    .setNodeList(octarine.getLayerManager().getAllLayers()));
+            controller.addToolExtension( ((ContainerSelectionToolExtension) appContext.getBean("containerSelectionToolExtension_Controller", controller))
+                    .setNodeList(octarine.getLayerManager().getAllLayers())); //TODO: Setter or constructor?
 
             return controller;
         }
@@ -70,8 +69,8 @@ public class DemoControllerFactory
             controller.addRequestHandler(appContext.getBean(ResizeRequestHandler.class));
             controller.addRequestHandler(appContext.getBean(RotateRequestHandler.class));
 
-            controller.addToolExtension((appContext.getBean(SingleSelectionToolExtension.class))
-                    .setController(controller));
+            controller.addToolExtension( (SingleSelectionToolExtension) appContext.getBean("singleSelectionToolExtension_Controller", controller));
+
 
             return controller;
         }

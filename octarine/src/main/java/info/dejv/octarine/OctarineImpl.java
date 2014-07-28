@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import info.dejv.common.ui.ZoomableScrollPane;
-import info.dejv.octarine.tool.ToolExtension;
 import info.dejv.octarine.command.CommandStack;
 import info.dejv.octarine.controller.ContainerController;
 import info.dejv.octarine.layer.LayerManager;
@@ -24,6 +22,7 @@ import info.dejv.octarine.layer.LayerManagerImpl;
 import info.dejv.octarine.selection.SelectionManager;
 import info.dejv.octarine.selection.SelectionManagerImpl;
 import info.dejv.octarine.tool.Tool;
+import info.dejv.octarine.tool.ToolExtension;
 import info.dejv.octarine.tool.selection.EditationListener;
 import info.dejv.octarine.utils.FormattingUtils;
 
@@ -44,8 +43,7 @@ public class OctarineImpl
     private final SelectionManager selectionManager = new SelectionManagerImpl();
     private LayerManager layerManager;
 
-    @Autowired
-    private ZoomableScrollPane viewer;
+    private final ZoomableScrollPane viewer;
 
     private ContainerController rootController;
     private Tool activeTool;
@@ -58,9 +56,11 @@ public class OctarineImpl
     private long childIdSequence = 0;
 
 
+    @Autowired
+    public OctarineImpl(ZoomableScrollPane viewer) {
+        requireNonNull(viewer, "viewer is null");
 
-    @PostConstruct
-    public void initOctarine() {
+        this.viewer = viewer;
         this.layerManager = new LayerManagerImpl(layersGroup.getChildren());
 
         FormattingUtils.setZoomFactor(viewer.zoomFactorProperty());
@@ -74,7 +74,9 @@ public class OctarineImpl
         viewer.getContent().add(feedbackGroup);
         viewer.getContent().add(activeFeedbackGroup);
         viewer.getContent().add(handlesGroup);
+
     }
+
 
     @Override
     public ZoomableScrollPane getViewer() {

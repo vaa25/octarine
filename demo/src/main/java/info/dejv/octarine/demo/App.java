@@ -33,14 +33,14 @@ public class App extends Application {
             final FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(App.class.getResource("/fxml/OctarineDemo.fxml"));
             fxmlLoader.setBuilderFactory(appContext.getBean(ZoomableScrollPaneSpringFactory.class));
-            fxmlLoader.setControllerFactory(param -> {
+            //fxmlLoader.setControllerFactory(param -> {
 
-                if (OctarineDemoController.class.equals(param)) {
-                    return appContext.getBean(OctarineDemoController.class);
-                }
-                return null;
+            //    if (OctarineDemoController.class.equals(param)) {
+            //        return appContext.getBean(OctarineDemoController.class);
+            //    }
+            //    return null;
 
-            });
+            //});
 
             final AnchorPane page = fxmlLoader.load();
             final Scene scene = new Scene(page);

@@ -162,7 +162,14 @@ public class DefaultController
 
     @Override
     public boolean supports(Class<? extends Request> request) {
-        return requestHandlers.stream().anyMatch((rh) -> (rh.supports(request)));
+        // Look first within request handlers...
+        boolean result = requestHandlers.stream().anyMatch((rh) -> (rh.supports(request)));
+
+        // ... and if not found there, try also tool extensions.
+        if (!result) {
+            result = toolExtensions.stream().anyMatch((rh) -> (rh.supports(request)));
+        }
+        return result;
     }
 
 

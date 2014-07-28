@@ -12,8 +12,6 @@
     <artifactId>octarine</artifactId>
     
     <packaging>jar</packaging>
-    <!-- <packaging>bundle</packaging> -->
-    <!-- TODO: Uncomment this when maven-bundle-plugin can handle Java8 classes -->
 
     <parent>
         <artifactId>octarine</artifactId>
@@ -24,11 +22,6 @@
 
     
     <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>info.dejv.common</groupId>
             <artifactId>geometry</artifactId>

@@ -17,17 +17,7 @@
   </parent>
   
   <dependencies>
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-context</artifactId>
-      </dependency>
 
-        <dependency> 
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.0.13</version>
-        </dependency> 
-             
         <dependency>
             <groupId>info.dejv.common.ui</groupId>
             <artifactId>ui</artifactId>
