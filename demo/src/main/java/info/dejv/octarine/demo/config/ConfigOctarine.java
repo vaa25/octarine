@@ -7,11 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
-import info.dejv.common.ui.ZoomableScrollPane;
-import info.dejv.common.ui.logic.impl.ZoomableScrollPaneControllerImpl;
-import info.dejv.common.ui.logic.impl.ZoomableScrollPaneSpringFactory;
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.controller.ContainerController;
 import info.dejv.octarine.controller.Controller;
@@ -32,7 +30,8 @@ import info.dejv.octarine.tool.selection.extension.helper.IncrementalSelectionMa
  * Author: dejv (www.dejv.info)
  */
 @Configuration
-public class DemoConfig {
+@Lazy
+public class ConfigOctarine {
 
     @Autowired
     private ApplicationContext appContext;
@@ -80,26 +79,5 @@ public class DemoConfig {
     @Scope("prototype")
     ContainerSelectionToolExtension containerSelectionToolExtension(ContainerController controller) {
         return new ContainerSelectionToolExtension(controller, octarine, marqueeSelectionDynamicFeedback, incrementalSelectionManager);
-    }
-
-
-    @Bean
-    public ZoomableScrollPaneSpringFactory zoomableScrollPaneSpringFactory() {
-        return new ZoomableScrollPaneSpringFactory();
-    }
-
-
-    @Bean
-    public ZoomableScrollPaneControllerImpl zoomableScrollPaneLogic() {
-        return new ZoomableScrollPaneControllerImpl();
-    }
-
-
-    @Bean
-    public ZoomableScrollPane zoomableScrollPane(ZoomableScrollPaneControllerImpl logic) {
-        final ZoomableScrollPane zoomableScrollPane = new ZoomableScrollPane();
-        zoomableScrollPane.setController(logic);
-
-        return zoomableScrollPane;
     }
 }

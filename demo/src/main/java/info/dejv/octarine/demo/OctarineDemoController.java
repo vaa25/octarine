@@ -8,7 +8,7 @@ import javafx.scene.control.Slider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ApplicationContext;
 
 import info.dejv.common.ui.ZoomableScrollPane;
 import info.dejv.octarine.Octarine;
@@ -20,6 +20,10 @@ import info.dejv.octarine.demo.tools.AddRectangleTool;
 import info.dejv.octarine.tool.selection.SelectionTool;
 
 public class OctarineDemoController {
+
+    static final long serialVersionUID = 02L;
+
+    public static ApplicationContext applicationContext = null;
 
 // --Commented out by Inspection START (18.7.14 1:54):
 //    @FXML
@@ -39,11 +43,10 @@ public class OctarineDemoController {
     @FXML
     private Button bToolAdd;
 
-
     @FXML
     public void initialize() {
         LOGGER.info("---------- Initializing FXML ----------- ");
-        final ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("app.xml");
+        final ApplicationContext appContext = App.APPLICATION_CONTEXT;
 
         final Octarine octarine = appContext.getBean(Octarine.class);
         final SelectionTool selectionTool = appContext.getBean(SelectionTool.class);
@@ -54,6 +57,8 @@ public class OctarineDemoController {
 
         bToolSelect.setOnAction((final ActionEvent e) -> octarine.setActiveTool(selectionTool));
         bToolAdd.setOnAction((final ActionEvent e) -> octarine.setActiveTool(new AddRectangleTool()));
+//        bToolAdd.setOnAction((final ActionEvent e) -> {
+//        });
 
         bToolSelect.fire();
 

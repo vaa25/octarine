@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import info.dejv.common.ui.logic.impl.ZoomableScrollPaneSpringFactory;
@@ -19,6 +20,7 @@ import info.dejv.common.ui.logic.impl.ZoomableScrollPaneSpringFactory;
  */
 public class App extends Application {
 
+    public static final ApplicationContext APPLICATION_CONTEXT = new ClassPathXmlApplicationContext("app.xml");
 
     public static void main(final String[] args) {
         Application.launch(App.class, (String[]) null);
@@ -27,12 +29,13 @@ public class App extends Application {
 
     @Override
     public void start(final Stage primaryStage) throws Exception {
-        ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("app.xml");
+        //ClassPathXmlApplicationContext appContext = new ClassPathXmlApplicationContext("app.xml");
+        System.out.println("CTX");
         try {
 
             final FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(App.class.getResource("/fxml/OctarineDemo.fxml"));
-            fxmlLoader.setBuilderFactory(appContext.getBean(ZoomableScrollPaneSpringFactory.class));
+            fxmlLoader.setBuilderFactory(APPLICATION_CONTEXT.getBean(ZoomableScrollPaneSpringFactory.class));
             //fxmlLoader.setControllerFactory(param -> {
 
             //    if (OctarineDemoController.class.equals(param)) {
