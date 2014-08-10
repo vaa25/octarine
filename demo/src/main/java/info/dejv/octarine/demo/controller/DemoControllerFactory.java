@@ -44,8 +44,7 @@ public class DemoControllerFactory
     @Override
     public Controller createController(ModelElement modelElement, ContainerController parent) {
         if (modelElement instanceof ShapeContainer) {
-            final ContainerController controller = new DefaultContainerController((ShapeContainer) modelElement, parent, this);
-            controller.setViewFactory(canvasViewFactory);
+            final ContainerController controller = new DefaultContainerController((ShapeContainer) modelElement, parent, octarine, this, canvasViewFactory);
 
             controller.addRequestHandler((appContext.getBean(DeleteRequestHandler.class)).setTarget(controller));
 
@@ -56,8 +55,7 @@ public class DemoControllerFactory
         }
 
         if (modelElement instanceof RectangleShape) {
-            final Controller controller = new DefaultController(modelElement, parent);
-            controller.setViewFactory(rectangleViewFactory);
+            final Controller controller = new DefaultController(modelElement, parent, rectangleViewFactory);
 
             controller.addRequestHandler((appContext.getBean(DefaultShapeRequestHandler.class))
                     .setModelElement(modelElement)

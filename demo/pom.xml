@@ -1,42 +1,51 @@
 <?xml version="1.0"?>
-<project 
-    xmlns="http://maven.apache.org/POM/4.0.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  
-  <name>dejv :: Octarine :: Demo</name>
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>info.dejv.octarine</groupId>
-  <artifactId>demo</artifactId>
+    <name>dejv :: Octarine :: Demo</name>
 
-  <parent>
-    <groupId>info.dejv</groupId>
-    <artifactId>octarine</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
-  </parent>
-  
-  <dependencies>
+    <groupId>app.dejv.octarine</groupId>
+    <artifactId>demo</artifactId>
+
+    <parent>
+        <groupId>app.dejv</groupId>
+        <artifactId>octarine</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>info.dejv.common.ui</groupId>
             <artifactId>ui</artifactId>
         </dependency>
-        
-        <dependency>
-            <groupId>info.dejv.octarine</groupId>
-            <artifactId>octarine</artifactId>
-        </dependency>
-  </dependencies>
 
-  <build>
-      <plugins>
-          <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>exec-maven-plugin</artifactId>
-              <version>1.3</version>
-          </plugin>
-      </plugins>
-  </build>
-  
+        <dependency>
+            <groupId>app.dejv.octarine</groupId>
+            <artifactId>api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>app.dejv.octarine</groupId>
+            <artifactId>impl</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.3</version>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

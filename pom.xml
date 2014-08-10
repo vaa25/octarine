@@ -7,7 +7,7 @@
 
     <name>dejv :: Octarine :: !</name>
 
-    <groupId>info.dejv</groupId>
+    <groupId>app.dejv</groupId>
     <artifactId>octarine</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 
@@ -18,7 +18,8 @@
     </prerequisites>
 
     <modules>
-        <module>./octarine</module>
+        <module>./octarine/api</module>
+        <module>./octarine/impl</module>
         <module>./demo</module>
     </modules>
 
@@ -180,22 +181,25 @@
             </dependency>
 
             <dependency>
-                <groupId>info.dejv.octarine</groupId>
-                <artifactId>octarine</artifactId>
+                <groupId>app.dejv.octarine</groupId>
+                <artifactId>api</artifactId>
                 <version>${octarine.version}</version>
                 <scope>compile</scope>
             </dependency>
+
+            <dependency>
+                <groupId>app.dejv.octarine</groupId>
+                <artifactId>impl</artifactId>
+                <version>${octarine.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
 
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
