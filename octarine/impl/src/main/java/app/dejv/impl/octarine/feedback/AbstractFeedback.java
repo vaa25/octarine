@@ -68,12 +68,20 @@ public abstract class AbstractFeedback
 
 
     protected void beforeActivate() {
-
+        bind();
     }
 
 
     protected void afterDeactivate() {
+        unbind();
+    }
 
+    protected void bind() {
+        //Intentionally left blank
+    }
+
+    protected void unbind() {
+        //Intentionally left blank
     }
 
 

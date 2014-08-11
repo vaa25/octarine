@@ -3,6 +3,7 @@ package app.dejv.impl.octarine.tool.selection.extension.helper;
 import static java.util.Objects.requireNonNull;
 
 import java.awt.*;
+import java.util.Optional;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -20,41 +21,55 @@ import app.dejv.octarine.Octarine;
  */
 public class IncrementalSelectionManager {
 
-    private Octarine editor;
+    public enum IncrementType {
+        ADD,
+        REMOVE
+    }
 
+
+    private final Octarine octarine;
+    private final IncrementalSelectionDynamicFeedback incrementalSelectionFeedback;
     private IncrementalSelectionListener listener;
+    private Optional<IncrementType> type;
 
-    private IncrementalSelectionDynamicFeedback incrementalSelectionDynamicFeedback;
+    public IncrementalSelectionManager(Octarine octarine, IncrementalSelectionDynamicFeedback incrementalSelectionFeedback) {
+        requireNonNull(octarine, "octarine is null");
+        requireNonNull(incrementalSelectionFeedback, "incrementalSelectionFeedback is null");
+
+        this.octarine = octarine;
+        this.incrementalSelectionFeedback = incrementalSelectionFeedback;
+    }
 
 
-    public void activate(MouseEvent e, IncrementalSelectionListener listener) {
+    public void activate(IncrementalSelectionListener listener) {
         requireNonNull(listener, "listener is null");
 
         this.listener = listener;
 
-        Scene scene = editor.getViewer().getScene();
+        final Scene scene = octarine.getViewer().getScene();
         if (scene != null) {
             scene.addEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
             scene.addEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
+            scene.addEventHandler(MouseEvent.MOUSE_MOVED, this::handleMouseMoved);
         }
-        updateSelectionFeedback(e.isShortcutDown(), e.isAltDown(), e.getScreenX(), e.getScreenY());
     }
 
 
-    public void refresh(MouseEvent e) {
-        updateSelectionFeedback(e.isShortcutDown(), e.isAltDown(), e.getScreenX(), e.getScreenY());
+    public void deactivate() {
+        incrementalSelectionFeedback.deactivate();
+
+        final Scene scene = octarine.getViewer().getScene();
+        if (scene != null) {
+            scene.removeEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
+            scene.removeEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
+            scene.removeEventHandler(MouseEvent.MOUSE_MOVED, this::handleMouseMoved);
+        }
     }
 
 
-    @SuppressWarnings("UnusedParameters")
-    public void commit(MouseEvent e) {
-        Type currentType = incrementalSelectionDynamicFeedback.getType();
-
-        if (currentType == null) {
-            listener.replaceSelection();
-        } else {
-
-            switch (currentType) {
+    public void commit() {
+        if (type.isPresent()) {
+            switch (type.get()) {
                 case ADD:
                     listener.addToSelection();
                     break;
@@ -63,55 +78,45 @@ public class IncrementalSelectionManager {
                     listener.removeFromSelection();
                     break;
             }
+        } else {
+            listener.replaceSelection();
         }
     }
 
-
-    public void deactivate() {
-        incrementalSelectionDynamicFeedback.remove();
-        listener = null;
-
-        Scene scene = editor.getViewer().getScene();
-        if (scene != null) {
-            scene.removeEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
-            scene.removeEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
-        }
+    private void handleMouseMoved(MouseEvent mouseEvent) {
+        incrementalSelectionFeedback.setMouseLocation(mouseEvent.getX(), mouseEvent.getY());
     }
 
 
     private void handleKeyPressed(KeyEvent e) {
-        Point p = MouseInfo.getPointerInfo().getLocation();
-        updateSelectionFeedback(e.isControlDown(), e.isAltDown(), p.x, p.y);
+        updateKeyStates(e.isControlDown(), e.isAltDown());
     }
 
 
     private void handleKeyReleased(KeyEvent e) {
-        Point p = MouseInfo.getPointerInfo().getLocation();
-        updateSelectionFeedback(e.isControlDown(), e.isAltDown(), p.x, p.y);
+        updateKeyStates(e.isControlDown(), e.isAltDown());
     }
 
 
 
-    private void updateSelectionFeedback(boolean ctrl, boolean alt, double x, double y) {
-        Type currentType = incrementalSelectionDynamicFeedback.getType();
+    public void updateKeyStates(boolean ctrl, boolean alt) {
+        type = (alt) ? Optional.of(IncrementType.REMOVE) : Optional.empty();
+        type = (ctrl) ? Optional.of(IncrementType.ADD) : Optional.empty();
 
-        if ((ctrl) && (!Type.ADD.equals(currentType))) {
-            incrementalSelectionDynamicFeedback.set(Type.ADD);
-            return;
+        if (type.isPresent()) {
+            incrementalSelectionFeedback.setType(type.get());
+
+            if (!incrementalSelectionFeedback.isActive()) {
+                incrementalSelectionFeedback.activate();
+            }
+
         }
 
-        if ((alt) && (!Type.REMOVE.equals(currentType))) {
-            incrementalSelectionDynamicFeedback.set(Type.REMOVE);
-            return;
-        }
-
-        if ((!alt) && (!ctrl) && (currentType != null)) {
-            incrementalSelectionDynamicFeedback.remove();
-            return;
-        }
-
-        if (currentType != null) {
-            incrementalSelectionDynamicFeedback.setMouseLocation(x, y);
+        else {
+            if (incrementalSelectionFeedback.isActive()) {
+                incrementalSelectionFeedback.deactivate();
+            }
         }
     }
+
 }

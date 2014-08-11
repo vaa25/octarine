@@ -50,17 +50,31 @@ public abstract class CorneredStaticFeedback
         ensureHandleSetIsValid();
         ensureHandlesAreValid();
 
-        handles.forEach((handlePos, handle) -> bindHandle(handle, handlePos));
+        super.beforeActivate();
+
         handles.values().forEach(handle -> getChildren().add(handle));
     }
 
 
     @Override
     protected void afterDeactivate() {
-        handles.values().forEach(handle -> {
-            unbindHandle(handle);
-            getChildren().remove(handle);
-        });
+        handles.values().forEach(handle -> getChildren().remove(handle));
+
+        super.afterDeactivate();
+    }
+
+
+    @Override
+    protected void bind() {
+        super.bind();
+        handles.forEach((handlePos, handle) -> bindHandle(handle, handlePos));
+    }
+
+
+    @Override
+    protected void unbind() {
+        handles.values().forEach(this::unbindHandle);
+        super.unbind();
     }
 
 
