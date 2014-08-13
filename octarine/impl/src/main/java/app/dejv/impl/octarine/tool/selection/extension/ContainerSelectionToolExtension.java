@@ -7,7 +7,6 @@ import java.util.List;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
@@ -21,6 +20,7 @@ import app.dejv.impl.octarine.tool.selection.extension.feedback.MarqueeSelection
 import app.dejv.impl.octarine.tool.selection.extension.helper.IncrementalSelectionListener;
 import app.dejv.impl.octarine.tool.selection.extension.helper.IncrementalSelectionManager;
 import app.dejv.impl.octarine.tool.selection.request.SelectRequest;
+import app.dejv.impl.octarine.utils.MathUtils;
 import app.dejv.octarine.Octarine;
 import app.dejv.octarine.controller.ContainerController;
 import app.dejv.octarine.controller.Controller;
@@ -39,14 +39,15 @@ public class ContainerSelectionToolExtension
     private static final Logger LOG = LoggerFactory.getLogger(ContainerSelectionToolExtension.class);
 
     private final IncrementalSelectionManager incrementalSelectionManager;
-
     private final MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback;
 
     private ContainerController controller;
+    private ObservableList<Node> nodeList;
 
     private boolean drag = false;
+    private double initialX;
+    private double initialY;
 
-    private ObservableList<Node> nodeList;
 
     public ContainerSelectionToolExtension(
             ContainerController controller,
@@ -63,6 +64,7 @@ public class ContainerSelectionToolExtension
 
     }
 
+
     public ContainerSelectionToolExtension setNodeList(ObservableList<Node> nodeList) {
         this.nodeList = nodeList;
         return this;
@@ -76,6 +78,7 @@ public class ContainerSelectionToolExtension
         view.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
         view.addEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
     }
+
 
     @Override
     public void toolDeactivated(Tool tool) {
@@ -91,10 +94,12 @@ public class ContainerSelectionToolExtension
         performMarqueeSelection(SelectCommand.Op.ADD);
     }
 
+
     @Override
     public void removeFromSelection() {
         performMarqueeSelection(SelectCommand.Op.REMOVE);
     }
+
 
     @Override
     public void replaceSelection() {
@@ -105,8 +110,14 @@ public class ContainerSelectionToolExtension
     private void handleDragDetected(MouseEvent e) {
         if (e.isPrimaryButtonDown()) {
             drag = true;
-            marqueeSelectionDynamicFeedback.add(new Point2D(e.getX(), e.getY()));
-            incrementalSelectionManager.activate(e, this);
+
+            initialX = e.getX();
+            initialY = e.getY();
+
+            marqueeSelectionDynamicFeedback.setInitialCoords(initialX, initialY);
+
+            marqueeSelectionDynamicFeedback.activate();
+            incrementalSelectionManager.activate(this);
             e.consume();
         }
     }
@@ -114,16 +125,17 @@ public class ContainerSelectionToolExtension
 
     private void handleMouseDragged(MouseEvent e) {
         if (drag) {
-            marqueeSelectionDynamicFeedback.setCurrentCoords(new Point2D(e.getX(), e.getY()));
-            incrementalSelectionManager.refresh(e);
+            marqueeSelectionDynamicFeedback.setCurrentCoords(e.getX(), e.getY());
+
+            incrementalSelectionManager.setFeedbackLocation(MathUtils.mean(initialX, e.getX()), MathUtils.mean(initialY, e.getY()));
         }
     }
 
 
     private void handleMouseReleased(MouseEvent e) {
         if (drag) {
-            incrementalSelectionManager.commit(e);
-            marqueeSelectionDynamicFeedback.remove();
+            marqueeSelectionDynamicFeedback.deactivate();
+            incrementalSelectionManager.commit();
             drag = false;
         } else {
             performMarqueeSelection(SelectCommand.Op.DESELECT_ALL);
@@ -137,6 +149,7 @@ public class ContainerSelectionToolExtension
         filterSelectables(nodeList, result, marqueeBounds);
         return result;
     }
+
 
     private void filterSelectables(ObservableList<Node> list, List<Controller> result, Bounds marqueeBounds) {
         list.stream().forEach((node) -> {
@@ -156,10 +169,12 @@ public class ContainerSelectionToolExtension
         });
     }
 
+
     private boolean isFullyWithinBounds(Node node, Bounds bounds) {
         Bounds b = node.getBoundsInParent();
         return ((b.getMinX() > bounds.getMinX()) && (b.getMaxX() < bounds.getMaxX()) && (b.getMinY() > bounds.getMinY()) && (b.getMaxY() < bounds.getMaxY()));
     }
+
 
     private void performMarqueeSelection(SelectCommand.Op op) {
         List<Controller> selectableChildren = getBoundedSelectables(marqueeSelectionDynamicFeedback.getBoundsInLocal());

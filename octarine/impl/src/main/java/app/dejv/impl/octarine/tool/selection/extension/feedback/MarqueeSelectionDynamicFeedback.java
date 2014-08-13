@@ -1,12 +1,12 @@
 package app.dejv.impl.octarine.tool.selection.extension.feedback;
 
-import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
 
 import app.dejv.impl.octarine.feedback.DynamicFeedback;
 import app.dejv.impl.octarine.utils.FormattingUtils;
 import app.dejv.impl.octarine.utils.FormattingUtils.FeedbackOpacity;
 import app.dejv.impl.octarine.utils.FormattingUtils.FeedbackType;
+import app.dejv.octarine.Octarine;
 
 /**
  * "Marquee selection" dynamic feedback.
@@ -16,54 +16,60 @@ import app.dejv.impl.octarine.utils.FormattingUtils.FeedbackType;
 public class MarqueeSelectionDynamicFeedback
         extends DynamicFeedback {
 
-    private Point2D initialCoords;
-    private Rectangle rectangle;
+    private final Rectangle rectangle;
 
+    protected MarqueeSelectionDynamicFeedback(Octarine octarine) {
+        super(octarine);
 
-    public void add(Point2D initialCoords) {
-        this.initialCoords = initialCoords;
-
-        if (rectangle == null) {
-            addRectangle();
-            activate();
-        }
-    }
-
-    public void remove() {
-        deactivate();
-        removeRectangle();
-    }
-
-
-    public void setCurrentCoords(Point2D currentCoords) {
-        setRectCoords(initialCoords.getX(), currentCoords.getX(), initialCoords.getY(), currentCoords.getY());
-    }
-
-
-    private void addRectangle() {
         rectangle = new Rectangle();
         rectangle.setStroke(FormattingUtils.getFeedbackColor(FeedbackType.DYNAMIC, FeedbackOpacity.OPAQUE));
         rectangle.setFill(FormattingUtils.getFeedbackColor(FeedbackType.DYNAMIC, FeedbackOpacity.WEAK));
-        rectangle.strokeWidthProperty().bind(FormattingUtils.getDefaultFeedbackStrokeWidth(FormattingUtils.FeedbackType.STATIC));
+    }
 
-        setCurrentCoords(initialCoords);
 
+    public void setInitialCoords(double initialX, double initialY) {
+        rectangle.setX(initialX);
+        rectangle.setY(initialY);
+    }
+
+
+    public void setCurrentCoords(double currentX, double currentY) {
+        rectangle.setWidth(currentX - rectangle.getX());
+        rectangle.setHeight(currentY - rectangle.getY());
+    }
+
+
+    @Override
+    protected void beforeActivate() {
+        super.beforeActivate();
         getChildren().add(rectangle);
     }
 
 
-    private void removeRectangle() {
-        if ((rectangle != null) && (getChildren().contains(rectangle))) {
-            getChildren().remove(rectangle);
-        }
-        rectangle = null;
+    @Override
+    protected void afterDeactivate() {
+        getChildren().remove(rectangle);
+        super.afterDeactivate();
     }
 
 
-    private void setRectCoords(double ix, double cx, double iy, double cy) {
-        rectangle.setX((ix <= cx) ? ix : cx);
-        rectangle.setY((iy <= cy) ? iy : cy);
-        rectangle.setWidth((ix <= cx) ? cx - ix : ix - cx);
-        rectangle.setHeight((iy <= cy) ? cy - iy : iy - cy);
+    @Override
+    protected void bind() {
+        super.bind();
+        rectangle.strokeWidthProperty().bind(FormattingUtils.getDefaultFeedbackStrokeWidth(FormattingUtils.FeedbackType.STATIC));
     }
+
+
+    @Override
+    protected void unbind() {
+        rectangle.strokeWidthProperty().unbind();
+        super.unbind();
+    }
+
+//    private void setRectCoords(double ix, double cx, double iy, double cy) {
+//        rectangle.setX((ix <= cx) ? ix : cx);
+//        rectangle.setY((iy <= cy) ? iy : cy);
+//        rectangle.setWidth((ix <= cx) ? cx - ix : ix - cx);
+//        rectangle.setHeight((iy <= cy) ? cy - iy : iy - cy);
+//    }
 }

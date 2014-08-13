@@ -25,6 +25,7 @@ import app.dejv.octarine.controller.Controller;
 import app.dejv.octarine.tool.EditationListener;
 import app.dejv.octarine.tool.Tool;
 import app.dejv.octarine.tool.ToolExtension;
+import info.dejv.common.geometry.Rectangle2D;
 
 /**
  * Selection tool extension to enable proper "single selection" handling of selectable controllers.
@@ -45,7 +46,7 @@ public class SingleSelectionToolExtension
 
     public SingleSelectionToolExtension(
             Controller controller,
-            Octarine octarine,  MouseOverDynamicFeedback mouseOverDynamicFeedback, IncrementalSelectionManager incrementalSelectionManager) {
+            Octarine octarine, MouseOverDynamicFeedback mouseOverDynamicFeedback, IncrementalSelectionManager incrementalSelectionManager) {
 
         super(SelectionTool.class, controller, octarine);
 
@@ -67,25 +68,24 @@ public class SingleSelectionToolExtension
 
     @Override
     public void toolActivated(Tool tool) {
-        Node view = controller.getView();
+        final Node view = controller.getView();
         view.addEventHandler(MouseEvent.MOUSE_ENTERED, this::handleMouseEntered);
-        view.addEventHandler(MouseEvent.MOUSE_MOVED, this::handleMouseMoved);
         view.addEventHandler(MouseEvent.MOUSE_EXITED, this::handleMouseExited);
         view.addEventHandler(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
     }
 
+
     @Override
     public void toolDeactivated(Tool tool) {
-        Node view = controller.getView();
+        final Node view = controller.getView();
         view.removeEventHandler(MouseEvent.MOUSE_ENTERED, this::handleMouseEntered);
-        view.removeEventHandler(MouseEvent.MOUSE_MOVED, this::handleMouseMoved);
         view.removeEventHandler(MouseEvent.MOUSE_EXITED, this::handleMouseExited);
         view.removeEventHandler(MouseEvent.MOUSE_PRESSED, this::handleMousePressed);
     }
 
+
     @Override
     public void addToSelection() {
-
         // Don't try to select again, if already selected
         if (isAlreadySelected()) {
             return;
@@ -109,7 +109,6 @@ public class SingleSelectionToolExtension
 
     @Override
     public void replaceSelection() {
-
         // Don't try to select again, if already selected
         if (isAlreadySelected()) {
             return;
@@ -122,14 +121,23 @@ public class SingleSelectionToolExtension
     }
 
 
-    private void handleMouseEntered(MouseEvent e) {
-        incrementalSelectionManager.activate(this);
-        mouseOverDynamicFeedback.add(controller);
+    @Override
+    public void onEditStarted() {
+        edited = true;
     }
 
 
-    private void handleMouseMoved(MouseEvent e) {
-        incrementalSelectionManager.setFeedbackLocation(e.getX(), e.getY());
+    @Override
+    public void onEditFinished() {
+        edited = false;
+    }
+
+
+    private void handleMouseEntered(MouseEvent e) {
+        final Rectangle2D r = Rectangle2D.fromFXBounds(controller.getView().getBoundsInParent());
+        incrementalSelectionManager.setFeedbackLocation(r.getCenter().getX(), r.getCenter().getY());
+        incrementalSelectionManager.activate(this);
+        mouseOverDynamicFeedback.add(controller);
     }
 
 
@@ -146,16 +154,6 @@ public class SingleSelectionToolExtension
             return;
         }
         incrementalSelectionManager.commit();
-    }
-
-    @Override
-    public void onEditStarted() {
-        edited = true;
-    }
-
-    @Override
-    public void onEditFinished() {
-        edited = false;
     }
 
 
