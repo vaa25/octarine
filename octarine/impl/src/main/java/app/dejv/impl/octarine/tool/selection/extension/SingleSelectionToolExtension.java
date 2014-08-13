@@ -123,13 +123,13 @@ public class SingleSelectionToolExtension
 
 
     private void handleMouseEntered(MouseEvent e) {
-        incrementalSelectionManager.activate(e, this);
+        incrementalSelectionManager.activate(this);
         mouseOverDynamicFeedback.add(controller);
     }
 
 
     private void handleMouseMoved(MouseEvent e) {
-        incrementalSelectionManager.refresh(e);
+        incrementalSelectionManager.setFeedbackLocation(e.getX(), e.getY());
     }
 
 
@@ -145,7 +145,7 @@ public class SingleSelectionToolExtension
             edited = false;
             return;
         }
-        incrementalSelectionManager.commit(e);
+        incrementalSelectionManager.commit();
     }
 
     @Override

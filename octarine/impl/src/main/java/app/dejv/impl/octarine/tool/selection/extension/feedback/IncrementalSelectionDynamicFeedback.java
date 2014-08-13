@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import app.dejv.impl.octarine.feedback.DynamicFeedback;
+import app.dejv.impl.octarine.tool.selection.extension.helper.IncrementType;
 import app.dejv.impl.octarine.utils.ConstantZoomDoubleBinding;
 import app.dejv.impl.octarine.utils.FormattingUtils;
 import app.dejv.octarine.Octarine;
@@ -29,6 +30,7 @@ public class IncrementalSelectionDynamicFeedback
 
 
     public static final double SYMBOL_MAGNIFICATION = 1.5;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(IncrementalSelectionDynamicFeedback.class);
 
     private final Group symbolPlus;
@@ -36,7 +38,7 @@ public class IncrementalSelectionDynamicFeedback
     private final ConstantZoomDoubleBinding symbolScale;
     private final Translate symbolTranslate = new Translate();
     private Group symbol;
-    private Type type;
+    private IncrementType type;
 
 
     public IncrementalSelectionDynamicFeedback(Octarine octarine) throws IOException {
@@ -48,11 +50,11 @@ public class IncrementalSelectionDynamicFeedback
         symbolPlus = createAndFormat("/fxml/plus.fxml");
         symbolMinus = createAndFormat("/fxml/minus.fxml");
 
-        setType(Type.ADD);
+        setType(IncrementType.ADD);
     }
 
 
-    public final void setType(Type type) {
+    public final void setType(IncrementType type) {
         boolean reactivate = false;
 
         if (this.type == type) {
@@ -64,7 +66,7 @@ public class IncrementalSelectionDynamicFeedback
             reactivate = true;
         }
 
-        this.symbol = (type == Type.ADD) ? symbolPlus : symbolMinus;
+        this.symbol = (type == IncrementType.ADD) ? symbolPlus : symbolMinus;
         this.type = type;
 
         if (reactivate) {
@@ -73,15 +75,16 @@ public class IncrementalSelectionDynamicFeedback
     }
 
 
-    public void setMouseLocation(double x, double y) {
+    public void setLocation(double x, double y) {
         try {
             Point2D p = screenToLocal(x, y);
+
             if (p != null) {
-                symbol.setTranslateX(p.getX());
-                symbol.setTranslateY(p.getY() - symbol.getBoundsInLocal().getHeight());
+                translateSymbol(symbolPlus, p.getX(), p.getY());
+                translateSymbol(symbolMinus, p.getX(), p.getY());
             }
         } catch (NullPointerException npe) {
-            // A workaround for some Java 8 problem in "screenToLocal"
+            LOGGER.warn("NPE in screenToLocal");
         }
     }
 
@@ -122,6 +125,12 @@ public class IncrementalSelectionDynamicFeedback
     }
 
 
+    private void translateSymbol(Group symbol, double x, double y) {
+        symbol.setTranslateX(x);
+        symbol.setTranslateY(y - symbol.getBoundsInLocal().getHeight());
+    }
+
+
     private Group createAndFormat(String path) throws IOException {
         final URL url = new URL("classpath:" + path);
         final Group symbol = FXMLLoader.load(url);
@@ -129,11 +138,5 @@ public class IncrementalSelectionDynamicFeedback
         FormattingUtils.formatSymbol((SVGPath) symbol.lookup("#symbol"));
 
         return symbol;
-    }
-
-
-    public enum Type {
-        ADD,
-        REMOVE
     }
 }

@@ -2,15 +2,12 @@ package app.dejv.impl.octarine.tool.selection.extension.helper;
 
 import static java.util.Objects.requireNonNull;
 
-import java.awt.*;
 import java.util.Optional;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 
 import app.dejv.impl.octarine.tool.selection.extension.feedback.IncrementalSelectionDynamicFeedback;
-import app.dejv.impl.octarine.tool.selection.extension.feedback.IncrementalSelectionDynamicFeedback.Type;
 import app.dejv.octarine.Octarine;
 
 /**
@@ -21,23 +18,26 @@ import app.dejv.octarine.Octarine;
  */
 public class IncrementalSelectionManager {
 
-    public enum IncrementType {
-        ADD,
-        REMOVE
-    }
-
-
-    private final Octarine octarine;
+    private final Scene scene;
     private final IncrementalSelectionDynamicFeedback incrementalSelectionFeedback;
     private IncrementalSelectionListener listener;
     private Optional<IncrementType> type;
+    private boolean isActive = false;
+
 
     public IncrementalSelectionManager(Octarine octarine, IncrementalSelectionDynamicFeedback incrementalSelectionFeedback) {
         requireNonNull(octarine, "octarine is null");
         requireNonNull(incrementalSelectionFeedback, "incrementalSelectionFeedback is null");
 
-        this.octarine = octarine;
+        this.scene = octarine.getViewer().getScene();
+        requireNonNull(scene, "scene is null");
+
         this.incrementalSelectionFeedback = incrementalSelectionFeedback;
+    }
+
+
+    public void setFeedbackLocation(double x, double y) {
+        incrementalSelectionFeedback.setLocation(x, y);
     }
 
 
@@ -46,24 +46,27 @@ public class IncrementalSelectionManager {
 
         this.listener = listener;
 
-        final Scene scene = octarine.getViewer().getScene();
-        if (scene != null) {
-            scene.addEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
-            scene.addEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
-            scene.addEventHandler(MouseEvent.MOUSE_MOVED, this::handleMouseMoved);
+        if (isActive) {
+            return;
         }
+
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyEvent);
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyEvent);
+
+        isActive = true;
     }
 
 
     public void deactivate() {
+        if (!isActive)
+            return;
+
         incrementalSelectionFeedback.deactivate();
 
-        final Scene scene = octarine.getViewer().getScene();
-        if (scene != null) {
-            scene.removeEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyPressed);
-            scene.removeEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyReleased);
-            scene.removeEventHandler(MouseEvent.MOUSE_MOVED, this::handleMouseMoved);
-        }
+        scene.removeEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyEvent);
+        scene.removeEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyEvent);
+
+        isActive = false;
     }
 
 
@@ -74,7 +77,7 @@ public class IncrementalSelectionManager {
                     listener.addToSelection();
                     break;
 
-                case REMOVE:
+                case SUBTRACT:
                     listener.removeFromSelection();
                     break;
             }
@@ -83,24 +86,14 @@ public class IncrementalSelectionManager {
         }
     }
 
-    private void handleMouseMoved(MouseEvent mouseEvent) {
-        incrementalSelectionFeedback.setMouseLocation(mouseEvent.getX(), mouseEvent.getY());
-    }
 
-
-    private void handleKeyPressed(KeyEvent e) {
+    private void handleKeyEvent(KeyEvent e) {
         updateKeyStates(e.isControlDown(), e.isAltDown());
     }
 
 
-    private void handleKeyReleased(KeyEvent e) {
-        updateKeyStates(e.isControlDown(), e.isAltDown());
-    }
-
-
-
-    public void updateKeyStates(boolean ctrl, boolean alt) {
-        type = (alt) ? Optional.of(IncrementType.REMOVE) : Optional.empty();
+    private void updateKeyStates(boolean ctrl, boolean alt) {
+        type = (alt) ? Optional.of(IncrementType.SUBTRACT) : Optional.empty();
         type = (ctrl) ? Optional.of(IncrementType.ADD) : Optional.empty();
 
         if (type.isPresent()) {
@@ -110,9 +103,7 @@ public class IncrementalSelectionManager {
                 incrementalSelectionFeedback.activate();
             }
 
-        }
-
-        else {
+        } else {
             if (incrementalSelectionFeedback.isActive()) {
                 incrementalSelectionFeedback.deactivate();
             }
