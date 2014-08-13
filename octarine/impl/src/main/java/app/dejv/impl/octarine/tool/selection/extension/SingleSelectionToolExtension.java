@@ -137,14 +137,16 @@ public class SingleSelectionToolExtension
         final Rectangle2D r = Rectangle2D.fromFXBounds(controller.getView().getBoundsInParent());
         incrementalSelectionManager.setFeedbackLocation(r.getCenter().getX(), r.getCenter().getY());
         incrementalSelectionManager.activate(this);
-        mouseOverDynamicFeedback.add(controller);
+
+        mouseOverDynamicFeedback.setController(controller);
+        mouseOverDynamicFeedback.activate();
     }
 
 
     @SuppressWarnings("UnusedParameters")
     private void handleMouseExited(MouseEvent e) {
+        mouseOverDynamicFeedback.deactivate();
         incrementalSelectionManager.deactivate();
-        mouseOverDynamicFeedback.remove();
     }
 
 

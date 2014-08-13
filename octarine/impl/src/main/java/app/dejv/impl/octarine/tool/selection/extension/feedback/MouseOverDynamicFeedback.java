@@ -1,5 +1,7 @@
 package app.dejv.impl.octarine.tool.selection.extension.feedback;
 
+import static java.util.Objects.requireNonNull;
+
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.shape.Shape;
@@ -8,6 +10,7 @@ import app.dejv.impl.octarine.feedback.DynamicFeedback;
 import app.dejv.impl.octarine.utils.ConstantZoomDoubleBinding;
 import app.dejv.impl.octarine.utils.ControllerUtils;
 import app.dejv.impl.octarine.utils.FormattingUtils;
+import app.dejv.octarine.Octarine;
 import app.dejv.octarine.controller.Controller;
 
 /**
@@ -20,38 +23,53 @@ public class MouseOverDynamicFeedback
 
     private static final double SPACING = 5.0d;
 
-    private DoubleBinding spacing;
+    private final DoubleBinding spacing;
 
     private Controller controller;
     private Shape outline;
 
 
-    public void initMouseOverDynamicFeedback() {
+    protected MouseOverDynamicFeedback(Octarine octarine) {
+        super(octarine);
+
         final DoubleProperty zoomFactor = octarine.getViewer().zoomFactorProperty();
+
+        zoomFactor.addListener((observable) -> addOutline());
         spacing = new ConstantZoomDoubleBinding(zoomFactor, SPACING);
-
-        zoomFactor.addListener((observable) -> {
-            removeOutline();
-            addOutline();
-        });
-
     }
 
 
-
-    public void add(Controller controller) {
-        if (controller != null) {
-            remove();
-        }
+    public void setController(Controller controller) {
         this.controller = controller;
-        addOutline();
-        activate();
     }
 
-    public void remove() {
-        deactivate();
+
+    @Override
+    protected void beforeActivate() {
+        requireNonNull(controller, "Controller must be set before activation");
+        super.beforeActivate();
+        addOutline();
+    }
+
+
+    @Override
+    protected void afterDeactivate() {
         removeOutline();
-        controller = null;
+        super.afterDeactivate();
+    }
+
+
+    @Override
+    protected void bind() {
+        super.bind();
+        outline.strokeWidthProperty().bind(FormattingUtils.getDefaultFeedbackStrokeWidth(FormattingUtils.FeedbackType.DYNAMIC));
+    }
+
+
+    @Override
+    protected void unbind() {
+        super.unbind();
+        outline.strokeWidthProperty().unbind();
     }
 
 
@@ -67,9 +85,9 @@ public class MouseOverDynamicFeedback
             return;
         }
 
-        outline = FormattingUtils.grow(ControllerUtils.getShape(controller), spacing.get());
+        removeOutline();
 
-        outline.strokeWidthProperty().bind(FormattingUtils.getDefaultFeedbackStrokeWidth(FormattingUtils.FeedbackType.DYNAMIC));
+        outline = FormattingUtils.grow(ControllerUtils.getShape(controller), spacing.get());
         FormattingUtils.formatFeedbackOutline(outline, FormattingUtils.FeedbackType.DYNAMIC, FormattingUtils.FeedbackOpacity.STRONG, "Mouseover");
 
         getChildren().add(outline);
