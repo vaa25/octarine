@@ -5,9 +5,10 @@ import javafx.geometry.Rectangle2D;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import info.dejv.octarine.model.AbstractModelElement;
-import info.dejv.octarine.model.BasicProperties;
-import info.dejv.octarine.model.chunk.DoubleTuple;
+import app.dejv.impl.octarine.model.AbstractModelElement;
+import app.dejv.impl.octarine.model.BasicProperties;
+import app.dejv.impl.octarine.model.chunk.DoubleTuple;
+
 
 @Component
 @Scope("prototype")

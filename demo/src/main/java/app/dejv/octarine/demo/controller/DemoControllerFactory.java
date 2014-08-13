@@ -4,26 +4,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import app.dejv.octarine.demo.view.RectangleViewFactory;
-import info.dejv.octarine.Octarine;
-import info.dejv.octarine.tool.selection.extension.ContainerSelectionToolExtension;
-import info.dejv.octarine.tool.selection.extension.SingleSelectionToolExtension;
-import info.dejv.octarine.controller.ContainerController;
-import info.dejv.octarine.controller.Controller;
-import info.dejv.octarine.controller.ControllerFactory;
-import info.dejv.octarine.controller.DefaultContainerController;
-import info.dejv.octarine.controller.DefaultController;
+import app.dejv.impl.octarine.controller.DefaultContainerController;
+import app.dejv.impl.octarine.controller.DefaultController;
+import app.dejv.impl.octarine.model.BasicProperties;
+import app.dejv.impl.octarine.model.chunk.DoubleTuple;
+import app.dejv.impl.octarine.request.handler.DefaultShapeRequestHandler;
+import app.dejv.impl.octarine.request.handler.DeleteRequestHandler;
+import app.dejv.impl.octarine.request.handler.ResizeRequestHandler;
+import app.dejv.impl.octarine.request.handler.RotateRequestHandler;
+import app.dejv.impl.octarine.request.handler.TranslateRequestHandler;
+import app.dejv.impl.octarine.tool.selection.extension.ContainerSelectionToolExtension;
+import app.dejv.impl.octarine.tool.selection.extension.SingleSelectionToolExtension;
+import app.dejv.octarine.Octarine;
+import app.dejv.octarine.controller.ContainerController;
+import app.dejv.octarine.controller.Controller;
+import app.dejv.octarine.controller.ControllerFactory;
 import app.dejv.octarine.demo.model.RectangleShape;
 import app.dejv.octarine.demo.model.ShapeContainer;
 import app.dejv.octarine.demo.view.CanvasViewFactory;
-import info.dejv.octarine.model.BasicProperties;
-import info.dejv.octarine.model.ModelElement;
-import info.dejv.octarine.model.chunk.DoubleTuple;
-import info.dejv.octarine.request.handler.DefaultShapeRequestHandler;
-import info.dejv.octarine.request.handler.DeleteRequestHandler;
-import info.dejv.octarine.request.handler.ResizeRequestHandler;
-import info.dejv.octarine.request.handler.RotateRequestHandler;
-import info.dejv.octarine.request.handler.TranslateRequestHandler;
+import app.dejv.octarine.demo.view.RectangleViewFactory;
+import app.dejv.octarine.model.ModelElement;
+
 
 @Component
 public class DemoControllerFactory

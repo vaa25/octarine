@@ -7,10 +7,10 @@ import javafx.scene.shape.StrokeType;
 
 import org.springframework.context.annotation.Configuration;
 
-import info.dejv.octarine.model.BasicProperties;
-import info.dejv.octarine.model.ModelElement;
-import info.dejv.octarine.model.chunk.DoubleTuple;
-import info.dejv.octarine.view.AbstractShapeFactory;
+import app.dejv.impl.octarine.model.BasicProperties;
+import app.dejv.impl.octarine.model.chunk.DoubleTuple;
+import app.dejv.impl.octarine.view.AbstractShapeFactory;
+import app.dejv.octarine.model.ModelElement;
 
 /**
  * <br/>

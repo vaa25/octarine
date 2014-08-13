@@ -2,9 +2,10 @@ package app.dejv.octarine.demo.model;
 
 import org.springframework.stereotype.Component;
 
-import info.dejv.octarine.model.AbstractContainerModelElement;
-import info.dejv.octarine.model.BasicProperties;
-import info.dejv.octarine.model.chunk.DoubleTuple;
+import app.dejv.impl.octarine.model.AbstractContainerModelElement;
+import app.dejv.impl.octarine.model.BasicProperties;
+import app.dejv.impl.octarine.model.chunk.DoubleTuple;
+
 
 @Component
 public class ShapeContainer

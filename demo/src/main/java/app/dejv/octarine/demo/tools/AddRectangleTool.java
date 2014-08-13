@@ -1,6 +1,7 @@
 package app.dejv.octarine.demo.tools;
 
-import info.dejv.octarine.tool.Tool;
+
+import app.dejv.octarine.tool.Tool;
 
 public class AddRectangleTool
         implements Tool {

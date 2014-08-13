@@ -10,20 +10,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
-import info.dejv.octarine.Octarine;
-import info.dejv.octarine.controller.ContainerController;
-import info.dejv.octarine.controller.Controller;
-import info.dejv.octarine.tool.selection.editmode.EditMode;
-import info.dejv.octarine.tool.selection.editmode.EditModeDelete;
-import info.dejv.octarine.tool.selection.editmode.EditModeResize;
-import info.dejv.octarine.tool.selection.editmode.EditModeRotate;
-import info.dejv.octarine.tool.selection.editmode.EditModeTranslate;
-import info.dejv.octarine.tool.selection.editmode.ExclusiveEditMode;
-import info.dejv.octarine.tool.selection.extension.ContainerSelectionToolExtension;
-import info.dejv.octarine.tool.selection.extension.SingleSelectionToolExtension;
-import info.dejv.octarine.tool.selection.extension.feedback.MarqueeSelectionDynamicFeedback;
-import info.dejv.octarine.tool.selection.extension.feedback.MouseOverDynamicFeedback;
-import info.dejv.octarine.tool.selection.extension.helper.IncrementalSelectionManager;
+import app.dejv.impl.octarine.tool.selection.editmode.EditModeDelete;
+import app.dejv.impl.octarine.tool.selection.editmode.EditModeResize;
+import app.dejv.impl.octarine.tool.selection.editmode.EditModeRotate;
+import app.dejv.impl.octarine.tool.selection.editmode.EditModeTranslate;
+import app.dejv.impl.octarine.tool.selection.extension.ContainerSelectionToolExtension;
+import app.dejv.impl.octarine.tool.selection.extension.SingleSelectionToolExtension;
+import app.dejv.impl.octarine.tool.selection.extension.feedback.MarqueeSelectionDynamicFeedback;
+import app.dejv.impl.octarine.tool.selection.extension.feedback.MouseOverDynamicFeedback;
+import app.dejv.impl.octarine.tool.selection.extension.helper.IncrementalSelectionManager;
+import app.dejv.octarine.Octarine;
+import app.dejv.octarine.controller.ContainerController;
+import app.dejv.octarine.controller.Controller;
+import app.dejv.octarine.tool.editmode.EditMode;
+import app.dejv.octarine.tool.editmode.ExclusiveEditMode;
+
 
 /**
  * <br/>

@@ -9,10 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import info.dejv.octarine.model.BasicProperties;
-import info.dejv.octarine.model.ModelElement;
-import info.dejv.octarine.model.chunk.DoubleTuple;
-import info.dejv.octarine.view.AbstractShapeFactory;
+import app.dejv.impl.octarine.model.BasicProperties;
+import app.dejv.impl.octarine.model.chunk.DoubleTuple;
+import app.dejv.impl.octarine.view.AbstractShapeFactory;
+import app.dejv.octarine.model.ModelElement;
 
 /**
  * <br/>
