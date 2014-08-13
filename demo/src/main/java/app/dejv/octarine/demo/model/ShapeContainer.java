@@ -1,4 +1,4 @@
-package info.dejv.octarine.demo.model;
+package app.dejv.octarine.demo.model;
 
 import org.springframework.stereotype.Component;
 

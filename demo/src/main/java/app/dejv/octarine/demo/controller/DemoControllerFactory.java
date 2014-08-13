@@ -1,9 +1,10 @@
-package info.dejv.octarine.demo.controller;
+package app.dejv.octarine.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import app.dejv.octarine.demo.view.RectangleViewFactory;
 import info.dejv.octarine.Octarine;
 import info.dejv.octarine.tool.selection.extension.ContainerSelectionToolExtension;
 import info.dejv.octarine.tool.selection.extension.SingleSelectionToolExtension;
@@ -12,10 +13,9 @@ import info.dejv.octarine.controller.Controller;
 import info.dejv.octarine.controller.ControllerFactory;
 import info.dejv.octarine.controller.DefaultContainerController;
 import info.dejv.octarine.controller.DefaultController;
-import info.dejv.octarine.demo.model.RectangleShape;
-import info.dejv.octarine.demo.model.ShapeContainer;
-import info.dejv.octarine.demo.view.CanvasViewFactory;
-import info.dejv.octarine.demo.view.RectangleViewFactory;
+import app.dejv.octarine.demo.model.RectangleShape;
+import app.dejv.octarine.demo.model.ShapeContainer;
+import app.dejv.octarine.demo.view.CanvasViewFactory;
 import info.dejv.octarine.model.BasicProperties;
 import info.dejv.octarine.model.ModelElement;
 import info.dejv.octarine.model.chunk.DoubleTuple;

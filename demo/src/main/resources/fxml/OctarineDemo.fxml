@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="info.dejv.octarine.demo.OctarineDemoFXMLController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="app.dejv.octarine.demo.OctarineDemoFXMLController">
     <Button fx:id="bToolSelect" text="Select" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"/>
     <Button fx:id="bToolAdd" text="Add"  AnchorPane.leftAnchor="120.0" AnchorPane.topAnchor="10.0"/>
     <ZoomableScrollPane fx:id="zoomableScrollPane" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="45.0" />

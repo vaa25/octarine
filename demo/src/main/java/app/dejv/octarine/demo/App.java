@@ -1,4 +1,4 @@
-package info.dejv.octarine.demo;
+package app.dejv.octarine.demo;
 
 import java.io.IOException;
 

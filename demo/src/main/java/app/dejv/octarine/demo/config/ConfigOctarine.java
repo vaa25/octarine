@@ -1,4 +1,4 @@
-package info.dejv.octarine.demo.config;
+package app.dejv.octarine.demo.config;
 
 import java.util.ArrayList;
 import java.util.List;

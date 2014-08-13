@@ -1,4 +1,4 @@
-package info.dejv.octarine.demo.config;
+package app.dejv.octarine.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

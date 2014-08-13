@@ -1,4 +1,4 @@
-package info.dejv.octarine.demo;
+package app.dejv.octarine.demo;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,14 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+import app.dejv.impl.octarine.tool.selection.SelectionTool;
+import app.dejv.octarine.Octarine;
+import app.dejv.octarine.controller.ContainerController;
+import app.dejv.octarine.demo.tools.AddRectangleTool;
 import info.dejv.common.ui.ZoomableScrollPane;
-import info.dejv.octarine.Octarine;
-import info.dejv.octarine.controller.ContainerController;
-import info.dejv.octarine.demo.controller.DemoControllerFactory;
-import info.dejv.octarine.demo.model.RectangleShape;
-import info.dejv.octarine.demo.model.ShapeContainer;
-import info.dejv.octarine.demo.tools.AddRectangleTool;
-import info.dejv.octarine.tool.selection.SelectionTool;
+import app.dejv.octarine.demo.controller.DemoControllerFactory;
+import app.dejv.octarine.demo.model.RectangleShape;
+import app.dejv.octarine.demo.model.ShapeContainer;
 
 public class OctarineDemoFXMLController {
 

@@ -8,7 +8,7 @@
 
     <name>dejv :: Octarine :: Implementation</name>
     
-    <groupId>info.dejv.octarine</groupId>
+    <groupId>app.dejv.octarine</groupId>
     <artifactId>impl</artifactId>
     
     <packaging>jar</packaging>

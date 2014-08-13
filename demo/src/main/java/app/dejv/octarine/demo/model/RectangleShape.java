@@ -1,4 +1,4 @@
-package info.dejv.octarine.demo.model;
+package app.dejv.octarine.demo.model;
 
 import javafx.geometry.Rectangle2D;
 

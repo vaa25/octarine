@@ -1,4 +1,4 @@
-package info.dejv.octarine.demo.tools;
+package app.dejv.octarine.demo.tools;
 
 import info.dejv.octarine.tool.Tool;
 

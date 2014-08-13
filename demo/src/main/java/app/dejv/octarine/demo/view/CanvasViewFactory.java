@@ -1,4 +1,4 @@
-package info.dejv.octarine.demo.view;
+package app.dejv.octarine.demo.view;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;

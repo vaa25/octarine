@@ -25,9 +25,9 @@ public class EditModeRotate
     private final RotateStaticFeedback staticFeedback;
 
 
-    public EditModeRotate() throws IOException {
+    public EditModeRotate(RotateStaticFeedback rotateStaticFeedback) throws IOException {
         super(RotateRequest.class);
-        this.staticFeedback = new RotateStaticFeedback(getOctarine());
+        this.staticFeedback = rotateStaticFeedback;
     }
 
 
