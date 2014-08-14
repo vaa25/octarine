@@ -29,7 +29,7 @@ public class MouseOverDynamicFeedback
     private Shape outline;
 
 
-    protected MouseOverDynamicFeedback(Octarine octarine) {
+    public MouseOverDynamicFeedback(Octarine octarine) {
         super(octarine);
 
         final DoubleProperty zoomFactor = octarine.getViewer().zoomFactorProperty();

@@ -78,7 +78,7 @@ public class SelectionTool
 
 
     private void initWithSceneAvailable() {
-        selectionOutlines = new SelectionOutlines(octarine.getFeedback(), octarine.getViewer().zoomFactorProperty());
+        selectionOutlines = new SelectionOutlines(octarine.getGroupFeedbackStatic(), octarine.getViewer().zoomFactorProperty());
 
         initiated = true;
         if (active) {

@@ -36,13 +36,17 @@ public interface Octarine {
 
     ZoomableScrollPane getViewer();
 
+
     long getNextChildSequence();
+
 
     void addActionHandler(Class<? extends Tool> toolClass, ToolExtension handler);
 
     void removeActionHandler(Class<? extends Tool> toolClass, ToolExtension handler);
 
+
     List<EditationListener> getEditationListeners();
+
 
     CommandStack getCommandStack();
 
@@ -50,9 +54,12 @@ public interface Octarine {
 
     LayerManager getLayerManager();
 
-    ObservableList<Node> getFeedback();
 
-    ObservableList<Node> getActiveFeedback();
+    ObservableList<Node> getGroupLayers();
 
-    ObservableList<Node> getHandle();
+    ObservableList<Node> getGroupFeedbackStatic();
+
+    ObservableList<Node> getGroupFeedbackDynamic();
+
+    ObservableList<Node> getGroupHandles();
 }

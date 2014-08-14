@@ -13,11 +13,11 @@ import org.springframework.context.ApplicationContext;
 import app.dejv.impl.octarine.tool.selection.SelectionTool;
 import app.dejv.octarine.Octarine;
 import app.dejv.octarine.controller.ContainerController;
-import app.dejv.octarine.demo.tools.AddRectangleTool;
-import info.dejv.common.ui.ZoomableScrollPane;
-import app.dejv.octarine.demo.controller.DemoControllerFactory;
+import app.dejv.octarine.demo.config.ConfigController;
 import app.dejv.octarine.demo.model.RectangleShape;
 import app.dejv.octarine.demo.model.ShapeContainer;
+import app.dejv.octarine.demo.tools.AddRectangleTool;
+import info.dejv.common.ui.ZoomableScrollPane;
 
 public class OctarineDemoFXMLController {
 
@@ -64,10 +64,10 @@ public class OctarineDemoFXMLController {
 
     private void initScene(ApplicationContext appContext, Octarine octarine) {
 
-        final DemoControllerFactory demoControllerFactory = appContext.getBean(DemoControllerFactory.class);
+        final ConfigController controllerFactory = appContext.getBean(ConfigController.class);
         final ShapeContainer shapeContainer = appContext.getBean(ShapeContainer.class);
 
-        octarine.setRootController((ContainerController) demoControllerFactory.createController(shapeContainer, null));
+        octarine.setRootController((ContainerController) controllerFactory.createController(shapeContainer, null));
 
         shapeContainer.getChildren().add(new RectangleShape(new Rectangle2D(20, 50, 100, 200)));
         shapeContainer.getChildren().add(new RectangleShape(new Rectangle2D(130, 80, 100, 120)));

@@ -22,11 +22,12 @@ import app.dejv.octarine.request.Request;
 public class DeleteRequestHandler
         extends AbstractRequestHandler {
 
-    private ContainerController target;
+    private final ContainerController target;
 
-    public DeleteRequestHandler setTarget(ContainerController target) {
+    public DeleteRequestHandler(ContainerController target) {
+        requireNonNull(target, "target is null");
+
         this.target = target;
-        return this;
     }
 
     @Override
@@ -37,7 +38,6 @@ public class DeleteRequestHandler
 
     @Override
     protected void requestChecked(Request request) {
-        requireNonNull(target, "target is null");
 
         DeleteRequest deleteRequest = (DeleteRequest) request;
 

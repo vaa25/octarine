@@ -19,7 +19,7 @@ public class MarqueeSelectionDynamicFeedback
     private final Rectangle rectangle;
 
 
-    protected MarqueeSelectionDynamicFeedback(Octarine octarine) {
+    public MarqueeSelectionDynamicFeedback(Octarine octarine) {
         super(octarine);
 
         rectangle = new Rectangle();

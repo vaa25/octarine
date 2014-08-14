@@ -3,6 +3,7 @@ package app.dejv.impl.octarine.selection;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.octarine.controller.Controller;
 import app.dejv.octarine.selection.SelectionChangeListener;
 import app.dejv.octarine.selection.SelectionManager;
@@ -22,7 +23,15 @@ public class DefaultSelectionManager
     private final List<Controller> selected = new ArrayList<>();
     private final List<Controller> deselected = new ArrayList<>();
 
+    private final CompositeObservableBounds selectionBounds;
+
     private int updateCounter = 0;
+
+
+    public DefaultSelectionManager(CompositeObservableBounds selectionBounds) {
+        this.selectionBounds = selectionBounds;
+    }
+
 
     @Override
     public List<Controller> getSelection() {
@@ -96,6 +105,9 @@ public class DefaultSelectionManager
         updateCounter--;
 
         if (updateCounter == 0) {
+            selectionBounds.clear();
+            selection.forEach((controller) -> selectionBounds.add(controller.getView().boundsInParentProperty()));
+
             listeners.stream().forEach((listener) -> listener.selectionChanged(this, new ArrayList<>(selection), new ArrayList<>(selected), new ArrayList<>(deselected)));
 
             deselected.clear();

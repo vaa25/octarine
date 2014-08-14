@@ -13,13 +13,13 @@ import app.dejv.octarine.Octarine;
 public abstract class DynamicFeedback
         extends AbstractFeedback {
 
-    protected DynamicFeedback(Octarine octarine) {
+    public DynamicFeedback(Octarine octarine) {
         super(octarine);
     }
 
 
     @Override
     protected ObservableList<Node> selectFeedbackNodes() {
-        return octarine.getActiveFeedback();
+        return octarine.getGroupFeedbackDynamic();
     }
 }

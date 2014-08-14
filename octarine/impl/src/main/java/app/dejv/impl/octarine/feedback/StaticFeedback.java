@@ -21,7 +21,7 @@ public abstract class StaticFeedback
 
     @Override
     protected ObservableList<Node> selectFeedbackNodes() {
-        return octarine.getFeedback();
+        return octarine.getGroupFeedbackStatic();
     }
 
 }

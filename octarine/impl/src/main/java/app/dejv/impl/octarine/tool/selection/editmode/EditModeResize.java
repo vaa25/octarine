@@ -18,8 +18,9 @@ public class EditModeResize
     private ResizeStaticFeedback staticFeedback;
 
 
-    public EditModeResize() {
+    public EditModeResize(ResizeStaticFeedback resizeStaticFeedback) {
         super(ResizeRequest.class);
+        this.staticFeedback = resizeStaticFeedback;
     }
 
 

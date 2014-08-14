@@ -48,26 +48,22 @@ public class ContainerSelectionToolExtension
     private double initialX;
     private double initialY;
 
-
+    //TODO: Derive stamdalone "MarqueeSelectionManager"
     public ContainerSelectionToolExtension(
-            ContainerController controller,
-            Octarine octarine, MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback, IncrementalSelectionManager incrementalSelectionManager) {
+            ContainerController controller, Octarine octarine,
+            ObservableList<Node> nodeList, MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback, IncrementalSelectionManager incrementalSelectionManager) {
 
         super(SelectionTool.class, controller, octarine);
 
+        requireNonNull(nodeList);
         requireNonNull(marqueeSelectionDynamicFeedback);
         requireNonNull(incrementalSelectionManager);
 
         this.controller = controller;
+        this.nodeList = nodeList;
         this.marqueeSelectionDynamicFeedback = marqueeSelectionDynamicFeedback;
         this.incrementalSelectionManager = incrementalSelectionManager;
 
-    }
-
-
-    public ContainerSelectionToolExtension setNodeList(ObservableList<Node> nodeList) {
-        this.nodeList = nodeList;
-        return this;
     }
 
 

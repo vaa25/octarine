@@ -1,29 +1,24 @@
 package app.dejv.octarine.demo.config;
 
-import java.util.ArrayList;
-import java.util.List;
+import javafx.scene.Group;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
 
-import app.dejv.impl.octarine.tool.selection.editmode.EditModeDelete;
-import app.dejv.impl.octarine.tool.selection.editmode.EditModeResize;
-import app.dejv.impl.octarine.tool.selection.editmode.EditModeRotate;
-import app.dejv.impl.octarine.tool.selection.editmode.EditModeTranslate;
-import app.dejv.impl.octarine.tool.selection.extension.ContainerSelectionToolExtension;
-import app.dejv.impl.octarine.tool.selection.extension.SingleSelectionToolExtension;
-import app.dejv.impl.octarine.tool.selection.extension.feedback.MarqueeSelectionDynamicFeedback;
-import app.dejv.impl.octarine.tool.selection.extension.feedback.MouseOverDynamicFeedback;
-import app.dejv.impl.octarine.tool.selection.extension.helper.IncrementalSelectionManager;
+import app.dejv.impl.octarine.DefaultOctarineImpl;
+import app.dejv.impl.octarine.command.DefaultCommandStack;
+import app.dejv.impl.octarine.layer.DefaultLayerManager;
+import app.dejv.impl.octarine.selection.DefaultSelectionManager;
+import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.octarine.Octarine;
-import app.dejv.octarine.controller.ContainerController;
-import app.dejv.octarine.controller.Controller;
-import app.dejv.octarine.tool.editmode.EditMode;
-import app.dejv.octarine.tool.editmode.ExclusiveEditMode;
+import app.dejv.octarine.command.CommandStack;
+import app.dejv.octarine.layer.LayerManager;
+import app.dejv.octarine.selection.SelectionManager;
+import info.dejv.common.ui.ZoomableScrollPane;
 
 
 /**
@@ -36,49 +31,67 @@ public class ConfigOctarine {
 
     @Autowired
     private ApplicationContext appContext;
-//
-    @Autowired
-    private Octarine octarine;
-//
-    @Autowired
-    private MouseOverDynamicFeedback mouseOverDynamicFeedback;
 
-    @Autowired
-    private MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback;
 
-    @Autowired
-    private IncrementalSelectionManager incrementalSelectionManager;
+    @Bean
+    public CompositeObservableBounds compositeObservableBounds() {
+        return new CompositeObservableBounds();
+    }
+
+
+    @Bean
+    public CommandStack commandStack() {
+        return new DefaultCommandStack();
+    }
+
+
+    @Bean
+    public SelectionManager selectionManager(CompositeObservableBounds compositeObservableBounds) {
+        return new DefaultSelectionManager(compositeObservableBounds);
+    }
 
 
     @Bean
     @Autowired
-    List<EditMode> coexistingEditorModes(EditModeDelete editModeDelete, EditModeTranslate editModeTranslate) {
-        final List<EditMode> result = new ArrayList<>();
-        result.add(editModeDelete);
-        result.add(editModeTranslate);
-        return result;
+    public LayerManager layerManager(@Qualifier("groupLayers") Group groupLayers) {
+        return new DefaultLayerManager(groupLayers.getChildren());
     }
+
+
+    @Bean
+    public Group groupLayers() {
+        return new Group();
+    }
+
+
+    @Bean
+    public Group groupFeedbackStatic() {
+        return new Group();
+    }
+
+
+    @Bean
+    public Group groupFeedbackDynamic() {
+        return new Group();
+    }
+
+
+    @Bean
+    public Group groupHandles() {
+        return new Group();
+    }
+
 
     @Bean
     @Autowired
-    List<ExclusiveEditMode> exclusiveEditorModes(EditModeResize editModeResize, EditModeRotate editModeRotate) {
-        final List<ExclusiveEditMode> result = new ArrayList<>();
-        result.add(editModeResize);
-        result.add(editModeRotate);
-        return result;
-    }
-
-
-    @Bean(name = "singleSelectionToolExtension_Controller")
-    @Scope("prototype")
-    SingleSelectionToolExtension singleSelectionToolExtension(Controller controller) {
-        return new SingleSelectionToolExtension(controller, octarine, mouseOverDynamicFeedback, incrementalSelectionManager);
-    }
-
-
-    @Bean(name = "containerSelectionToolExtension_Controller")
-    @Scope("prototype")
-    ContainerSelectionToolExtension containerSelectionToolExtension(ContainerController controller) {
-        return new ContainerSelectionToolExtension(controller, octarine, marqueeSelectionDynamicFeedback, incrementalSelectionManager);
+    Octarine octarine(ZoomableScrollPane zoomableScrollPane,
+                      CommandStack commandStack,
+                      SelectionManager selectionManager,
+                      LayerManager layerManager,
+                      @Qualifier("groupLayers") Group groupLayers,
+                      @Qualifier("groupFeedbackStatic") Group groupFeedbackStatic,
+                      @Qualifier("groupFeedbackDynamic") Group groupFeedbackDynamic,
+                      @Qualifier("groupHandles") Group groupHandles) {
+        return new DefaultOctarineImpl(zoomableScrollPane, commandStack, selectionManager, layerManager, groupLayers, groupFeedbackStatic, groupFeedbackDynamic, groupHandles);
     }
 }

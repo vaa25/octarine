@@ -11,11 +11,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 
-import app.dejv.impl.octarine.command.DefaultCommandStack;
-import app.dejv.impl.octarine.layer.DefaultLayerManager;
-import app.dejv.impl.octarine.selection.DefaultSelectionManager;
 import app.dejv.impl.octarine.utils.FormattingUtils;
 import app.dejv.octarine.Octarine;
+import app.dejv.octarine.command.CommandStack;
 import app.dejv.octarine.controller.ContainerController;
 import app.dejv.octarine.layer.LayerManager;
 import app.dejv.octarine.selection.SelectionManager;
@@ -24,53 +22,57 @@ import app.dejv.octarine.tool.Tool;
 import app.dejv.octarine.tool.ToolExtension;
 import info.dejv.common.ui.ZoomableScrollPane;
 
-public class OctarineImpl
+public class DefaultOctarineImpl
         implements Octarine {
 
     private static final String ID_LAYERS = "Layers";
-    private static final String ID_FEEDBACK = "Feedback";
-    private static final String ID_ACTIVEFEEDBACK = "ActiveFeedback";
+    private static final String ID_FEEDBACK_STATIC = "Feedback_Static";
+    private static final String ID_FEEDBACK_DYNAMIC = "Feedback_Dynamic";
     private static final String ID_HANDLES = "Handles";
 
     private final Map<Class<? extends Tool>, List<ToolExtension>> toolExtensions = new HashMap<>();
 
     private final List<EditationListener> editationListeners = new ArrayList<>();
 
-    private final DefaultCommandStack commandStack = new DefaultCommandStack();
-    private final SelectionManager selectionManager = new DefaultSelectionManager();
+    private final CommandStack commandStack;
+    private final SelectionManager selectionManager;
     private final LayerManager layerManager;
 
     private final ZoomableScrollPane viewer;
 
+    private final Group groupLayers;
+    private final Group groupFeedbackStatic;
+    private final Group groupFeedbackDynamic;
+    private final Group groupHandles;
+
     private ContainerController rootController;
     private Tool activeTool;
-
-    private final Group layersGroup = new Group();
-    private final Group feedbackGroup = new Group();
-    private final Group activeFeedbackGroup = new Group();
-    private final Group handlesGroup = new Group();
 
     private long childIdSequence = 0;
 
 
-    public OctarineImpl(ZoomableScrollPane viewer) {
+    public DefaultOctarineImpl(ZoomableScrollPane viewer, CommandStack commandStack, SelectionManager selectionManager, LayerManager layerManager,
+                               Group groupLayers, Group groupFeedbackStatic, Group groupFeedbackDynamic, Group groupHandles) {
         requireNonNull(viewer, "viewer is null");
 
         this.viewer = viewer;
-        this.layerManager = new DefaultLayerManager(layersGroup.getChildren());
+        this.commandStack = commandStack;
+        this.selectionManager = selectionManager;
+        this.layerManager = layerManager;
+
+        this.groupLayers = prepareGroup(groupLayers, ID_LAYERS);
+        this.groupFeedbackStatic = prepareGroup(groupFeedbackStatic, ID_FEEDBACK_STATIC);
+        this.groupFeedbackDynamic = prepareGroup(groupFeedbackDynamic, ID_FEEDBACK_DYNAMIC);
+        this.groupHandles = prepareGroup(groupHandles, ID_LAYERS);
 
         FormattingUtils.setZoomFactor(viewer.zoomFactorProperty());
+    }
 
-        layersGroup.setId(ID_LAYERS);
-        feedbackGroup.setId(ID_FEEDBACK);
-        activeFeedbackGroup.setId(ID_ACTIVEFEEDBACK);
-        handlesGroup.setId(ID_HANDLES);
 
-        viewer.getContent().add(layersGroup);
-        viewer.getContent().add(feedbackGroup);
-        viewer.getContent().add(activeFeedbackGroup);
-        viewer.getContent().add(handlesGroup);
-
+    private Group prepareGroup(Group group, String id) {
+        group.setId(id);
+        viewer.getContent().add(group);
+        return group;
     }
 
 
@@ -139,7 +141,7 @@ public class OctarineImpl
 
 
     @Override
-    public DefaultCommandStack getCommandStack() {
+    public CommandStack getCommandStack() {
         return commandStack;
     }
 
@@ -175,19 +177,23 @@ public class OctarineImpl
         return layerManager;
     }
 
-
     @Override
-    public ObservableList<Node> getFeedback() {
-        return feedbackGroup.getChildren();
+    public ObservableList<Node> getGroupLayers() {
+        return groupLayers.getChildren();
     }
 
     @Override
-    public ObservableList<Node> getActiveFeedback() {
-        return feedbackGroup.getChildren();
+    public ObservableList<Node> getGroupFeedbackStatic() {
+        return groupFeedbackStatic.getChildren();
     }
 
     @Override
-    public ObservableList<Node> getHandle() {
-        return handlesGroup.getChildren();
+    public ObservableList<Node> getGroupFeedbackDynamic() {
+        return groupFeedbackDynamic.getChildren();
+    }
+
+    @Override
+    public ObservableList<Node> getGroupHandles() {
+        return groupHandles.getChildren();
     }
 }

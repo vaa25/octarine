@@ -23,7 +23,7 @@ public abstract class AbstractFeedback
     private boolean active = false;
 
 
-    protected AbstractFeedback(Octarine octarine) {
+    public AbstractFeedback(Octarine octarine) {
         requireNonNull(octarine, "octarine is null");
 
         this.octarine = octarine;
