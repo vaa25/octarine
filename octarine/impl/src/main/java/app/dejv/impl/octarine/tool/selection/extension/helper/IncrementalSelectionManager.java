@@ -53,6 +53,8 @@ public class IncrementalSelectionManager {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyEvent);
         scene.addEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyEvent);
 
+        updateKeyStates(false, false);
+
         isActive = true;
     }
 
@@ -93,8 +95,9 @@ public class IncrementalSelectionManager {
 
 
     private void updateKeyStates(boolean ctrl, boolean alt) {
-        type = (alt) ? Optional.of(IncrementType.SUBTRACT) : Optional.empty();
-        type = (ctrl) ? Optional.of(IncrementType.ADD) : Optional.empty();
+        type = (alt) ? Optional.of(IncrementType.SUBTRACT)
+                : (ctrl) ? Optional.of(IncrementType.ADD)
+                : Optional.empty();
 
         if (type.isPresent()) {
             incrementalSelectionFeedback.setType(type.get());

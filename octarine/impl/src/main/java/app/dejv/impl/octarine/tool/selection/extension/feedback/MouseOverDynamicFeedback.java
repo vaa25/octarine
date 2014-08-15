@@ -34,7 +34,7 @@ public class MouseOverDynamicFeedback
 
         final DoubleProperty zoomFactor = octarine.getViewer().zoomFactorProperty();
 
-        zoomFactor.addListener((observable) -> addOutline());
+        zoomFactor.addListener((observable) -> createOutline());
         spacing = new ConstantZoomDoubleBinding(zoomFactor, SPACING);
     }
 
@@ -47,14 +47,18 @@ public class MouseOverDynamicFeedback
     @Override
     protected void beforeActivate() {
         requireNonNull(controller, "Controller must be set before activation");
+        createOutline();
+
         super.beforeActivate();
-        addOutline();
+
+        getChildren().add(outline);
     }
 
 
     @Override
     protected void afterDeactivate() {
         removeOutline();
+
         super.afterDeactivate();
     }
 
@@ -73,14 +77,7 @@ public class MouseOverDynamicFeedback
     }
 
 
-    private void removeOutline() {
-        if ((outline != null) && (getChildren().contains(outline))) {
-            getChildren().remove(outline);
-        }
-    }
-
-
-    private void addOutline() {
+    private void createOutline() {
         if (controller == null) {
             return;
         }
@@ -89,7 +86,12 @@ public class MouseOverDynamicFeedback
 
         outline = FormattingUtils.grow(ControllerUtils.getShape(controller), spacing.get());
         FormattingUtils.formatFeedbackOutline(outline, FormattingUtils.FeedbackType.DYNAMIC, FormattingUtils.FeedbackOpacity.STRONG, "Mouseover");
+    }
 
-        getChildren().add(outline);
+
+    private void removeOutline() {
+        if ((outline != null) && (getChildren().contains(outline))) {
+            getChildren().remove(outline);
+        }
     }
 }

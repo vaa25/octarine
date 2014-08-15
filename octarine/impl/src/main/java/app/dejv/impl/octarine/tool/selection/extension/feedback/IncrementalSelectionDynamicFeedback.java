@@ -2,10 +2,13 @@ package app.dejv.impl.octarine.tool.selection.extension.feedback;
 
 import java.io.IOException;
 
+import javafx.animation.FadeTransition;
 import javafx.beans.property.DoubleProperty;
-import javafx.geometry.Point2D;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.transform.Translate;
+import javafx.util.Duration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,14 +79,16 @@ public class IncrementalSelectionDynamicFeedback
 
     public void setLocation(double x, double y) {
         try {
-            Point2D p = screenToLocal(x, y);
+            //Point2D p = screenToLocal(x, y);
 
-            if (p != null) {
-                translateSymbol(symbolPlus, p.getX(), p.getY());
-                translateSymbol(symbolMinus, p.getX(), p.getY());
-            }
+            //if (p != null) {
+//                translateSymbol(symbolPlus, p.getX(), p.getY());
+//                translateSymbol(symbolMinus, p.getX(), p.getY());
+                translateSymbol(symbolPlus, x, y + symbolPlus.getBoundsInParent().getHeight() * symbolScale.get() / 2);
+                translateSymbol(symbolMinus, x, y + symbolMinus.getBoundsInParent().getHeight()  * symbolScale.get() / 2);
+            //}
         } catch (NullPointerException npe) {
-            LOGGER.warn("NPE in screenToLocal");
+            LOGGER.trace("NPE in screenToLocal");
         }
     }
 
@@ -92,13 +97,16 @@ public class IncrementalSelectionDynamicFeedback
     protected void beforeActivate() {
         super.beforeActivate();
         getChildren().add(symbol);
+        runFadeTransition(0.0, 1.0, null);
     }
 
 
     @Override
     protected void afterDeactivate() {
-        super.afterDeactivate();
-        getChildren().remove(symbol);
+        runFadeTransition(0.0, 1.0, event -> {
+            super.afterDeactivate();
+            getChildren().remove(symbol);
+        });
     }
 
 
@@ -127,5 +135,19 @@ public class IncrementalSelectionDynamicFeedback
     private void translateSymbol(Group symbol, double x, double y) {
         symbol.setTranslateX(x);
         symbol.setTranslateY(y - symbol.getBoundsInLocal().getHeight());
+    }
+
+    private void runFadeTransition(double from, double to, EventHandler<ActionEvent> onFinished) {
+        final FadeTransition ft = new FadeTransition(Duration.millis(250), symbol);
+        ft.setFromValue(from);
+        ft.setToValue(to);
+        ft.setCycleCount(1);
+        ft.setAutoReverse(false);
+
+        if (onFinished != null) {
+            ft.setOnFinished(onFinished);
+        }
+
+        ft.play();
     }
 }
