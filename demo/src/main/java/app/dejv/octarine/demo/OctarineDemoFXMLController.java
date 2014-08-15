@@ -1,8 +1,11 @@
 package app.dejv.octarine.demo;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 
@@ -13,7 +16,7 @@ import org.springframework.context.ApplicationContext;
 import app.dejv.impl.octarine.tool.selection.SelectionTool;
 import app.dejv.octarine.Octarine;
 import app.dejv.octarine.controller.ContainerController;
-import app.dejv.octarine.demo.config.ConfigController;
+import app.dejv.octarine.demo.controller.DemoControllerFactory;
 import app.dejv.octarine.demo.model.RectangleShape;
 import app.dejv.octarine.demo.model.ShapeContainer;
 import app.dejv.octarine.demo.tools.AddRectangleTool;
@@ -45,26 +48,34 @@ public class OctarineDemoFXMLController {
 
     @FXML
     public void initialize() {
-        LOGGER.info("---------- Initializing FXML ----------- ");
-        final ApplicationContext appContext = App.APPLICATION_CONTEXT;
 
-        final Octarine octarine = appContext.getBean(Octarine.class);
-        final SelectionTool selectionTool = appContext.getBean(SelectionTool.class);
+        zoomableScrollPane.getNode().sceneProperty().addListener(new ChangeListener<Scene>() {
+            @Override
+            public void changed(ObservableValue<? extends Scene> observable, Scene oldValue, Scene newValue) {
+                if (newValue != null) {
+                    LOGGER.info("---------- Initializing FXML ----------- ");
+                    final ApplicationContext appContext = App.APPLICATION_CONTEXT;
 
-        zoomableScrollPane.zoomFactorProperty().bindBidirectional(slider.valueProperty());
+                    final Octarine octarine = appContext.getBean(Octarine.class);
+                    final SelectionTool selectionTool = appContext.getBean(SelectionTool.class);
 
-        bToolSelect.setOnAction((final ActionEvent e) -> octarine.setActiveTool(selectionTool));
-        bToolAdd.setOnAction((final ActionEvent e) -> octarine.setActiveTool(new AddRectangleTool()));
+                    zoomableScrollPane.zoomFactorProperty().bindBidirectional(slider.valueProperty());
 
-        initScene(appContext, octarine);
+                    bToolSelect.setOnAction((final ActionEvent e) -> octarine.setActiveTool(selectionTool));
+                    bToolAdd.setOnAction((final ActionEvent e) -> octarine.setActiveTool(new AddRectangleTool()));
 
-        bToolSelect.fire();
+                    initScene(appContext, octarine);
+
+                    bToolSelect.fire();
+                }
+            }
+        });
     }
 
 
     private void initScene(ApplicationContext appContext, Octarine octarine) {
 
-        final ConfigController controllerFactory = appContext.getBean(ConfigController.class);
+        final DemoControllerFactory controllerFactory = appContext.getBean(DemoControllerFactory.class);
         final ShapeContainer shapeContainer = appContext.getBean(ShapeContainer.class);
 
         octarine.setRootController((ContainerController) controllerFactory.createController(shapeContainer, null));

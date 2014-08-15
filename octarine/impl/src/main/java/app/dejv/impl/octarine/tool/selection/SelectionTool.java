@@ -93,14 +93,8 @@ public class SelectionTool
 
         octarine.getSelectionManager().addSelectionChangeListener(this);
 
-        coexistingEditorModes.forEach(editMode -> {
-            editMode.initWithSceneAvailable();
-            editMode.activate();
-        });
-        exclusiveEditorModes.forEach(editMode -> {
-            editMode.initWithSceneAvailable();
-            editMode.installActivationHandlers();
-        });
+        coexistingEditorModes.forEach(EditMode::activate);
+        exclusiveEditorModes.forEach(ExclusiveEditMode::installActivationHandlers);
 
         SelectionManager selectionManager = octarine.getSelectionManager();
         List<Controller> currentSelection = selectionManager.getSelection();

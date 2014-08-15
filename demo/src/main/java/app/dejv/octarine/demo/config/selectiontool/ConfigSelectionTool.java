@@ -29,41 +29,44 @@ import app.dejv.octarine.tool.editmode.ExclusiveEditMode;
 @Lazy
 public class ConfigSelectionTool {
 
+    @Autowired
+    private Octarine octarine;
+
     @Bean
     @Autowired
-    public ResizeStaticFeedback resizeStaticFeedback(Octarine octarine, CompositeObservableBounds compositeObservableBounds) {
+    public ResizeStaticFeedback resizeStaticFeedback(CompositeObservableBounds compositeObservableBounds) {
         return new ResizeStaticFeedback(octarine, compositeObservableBounds);
     }
 
 
     @Bean
     @Autowired
-    public RotateStaticFeedback rotateStaticFeedback(Octarine octarine, CompositeObservableBounds compositeObservableBounds) throws IOException {
+    public RotateStaticFeedback rotateStaticFeedback(CompositeObservableBounds compositeObservableBounds) throws IOException {
         return new RotateStaticFeedback(octarine, compositeObservableBounds);
     }
 
 
     @Bean
     public EditModeDelete editModeDelete() {
-        return new EditModeDelete();
+        return new EditModeDelete(octarine);
     }
 
     @Bean
     public EditModeTranslate editModeTranslate() {
-        return new EditModeTranslate();
+        return new EditModeTranslate(octarine);
     }
 
     @Bean
     @Autowired
     public EditModeResize editModeResize(ResizeStaticFeedback resizeStaticFeedback) {
-        return new EditModeResize(resizeStaticFeedback);
+        return new EditModeResize(octarine, resizeStaticFeedback);
     }
 
 
     @Bean
     @Autowired
     public EditModeRotate editModeRotate(RotateStaticFeedback rotateStaticFeedback) throws IOException {
-        return new EditModeRotate(rotateStaticFeedback);
+        return new EditModeRotate(octarine, rotateStaticFeedback);
     }
 
 

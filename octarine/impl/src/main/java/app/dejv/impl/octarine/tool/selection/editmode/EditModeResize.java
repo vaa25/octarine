@@ -4,6 +4,7 @@ import javafx.scene.input.KeyCode;
 
 import app.dejv.impl.octarine.tool.selection.editmode.feedback.ResizeStaticFeedback;
 import app.dejv.impl.octarine.tool.selection.request.ResizeRequest;
+import app.dejv.octarine.Octarine;
 import app.dejv.octarine.tool.editmode.ExclusivityCoordinator;
 
 /**
@@ -18,8 +19,8 @@ public class EditModeResize
     private ResizeStaticFeedback staticFeedback;
 
 
-    public EditModeResize(ResizeStaticFeedback resizeStaticFeedback) {
-        super(ResizeRequest.class);
+    public EditModeResize(Octarine octarine, ResizeStaticFeedback resizeStaticFeedback) {
+        super(octarine, ResizeRequest.class);
         this.staticFeedback = resizeStaticFeedback;
     }
 

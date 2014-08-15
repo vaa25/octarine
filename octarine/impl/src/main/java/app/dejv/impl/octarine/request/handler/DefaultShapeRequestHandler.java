@@ -17,19 +17,16 @@ import app.dejv.octarine.view.ShapeFactory;
 public class DefaultShapeRequestHandler
         extends AbstractRequestHandler {
 
-    private ShapeFactory shapeFactory;
-    private ModelElement modelElement;
+    private final ShapeFactory shapeFactory;
+    private final ModelElement modelElement;
 
 
-    public DefaultShapeRequestHandler setShapeFactory(ShapeFactory shapeFactory) {
+    public DefaultShapeRequestHandler(ModelElement modelElement, ShapeFactory shapeFactory) {
+        requireNonNull(shapeFactory, "shapeFactory is null");
+        requireNonNull(modelElement, "modelElement is null");
+
         this.shapeFactory = shapeFactory;
-        return this;
-    }
-
-
-    public DefaultShapeRequestHandler setModelElement(ModelElement modelElement) {
         this.modelElement = modelElement;
-        return this;
     }
 
 

@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCode;
 
 import app.dejv.impl.octarine.tool.selection.editmode.feedback.RotateStaticFeedback;
 import app.dejv.impl.octarine.tool.selection.request.RotateRequest;
+import app.dejv.octarine.Octarine;
 import app.dejv.octarine.tool.editmode.ExclusivityCoordinator;
 
 /**
@@ -25,8 +26,8 @@ public class EditModeRotate
     private final RotateStaticFeedback staticFeedback;
 
 
-    public EditModeRotate(RotateStaticFeedback rotateStaticFeedback) throws IOException {
-        super(RotateRequest.class);
+    public EditModeRotate(Octarine octarine, RotateStaticFeedback rotateStaticFeedback) throws IOException {
+        super(octarine, RotateRequest.class);
         this.staticFeedback = rotateStaticFeedback;
     }
 

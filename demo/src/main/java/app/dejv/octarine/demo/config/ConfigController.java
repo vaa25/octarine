@@ -15,25 +15,25 @@ import app.dejv.impl.octarine.request.handler.DeleteRequestHandler;
 import app.dejv.impl.octarine.request.handler.ResizeRequestHandler;
 import app.dejv.impl.octarine.request.handler.RotateRequestHandler;
 import app.dejv.impl.octarine.request.handler.TranslateRequestHandler;
-import app.dejv.impl.octarine.tool.selection.extension.ContainerSelectionToolExtension;
-import app.dejv.impl.octarine.tool.selection.extension.SingleSelectionToolExtension;
 import app.dejv.octarine.Octarine;
 import app.dejv.octarine.controller.ContainerController;
 import app.dejv.octarine.controller.Controller;
-import app.dejv.octarine.controller.ControllerFactory;
+import app.dejv.octarine.demo.controller.DemoControllerFactory;
 import app.dejv.octarine.demo.model.RectangleShape;
 import app.dejv.octarine.demo.model.ShapeContainer;
 import app.dejv.octarine.demo.view.CanvasViewFactory;
 import app.dejv.octarine.demo.view.RectangleViewFactory;
 import app.dejv.octarine.model.ModelElement;
+import app.dejv.octarine.request.RequestHandler;
+import app.dejv.octarine.tool.ToolExtension;
 
 /**
  * <br/>
  * Author: dejv (www.dejv.info)
  */
 @Configuration
-public class ConfigController
-        implements ControllerFactory {
+public class ConfigController {
+
 
     @Autowired
     private ApplicationContext appContext;
@@ -47,33 +47,24 @@ public class ConfigController
     @Autowired
     private RectangleViewFactory rectangleViewFactory;
 
-
-    @Override //TODO: Incorporate Optional
-    public Controller createController(ModelElement modelElement, ContainerController parent) {
-        if (modelElement instanceof ShapeContainer) {
-            return (ContainerController) appContext.getBean("containerController", modelElement);
-        }
-
-        if (modelElement instanceof RectangleShape) {
-            return (Controller) appContext.getBean("rectangleController", modelElement, parent);
-        }
-        return null;
-    }
-
+    @Autowired
+    private DemoControllerFactory controllerFactory;
 
     @Bean
     @Scope("prototype")
-    public ContainerController shapeContainerController(ModelElement modelElement) {
-        final DefaultContainerController result = new DefaultContainerController((ShapeContainer) modelElement, null, octarine, this, canvasViewFactory);
+    public ContainerController containerController(ModelElement modelElement) {
 
-        final DeleteRequestHandler deleteRequestHandler =
-                (DeleteRequestHandler) appContext.getBean("deleteRequestHandler", result);
+        if (!(modelElement instanceof ShapeContainer)) {
+            throw new IllegalArgumentException("Expected modelElement of type 'ShapeContainer'");
+        }
 
-        final ContainerSelectionToolExtension containerSelectionToolExtension =
-                (ContainerSelectionToolExtension) appContext.getBean("containerSelectionToolExtension", result, octarine.getLayerManager().getAllLayers());
+        final DefaultContainerController result = new DefaultContainerController((ShapeContainer) modelElement, null, octarine, controllerFactory, canvasViewFactory);
 
-        result.addRequestHandler(deleteRequestHandler);
-        result.addToolExtension(containerSelectionToolExtension);
+        result.addRequestHandler(
+                (RequestHandler) appContext.getBean("deleteRequestHandler", modelElement, result));
+
+        result.addToolExtension(
+                (ToolExtension) appContext.getBean("containerSelectionToolExtension", result, octarine.getLayerManager().getAllLayers()));
 
         return result;
     }
@@ -82,19 +73,64 @@ public class ConfigController
     @Bean
     @Scope("prototype")
     public Controller rectangleController(ModelElement modelElement, ContainerController parent) {
-        final Controller result = new DefaultController(modelElement, parent, rectangleViewFactory);
 
-        result.addRequestHandler((appContext.getBean(DefaultShapeRequestHandler.class))
-                .setModelElement(modelElement)
-                .setShapeFactory(rectangleViewFactory));
+        if (!(modelElement instanceof RectangleShape)) {
+            throw new IllegalArgumentException("Expected modelElement of type 'RectangleShape'");
+        }
 
-        result.addRequestHandler((appContext.getBean(TranslateRequestHandler.class))
-                .setCoords(modelElement.getChunk(BasicProperties.LOCATION, DoubleTuple.class)));
+        final Controller result = new DefaultController((RectangleShape) modelElement, parent, rectangleViewFactory);
 
-        result.addRequestHandler(appContext.getBean(ResizeRequestHandler.class));
-        result.addRequestHandler(appContext.getBean(RotateRequestHandler.class));
+        result.addRequestHandler(
+                (RequestHandler) appContext.getBean("defaultShapeRequestHandler", modelElement, result));
 
-        result.addToolExtension((SingleSelectionToolExtension) appContext.getBean("singleSelectionToolExtension_Controller", result));
+        result.addRequestHandler(
+                (RequestHandler) appContext.getBean("translateRequestHandler", modelElement, result));
+
+        result.addRequestHandler(
+                (RequestHandler) appContext.getBean("resizeRequestHandler", modelElement, result));
+
+        result.addRequestHandler(
+                (RequestHandler) appContext.getBean("rotateRequestHandler", modelElement, result));
+
+
+        result.addToolExtension(
+                (ToolExtension) appContext.getBean("singleSelectionToolExtension", result));
         return result;
     }
+
+
+    @Bean
+    @Scope("prototype")
+    public RequestHandler deleteRequestHandler(ModelElement modelElement, ContainerController controller) {
+        return new DeleteRequestHandler(controller);
+    }
+
+
+    @Bean
+    @Scope("prototype")
+    public RequestHandler defaultShapeRequestHandler(ModelElement modelElement, Controller controller) {
+        return new DefaultShapeRequestHandler(modelElement, rectangleViewFactory);
+    }
+
+
+    @Bean
+    @Scope("prototype")
+    public RequestHandler translateRequestHandler(ModelElement modelElement, Controller controller) {
+        return new TranslateRequestHandler(modelElement.getChunk(BasicProperties.LOCATION, DoubleTuple.class));
+    }
+
+
+    @Bean
+    @Scope("prototype")
+    public RequestHandler resizeRequestHandler(ModelElement modelElement, Controller controller) {
+        return new ResizeRequestHandler();
+    }
+
+
+    @Bean
+    @Scope("prototype")
+    public RequestHandler rotateRequestHandler(ModelElement modelElement, Controller controller) {
+        return new RotateRequestHandler();
+    }
+
 }

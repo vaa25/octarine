@@ -10,12 +10,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
 import app.dejv.impl.octarine.DefaultOctarineImpl;
+import app.dejv.impl.octarine.cfg.DefaultResources;
 import app.dejv.impl.octarine.command.DefaultCommandStack;
 import app.dejv.impl.octarine.layer.DefaultLayerManager;
 import app.dejv.impl.octarine.selection.DefaultSelectionManager;
 import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.octarine.Octarine;
 import app.dejv.octarine.command.CommandStack;
+import app.dejv.octarine.infrastructure.Resources;
 import app.dejv.octarine.layer.LayerManager;
 import app.dejv.octarine.selection.SelectionManager;
 import info.dejv.common.ui.ZoomableScrollPane;
@@ -57,6 +59,11 @@ public class ConfigOctarine {
         return new DefaultLayerManager(groupLayers.getChildren());
     }
 
+    @Bean
+    @Autowired
+    public Resources resources() {
+        return new DefaultResources();
+    }
 
     @Bean
     public Group groupLayers() {
@@ -88,10 +95,11 @@ public class ConfigOctarine {
                       CommandStack commandStack,
                       SelectionManager selectionManager,
                       LayerManager layerManager,
+                      Resources resources,
                       @Qualifier("groupLayers") Group groupLayers,
                       @Qualifier("groupFeedbackStatic") Group groupFeedbackStatic,
                       @Qualifier("groupFeedbackDynamic") Group groupFeedbackDynamic,
                       @Qualifier("groupHandles") Group groupHandles) {
-        return new DefaultOctarineImpl(zoomableScrollPane, commandStack, selectionManager, layerManager, groupLayers, groupFeedbackStatic, groupFeedbackDynamic, groupHandles);
+        return new DefaultOctarineImpl(zoomableScrollPane, commandStack, selectionManager, layerManager, resources, groupLayers, groupFeedbackStatic, groupFeedbackDynamic, groupHandles);
     }
 }

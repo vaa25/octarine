@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
@@ -15,6 +16,7 @@ import app.dejv.impl.octarine.utils.FormattingUtils;
 import app.dejv.octarine.Octarine;
 import app.dejv.octarine.command.CommandStack;
 import app.dejv.octarine.controller.ContainerController;
+import app.dejv.octarine.infrastructure.Resources;
 import app.dejv.octarine.layer.LayerManager;
 import app.dejv.octarine.selection.SelectionManager;
 import app.dejv.octarine.tool.EditationListener;
@@ -37,6 +39,7 @@ public class DefaultOctarineImpl
     private final CommandStack commandStack;
     private final SelectionManager selectionManager;
     private final LayerManager layerManager;
+    private final Resources resources;
 
     private final ZoomableScrollPane viewer;
 
@@ -51,14 +54,20 @@ public class DefaultOctarineImpl
     private long childIdSequence = 0;
 
 
-    public DefaultOctarineImpl(ZoomableScrollPane viewer, CommandStack commandStack, SelectionManager selectionManager, LayerManager layerManager,
+    public DefaultOctarineImpl(ZoomableScrollPane viewer, CommandStack commandStack, SelectionManager selectionManager, LayerManager layerManager, Resources resources,
                                Group groupLayers, Group groupFeedbackStatic, Group groupFeedbackDynamic, Group groupHandles) {
         requireNonNull(viewer, "viewer is null");
+        requireNonNull(viewer.getScene(), "scene is NULL");
+        requireNonNull(commandStack, "commandStack is null");
+        requireNonNull(selectionManager, "selectionManager is null");
+        requireNonNull(layerManager, "layerManager is null");
+        requireNonNull(resources, "resources is null");
 
         this.viewer = viewer;
         this.commandStack = commandStack;
         this.selectionManager = selectionManager;
         this.layerManager = layerManager;
+        this.resources = resources;
 
         this.groupLayers = prepareGroup(groupLayers, ID_LAYERS);
         this.groupFeedbackStatic = prepareGroup(groupFeedbackStatic, ID_FEEDBACK_STATIC);
@@ -76,9 +85,25 @@ public class DefaultOctarineImpl
     }
 
 
+    private void notifyToolDeactivated() {
+        if ((activeTool != null) && (toolExtensions.containsKey(activeTool.getClass()))) {
+            toolExtensions.get(activeTool.getClass()).stream().forEach((ah) -> ah.toolDeactivated(activeTool));
+            activeTool.deactivate();
+        }
+    }
+
+
     @Override
     public ZoomableScrollPane getViewer() {
         return viewer;
+    }
+
+
+    private void notifyToolActivated() {
+        if ((activeTool != null) && (toolExtensions.containsKey(activeTool.getClass()))) {
+            toolExtensions.get(activeTool.getClass()).stream().forEach((ah) -> ah.toolActivated(activeTool));
+            activeTool.activate();
+        }
     }
 
 
@@ -140,29 +165,14 @@ public class DefaultOctarineImpl
     }
 
 
+    public List<EditationListener> getEditationListeners() {
+        return editationListeners;
+    }
+
+
     @Override
     public CommandStack getCommandStack() {
         return commandStack;
-    }
-
-
-    private void notifyToolDeactivated() {
-        if ((activeTool != null) && (toolExtensions.containsKey(activeTool.getClass()))) {
-            toolExtensions.get(activeTool.getClass()).stream().forEach((ah) -> ah.toolDeactivated(activeTool));
-            activeTool.deactivate();
-        }
-    }
-
-
-    private void notifyToolActivated() {
-        if ((activeTool != null) && (toolExtensions.containsKey(activeTool.getClass()))) {
-            toolExtensions.get(activeTool.getClass()).stream().forEach((ah) -> ah.toolActivated(activeTool));
-            activeTool.activate();
-        }
-    }
-
-    public List<EditationListener> getEditationListeners() {
-        return editationListeners;
     }
 
 
@@ -177,20 +187,29 @@ public class DefaultOctarineImpl
         return layerManager;
     }
 
+
+    public Resources getResources() {
+        return resources;
+    }
+
+
     @Override
     public ObservableList<Node> getGroupLayers() {
         return groupLayers.getChildren();
     }
+
 
     @Override
     public ObservableList<Node> getGroupFeedbackStatic() {
         return groupFeedbackStatic.getChildren();
     }
 
+
     @Override
     public ObservableList<Node> getGroupFeedbackDynamic() {
         return groupFeedbackDynamic.getChildren();
     }
+
 
     @Override
     public ObservableList<Node> getGroupHandles() {

@@ -1,8 +1,9 @@
 package app.dejv.impl.octarine.tool.selection.editmode;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import javafx.scene.Scene;
@@ -39,23 +40,21 @@ public abstract class AbstractEditMode
 
     private Octarine octarine;
 
-    public AbstractEditMode(Class<? extends Request> requestType) {
-        Objects.requireNonNull(requestType, "type is NULL");
+    public AbstractEditMode(Octarine octarine, Class<? extends Request> requestType) {
+        requireNonNull(octarine, "octarine is NULL");
+        requireNonNull(octarine.getViewer().getScene(), "scene is NULL");
+        requireNonNull(octarine.getCommandStack(), "commandStack is NULL");
+        requireNonNull(requestType, "type is NULL");
 
+        this.octarine = octarine;
         this.requestType = requestType;
+
+        this.scene = octarine.getViewer().getScene();
+        this.commandStack = octarine.getCommandStack();
 
         LOG = LoggerFactory.getLogger(getClass());
     }
 
-
-    @Override
-    public void initWithSceneAvailable() {
-        this.scene = octarine.getViewer().getScene();
-        this.commandStack = octarine.getCommandStack();
-
-        assert this.scene != null : "scene is NULL";
-        assert this.commandStack != null : "commandStack is NULL";
-    }
 
     @Override
     public final void activate() {

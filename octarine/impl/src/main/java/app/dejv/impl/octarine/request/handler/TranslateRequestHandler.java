@@ -1,5 +1,7 @@
 package app.dejv.impl.octarine.request.handler;
 
+import static java.util.Objects.requireNonNull;
+
 import app.dejv.impl.octarine.model.chunk.DoubleTuple;
 import app.dejv.impl.octarine.tool.selection.command.TranslateCommand;
 import app.dejv.impl.octarine.tool.selection.request.TranslateRequest;
@@ -13,11 +15,11 @@ import app.dejv.octarine.request.Request;
 public class TranslateRequestHandler
         extends AbstractRequestHandler {
 
-    private DoubleTuple coords;
+    private final DoubleTuple coords;
 
-    public TranslateRequestHandler setCoords(DoubleTuple coords) {
+    public TranslateRequestHandler(DoubleTuple coords) {
+        requireNonNull(coords, "coords is null");
         this.coords = coords;
-        return this;
     }
 
     @Override

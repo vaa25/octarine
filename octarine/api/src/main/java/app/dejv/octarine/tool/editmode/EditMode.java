@@ -17,8 +17,6 @@ public interface EditMode {
      * Initialize the Edit Mode.
      * Call this method when "Scene" is available, not sooner!
      */
-    void initWithSceneAvailable();
-
     void activate();
 
     void deactivate();

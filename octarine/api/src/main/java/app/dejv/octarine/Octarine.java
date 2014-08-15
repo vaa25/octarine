@@ -12,6 +12,7 @@ import javafx.scene.Node;
 
 import app.dejv.octarine.command.CommandStack;
 import app.dejv.octarine.controller.ContainerController;
+import app.dejv.octarine.infrastructure.Resources;
 import app.dejv.octarine.layer.LayerManager;
 import app.dejv.octarine.selection.SelectionManager;
 import app.dejv.octarine.tool.EditationListener;
@@ -53,6 +54,8 @@ public interface Octarine {
     SelectionManager getSelectionManager();
 
     LayerManager getLayerManager();
+
+    Resources getResources();
 
 
     ObservableList<Node> getGroupLayers();

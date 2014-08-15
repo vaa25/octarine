@@ -17,6 +17,7 @@ import javafx.scene.shape.Shape;
 
 import app.dejv.impl.octarine.tool.selection.request.TranslateRequest;
 import app.dejv.impl.octarine.utils.ControllerUtils;
+import app.dejv.octarine.Octarine;
 import app.dejv.octarine.controller.Controller;
 import app.dejv.octarine.tool.EditationListener;
 
@@ -36,8 +37,8 @@ public class EditModeTranslate
     private final Map<Shape, Point2D> transformationFeedback = new HashMap<>();
 
 
-    public EditModeTranslate() {
-        super(TranslateRequest.class);
+    public EditModeTranslate(Octarine octarine) {
+        super(octarine, TranslateRequest.class);
     }
 
 

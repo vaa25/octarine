@@ -8,20 +8,18 @@ import java.util.Collections;
 import java.util.Set;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 
 import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.impl.octarine.utils.ConstantZoomDoubleBinding;
-import app.dejv.impl.octarine.utils.FormattingUtils;
 import app.dejv.impl.octarine.utils.FormattingUtils.FeedbackOpacity;
 import app.dejv.impl.octarine.utils.FormattingUtils.FeedbackType;
+import app.dejv.impl.octarine.utils.InfrastructureUtils;
 import app.dejv.octarine.Octarine;
 
 /**
@@ -38,8 +36,7 @@ public class RotateStaticFeedback
     public RotateStaticFeedback(Octarine octarine, CompositeObservableBounds selectionBounds) throws IOException {
         super(octarine, selectionBounds);
 
-        this.pivotCross = FXMLLoader.load(System.class.getResource("/fxml/rotpivot.fxml"));
-        FormattingUtils.formatSymbol((SVGPath) pivotCross.lookup("#symbol"));
+        this.pivotCross = InfrastructureUtils.getRequiredShape(octarine.getResources(), "rotpivot");
     }
 
 

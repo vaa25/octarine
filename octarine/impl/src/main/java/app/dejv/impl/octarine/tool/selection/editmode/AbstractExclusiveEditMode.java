@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import app.dejv.octarine.Octarine;
 import app.dejv.octarine.request.Request;
 import app.dejv.octarine.tool.editmode.ExclusiveEditMode;
 import app.dejv.octarine.tool.editmode.ExclusivityCoordinator;
@@ -21,8 +22,8 @@ public abstract class AbstractExclusiveEditMode
 
     private ExclusivityCoordinator exclusivityCoordinator;
 
-    public AbstractExclusiveEditMode(Class<? extends Request> requestType) {
-        super(requestType);
+    public AbstractExclusiveEditMode(Octarine octarine, Class<? extends Request> requestType) {
+        super(octarine, requestType);
     }
 
 

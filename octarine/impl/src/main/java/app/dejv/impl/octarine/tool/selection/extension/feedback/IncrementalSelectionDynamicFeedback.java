@@ -1,13 +1,10 @@
 package app.dejv.impl.octarine.tool.selection.extension.feedback;
 
 import java.io.IOException;
-import java.net.URL;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
-import javafx.scene.shape.SVGPath;
 import javafx.scene.transform.Translate;
 
 import org.slf4j.Logger;
@@ -16,8 +13,9 @@ import org.slf4j.LoggerFactory;
 import app.dejv.impl.octarine.feedback.DynamicFeedback;
 import app.dejv.impl.octarine.tool.selection.extension.helper.IncrementType;
 import app.dejv.impl.octarine.utils.ConstantZoomDoubleBinding;
-import app.dejv.impl.octarine.utils.FormattingUtils;
+import app.dejv.impl.octarine.utils.InfrastructureUtils;
 import app.dejv.octarine.Octarine;
+import app.dejv.octarine.infrastructure.Resources;
 
 /**
  * "Increamental selection" dynamic feedback.
@@ -47,8 +45,9 @@ public class IncrementalSelectionDynamicFeedback
         final DoubleProperty zoomFactor = octarine.getViewer().zoomFactorProperty();
         symbolScale = new ConstantZoomDoubleBinding(zoomFactor, SYMBOL_MAGNIFICATION);
 
-        symbolPlus = createAndFormat("/fxml/plus.fxml");
-        symbolMinus = createAndFormat("/fxml/minus.fxml");
+        final Resources resources = octarine.getResources();
+        symbolPlus = InfrastructureUtils.getRequiredShape(resources, "plus");
+        symbolMinus = InfrastructureUtils.getRequiredShape(resources, "minus");
 
         setType(IncrementType.ADD);
     }
@@ -128,15 +127,5 @@ public class IncrementalSelectionDynamicFeedback
     private void translateSymbol(Group symbol, double x, double y) {
         symbol.setTranslateX(x);
         symbol.setTranslateY(y - symbol.getBoundsInLocal().getHeight());
-    }
-
-
-    private Group createAndFormat(String path) throws IOException {
-        final URL url = new URL("classpath:" + path);
-        final Group symbol = FXMLLoader.load(url);
-
-        FormattingUtils.formatSymbol((SVGPath) symbol.lookup("#symbol"));
-
-        return symbol;
     }
 }

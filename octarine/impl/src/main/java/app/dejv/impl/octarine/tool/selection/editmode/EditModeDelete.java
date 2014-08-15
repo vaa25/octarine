@@ -8,6 +8,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import app.dejv.impl.octarine.tool.selection.request.DeleteRequest;
+import app.dejv.octarine.Octarine;
 import app.dejv.octarine.controller.Controller;
 
 /**
@@ -20,8 +21,8 @@ public class EditModeDelete
         extends AbstractEditMode {
 
 
-    public EditModeDelete() {
-        super(DeleteRequest.class);
+    public EditModeDelete(Octarine octarine) {
+        super(octarine, DeleteRequest.class);
     }
 
 
