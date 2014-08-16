@@ -57,23 +57,20 @@ public class IncrementalSelectionDynamicFeedback
 
 
     public final void setType(IncrementType type) {
-        boolean reactivate = false;
 
         if (this.type == type) {
             return;
         }
 
-        if (isActive()) {
-            deactivate();
-            reactivate = true;
+        if ((symbol != null) && (getChildren().contains(symbol))) {
+            getChildren().remove(symbol);
         }
 
         this.symbol = (type == IncrementType.ADD) ? symbolPlus : symbolMinus;
-        this.type = type;
 
-        if (reactivate) {
-            activate();
-        }
+        getChildren().add(symbol);
+
+        this.type = type;
     }
 
 
@@ -96,16 +93,14 @@ public class IncrementalSelectionDynamicFeedback
     @Override
     protected void beforeActivate() {
         super.beforeActivate();
-        getChildren().add(symbol);
         runFadeTransition(0.0, 1.0, null);
     }
 
 
     @Override
-    protected void afterDeactivate() {
-        runFadeTransition(0.0, 1.0, event -> {
-            super.afterDeactivate();
-            getChildren().remove(symbol);
+    protected void beforeDeactivate() {
+        runFadeTransition(1.0, 0.0, event -> {
+            confirmDeactivate();
         });
     }
 
