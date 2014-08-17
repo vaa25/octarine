@@ -18,6 +18,7 @@ public class MarqueeSelectionDynamicFeedback
 
     private final Rectangle rectangle;
 
+    private double initialX, initialY;
 
     public MarqueeSelectionDynamicFeedback(Octarine octarine) {
         super(octarine);
@@ -29,14 +30,13 @@ public class MarqueeSelectionDynamicFeedback
 
 
     public void setInitialCoords(double initialX, double initialY) {
-        rectangle.setX(initialX);
-        rectangle.setY(initialY);
+        this.initialX = initialX;
+        this.initialY = initialY;
     }
 
 
     public void setCurrentCoords(double currentX, double currentY) {
-        rectangle.setWidth(currentX - rectangle.getX());
-        rectangle.setHeight(currentY - rectangle.getY());
+        setRectCoords(initialX, initialY, currentX, currentY);
     }
 
 
@@ -67,10 +67,10 @@ public class MarqueeSelectionDynamicFeedback
         super.unbind();
     }
 
-//    private void setRectCoords(double ix, double cx, double iy, double cy) {
-//        rectangle.setX((ix <= cx) ? ix : cx);
-//        rectangle.setY((iy <= cy) ? iy : cy);
-//        rectangle.setWidth((ix <= cx) ? cx - ix : ix - cx);
-//        rectangle.setHeight((iy <= cy) ? cy - iy : iy - cy);
-//    }
+    private void setRectCoords(double ix, double iy, double cx, double cy) {
+        rectangle.setX((ix <= cx) ? ix : cx);
+        rectangle.setY((iy <= cy) ? iy : cy);
+        rectangle.setWidth((ix <= cx) ? cx - ix : ix - cx);
+        rectangle.setHeight((iy <= cy) ? cy - iy : iy - cy);
+    }
 }

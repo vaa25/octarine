@@ -30,7 +30,7 @@ public class IncrementalSelectionDynamicFeedback
         extends DynamicFeedback {
 
 
-    public static final double SYMBOL_MAGNIFICATION = 1.5;
+    public static final double SYMBOL_MAGNIFICATION = 1.25;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IncrementalSelectionDynamicFeedback.class);
 
@@ -38,7 +38,10 @@ public class IncrementalSelectionDynamicFeedback
     private final Group symbolMinus;
     private final ConstantZoomDoubleBinding symbolScale;
     private final Translate symbolTranslate = new Translate();
+
     private Group symbol;
+    private FadeTransition fadeTransition;
+
     private IncrementType type;
 
 
@@ -75,25 +78,8 @@ public class IncrementalSelectionDynamicFeedback
 
 
     public void setLocation(double x, double y) {
-        try {
-            //Point2D p = screenToLocal(x, y);
-
-            //if (p != null) {
-//                translateSymbol(symbolPlus, p.getX(), p.getY());
-//                translateSymbol(symbolMinus, p.getX(), p.getY());
-                translateSymbol(symbolPlus, x, y + symbolPlus.getBoundsInParent().getHeight() * symbolScale.get() / 2);
-                translateSymbol(symbolMinus, x, y + symbolMinus.getBoundsInParent().getHeight()  * symbolScale.get() / 2);
-            //}
-        } catch (NullPointerException npe) {
-            LOGGER.trace("NPE in screenToLocal");
-        }
-    }
-
-
-    @Override
-    protected void beforeActivate() {
-        super.beforeActivate();
-        runFadeTransition(0.0, 1.0, null);
+        translateSymbol(symbolPlus, x, y + symbolPlus.getBoundsInParent().getHeight() * symbolScale.get() / 2);
+        translateSymbol(symbolMinus, x, y + symbolMinus.getBoundsInParent().getHeight() * symbolScale.get() / 2);
     }
 
 
@@ -102,6 +88,13 @@ public class IncrementalSelectionDynamicFeedback
         runFadeTransition(1.0, 0.0, event -> {
             confirmDeactivate();
         });
+    }
+
+
+    @Override
+    protected void beforeActivate() {
+        super.beforeActivate();
+        runFadeTransition(0.0, 1.0, null);
     }
 
 
@@ -132,17 +125,25 @@ public class IncrementalSelectionDynamicFeedback
         symbol.setTranslateY(y - symbol.getBoundsInLocal().getHeight());
     }
 
-    private void runFadeTransition(double from, double to, EventHandler<ActionEvent> onFinished) {
-        final FadeTransition ft = new FadeTransition(Duration.millis(250), symbol);
-        ft.setFromValue(from);
-        ft.setToValue(to);
-        ft.setCycleCount(1);
-        ft.setAutoReverse(false);
 
-        if (onFinished != null) {
-            ft.setOnFinished(onFinished);
+    private void runFadeTransition(double from, double to, EventHandler<ActionEvent> onFinished) {
+
+        if (fadeTransition == null) {
+            fadeTransition = new FadeTransition(Duration.millis(150), this);
         }
 
-        ft.play();
+        fadeTransition.setFromValue(from);
+        fadeTransition.setToValue(to);
+        fadeTransition.setCycleCount(1);
+        fadeTransition.setAutoReverse(false);
+
+        fadeTransition.setOnFinished((event) -> {
+            if (onFinished != null) {
+                onFinished.handle(event);
+            }
+            fadeTransition = null;
+        });
+
+        fadeTransition.playFromStart();
     }
 }
