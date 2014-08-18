@@ -113,7 +113,7 @@ public class ContainerSelectionToolExtension
             marqueeSelectionDynamicFeedback.setInitialCoords(initialX, initialY);
 
             marqueeSelectionDynamicFeedback.activate();
-            incrementalSelectionManager.activate(this);
+            incrementalSelectionManager.activate(this, true, true);
             e.consume();
         }
     }

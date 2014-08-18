@@ -95,6 +95,8 @@ public class SingleSelectionToolExtension
 
         final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), SelectCommand.Op.ADD, controller);
         octarine.getCommandStack().execute(sc);
+
+        activateIncrementalSelectionFeedback();
     }
 
 
@@ -104,6 +106,8 @@ public class SingleSelectionToolExtension
 
         final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), SelectCommand.Op.REMOVE, controller);
         octarine.getCommandStack().execute(sc);
+
+        activateIncrementalSelectionFeedback();
     }
 
 
@@ -118,6 +122,8 @@ public class SingleSelectionToolExtension
 
         final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), SelectCommand.Op.REPLACE, controller);
         octarine.getCommandStack().execute(sc);
+
+        activateIncrementalSelectionFeedback();
     }
 
 
@@ -135,8 +141,9 @@ public class SingleSelectionToolExtension
 
     private void handleMouseEntered(MouseEvent e) {
         final Rectangle2D r = Rectangle2D.fromFXBounds(controller.getView().getBoundsInParent());
+
+        activateIncrementalSelectionFeedback();
         incrementalSelectionManager.setFeedbackLocation(r.getCenter().getX(), r.getCenter().getY());
-        incrementalSelectionManager.activate(this);
 
         mouseOverDynamicFeedback.setController(controller);
         mouseOverDynamicFeedback.activate();
@@ -161,5 +168,10 @@ public class SingleSelectionToolExtension
 
     private boolean isAlreadySelected() {
         return octarine.getSelectionManager().contains(controller);
+    }
+
+
+    private void activateIncrementalSelectionFeedback() {
+        incrementalSelectionManager.activate(this, !isAlreadySelected(), isAlreadySelected());
     }
 }

@@ -44,6 +44,7 @@ public class IncrementalSelectionDynamicFeedback
     private FadeTransition fadeTransition;
 
     private IncrementType type;
+    private boolean blockFadeOut = false;
 
 
     public IncrementalSelectionDynamicFeedback(Octarine octarine) throws IOException {
@@ -83,12 +84,20 @@ public class IncrementalSelectionDynamicFeedback
         translateSymbol(symbolMinus, x, y);
     }
 
+    public void blockFadeOut() {
+        blockFadeOut = true;
+    }
 
     @Override
     protected void beforeDeactivate() {
-        runFadeTransition(1.0, 0.0, event -> {
+        if (!blockFadeOut) {
+            runFadeTransition(1.0, 0.0, event -> {
+                onDeactivationConfirmed();
+            });
+        } else {
             onDeactivationConfirmed();
-        });
+            blockFadeOut = false;
+        }
     }
 
 

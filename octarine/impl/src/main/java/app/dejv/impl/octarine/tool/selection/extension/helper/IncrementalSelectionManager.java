@@ -25,6 +25,12 @@ public class IncrementalSelectionManager {
     private Optional<IncrementType> type;
     private boolean isActive = false;
 
+    private boolean addKeyDown = false;
+    private boolean subtractKeyDown = false;
+
+    private boolean canAdd = true;
+    private boolean canSubtract = true;
+
 
     public IncrementalSelectionManager(Octarine octarine, IncrementalSelectionDynamicFeedback incrementalSelectionFeedback) {
         requireNonNull(octarine, "octarine is null");
@@ -38,7 +44,7 @@ public class IncrementalSelectionManager {
 
         this.incrementalSelectionFeedback = incrementalSelectionFeedback;
 
-        updateKeyStates(false, false);
+        updateIncrementType();
     }
 
 
@@ -54,18 +60,19 @@ public class IncrementalSelectionManager {
     }
 
 
-    public void activate(IncrementalSelectionListener listener) {
+    public void activate(IncrementalSelectionListener listener, boolean canAdd, boolean canSubtract) {
         requireNonNull(listener, "listener is null");
-
+        this.canAdd = canAdd;
+        this.canSubtract = canSubtract;
         this.listener = listener;
-
-        if (isActive) {
-            return;
-        }
 
         isActive = true;
 
-        updateFeedback();
+        //Handle the special case, when force-hiding the symbol due to different blocker setting to avoid momentary "jump" of fading-out symbol
+        if ((addKeyDown && !canAdd) || (subtractKeyDown && !canSubtract)) {
+            incrementalSelectionFeedback.blockFadeOut();
+        }
+        updateIncrementType();
     }
 
 
@@ -97,13 +104,17 @@ public class IncrementalSelectionManager {
 
 
     private void handleKeyEvent(KeyEvent e) {
-        updateKeyStates(e.isControlDown(), e.isAltDown());
+        this.addKeyDown = e.isControlDown();
+        this.subtractKeyDown = e.isAltDown();
+
+        updateIncrementType();
     }
 
 
-    private void updateKeyStates(boolean ctrl, boolean alt) {
-        type = (alt) ? Optional.of(IncrementType.SUBTRACT)
-                : (ctrl) ? Optional.of(IncrementType.ADD)
+    private void updateIncrementType() {
+
+        type = (canSubtract && subtractKeyDown) ? Optional.of(IncrementType.SUBTRACT)
+                : (canAdd && addKeyDown) ? Optional.of(IncrementType.ADD)
                 : Optional.empty();
 
         updateFeedback();
