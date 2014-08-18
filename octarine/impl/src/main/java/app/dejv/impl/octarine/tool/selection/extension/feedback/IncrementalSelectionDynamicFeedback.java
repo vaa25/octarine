@@ -33,6 +33,7 @@ public class IncrementalSelectionDynamicFeedback
     public static final double SYMBOL_MAGNIFICATION = 1.25;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IncrementalSelectionDynamicFeedback.class);
+    public static final int FADE_PERIOD = 100;
 
     private final Group symbolPlus;
     private final Group symbolMinus;
@@ -78,15 +79,15 @@ public class IncrementalSelectionDynamicFeedback
 
 
     public void setLocation(double x, double y) {
-        translateSymbol(symbolPlus, x, y + symbolPlus.getBoundsInParent().getHeight() * symbolScale.get() / 2);
-        translateSymbol(symbolMinus, x, y + symbolMinus.getBoundsInParent().getHeight() * symbolScale.get() / 2);
+        translateSymbol(symbolPlus, x, y);
+        translateSymbol(symbolMinus, x, y);
     }
 
 
     @Override
     protected void beforeDeactivate() {
         runFadeTransition(1.0, 0.0, event -> {
-            confirmDeactivate();
+            onDeactivationConfirmed();
         });
     }
 
@@ -122,14 +123,14 @@ public class IncrementalSelectionDynamicFeedback
 
     private void translateSymbol(Group symbol, double x, double y) {
         symbol.setTranslateX(x);
-        symbol.setTranslateY(y - symbol.getBoundsInLocal().getHeight());
+        symbol.setTranslateY(y);
     }
 
 
     private void runFadeTransition(double from, double to, EventHandler<ActionEvent> onFinished) {
 
         if (fadeTransition == null) {
-            fadeTransition = new FadeTransition(Duration.millis(150), this);
+            fadeTransition = new FadeTransition(Duration.millis(FADE_PERIOD), this);
         }
 
         fadeTransition.setFromValue(from);

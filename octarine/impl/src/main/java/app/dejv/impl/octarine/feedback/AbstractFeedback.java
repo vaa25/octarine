@@ -58,11 +58,12 @@ public abstract class AbstractFeedback
         }
 
         beforeDeactivate();
+        active = false;
     }
 
 
     protected void beforeDeactivate() {
-        confirmDeactivate();
+        onDeactivationConfirmed();
     }
 
 
@@ -70,14 +71,12 @@ public abstract class AbstractFeedback
         bind();
     }
 
-    protected void confirmDeactivate() {
+    protected void onDeactivationConfirmed() {
         if (feedbackNodes.contains(this)) {
             feedbackNodes.remove(this);
         }
 
         afterDeactivate();
-
-        active = false;
     }
 
     protected void afterDeactivate() {

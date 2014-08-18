@@ -3,6 +3,7 @@ package app.dejv.impl.octarine.tool.selection.extension.helper;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
+import javax.annotation.PreDestroy;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -32,7 +33,19 @@ public class IncrementalSelectionManager {
         this.scene = octarine.getViewer().getScene();
         requireNonNull(scene, "scene is null");
 
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyEvent);
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyEvent);
+
         this.incrementalSelectionFeedback = incrementalSelectionFeedback;
+
+        updateKeyStates(false, false);
+    }
+
+
+    @PreDestroy
+    public void dispose() {
+        scene.removeEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyEvent);
+        scene.removeEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyEvent);
     }
 
 
@@ -50,12 +63,9 @@ public class IncrementalSelectionManager {
             return;
         }
 
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyEvent);
-        scene.addEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyEvent);
-
-        updateKeyStates(false, false);
-
         isActive = true;
+
+        updateFeedback();
     }
 
 
@@ -64,9 +74,6 @@ public class IncrementalSelectionManager {
             return;
 
         incrementalSelectionFeedback.deactivate();
-
-        scene.removeEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyEvent);
-        scene.removeEventHandler(KeyEvent.KEY_RELEASED, this::handleKeyEvent);
 
         isActive = false;
     }
@@ -99,16 +106,23 @@ public class IncrementalSelectionManager {
                 : (ctrl) ? Optional.of(IncrementType.ADD)
                 : Optional.empty();
 
+        updateFeedback();
+    }
+
+
+    private void updateFeedback() {
         if (type.isPresent()) {
             incrementalSelectionFeedback.setType(type.get());
-
-            if (!incrementalSelectionFeedback.isActive()) {
-                incrementalSelectionFeedback.activate();
-            }
-
-        } else {
-            if (incrementalSelectionFeedback.isActive()) {
-                incrementalSelectionFeedback.deactivate();
+        }
+        if (isActive) {
+            if (type.isPresent()) {
+                if (!incrementalSelectionFeedback.isActive()) {
+                    incrementalSelectionFeedback.activate();
+                }
+            } else {
+                if (incrementalSelectionFeedback.isActive()) {
+                    incrementalSelectionFeedback.deactivate();
+                }
             }
         }
     }
