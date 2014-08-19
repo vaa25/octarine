@@ -130,8 +130,9 @@ public class ContainerSelectionToolExtension
 
     private void handleMouseReleased(MouseEvent e) {
         if (drag) {
-            marqueeSelectionDynamicFeedback.deactivate();
             incrementalSelectionManager.commit();
+            incrementalSelectionManager.deactivate();
+            marqueeSelectionDynamicFeedback.deactivate();
             drag = false;
         } else {
             performMarqueeSelection(SelectCommand.Op.DESELECT_ALL);
