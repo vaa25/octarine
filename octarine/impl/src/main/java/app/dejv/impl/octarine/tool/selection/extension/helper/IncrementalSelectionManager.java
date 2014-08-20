@@ -21,7 +21,7 @@ public class IncrementalSelectionManager {
 
     private final Scene scene;
     private final IncrementalSelectionDynamicFeedback incrementalSelectionFeedback;
-    private IncrementalSelectionListener listener;
+    private SelectionActionListener listener;
     private Optional<IncrementType> type;
     private boolean isActive = false;
 
@@ -60,7 +60,7 @@ public class IncrementalSelectionManager {
     }
 
 
-    public void activate(IncrementalSelectionListener listener, boolean canAdd, boolean canSubtract) {
+    public void activate(SelectionActionListener listener, boolean canAdd, boolean canSubtract) {
         requireNonNull(listener, "listener is null");
         this.canAdd = canAdd;
         this.canSubtract = canSubtract;

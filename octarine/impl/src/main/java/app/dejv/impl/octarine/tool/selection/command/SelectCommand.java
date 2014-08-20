@@ -1,5 +1,7 @@
 package app.dejv.impl.octarine.tool.selection.command;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,12 +36,19 @@ public class SelectCommand
 
 
     public SelectCommand(SelectionManager selection, Op op, Controller selectable) {
-        this(selection, op, Arrays.asList(selectable));
+        this(selection, op, (selectable == null) ? null : Arrays.asList(selectable));
     }
 
 
-    public SelectCommand(SelectionManager selection, Op op, List<Controller> selectables) {
-        this.selection = selection;
+    public SelectCommand(SelectionManager selectionManager, Op op, List<Controller> selectables) {
+        requireNonNull(selectionManager, "selectionManager is null");
+        requireNonNull(op, "op is null");
+
+        if (op != Op.DESELECT_ALL) {
+            requireNonNull(selectables, "selectables is null");
+        }
+
+        this.selection = selectionManager;
         this.op = op;
         this.selectables = selectables;
     }

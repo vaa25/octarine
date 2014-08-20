@@ -9,18 +9,16 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.input.MouseEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import app.dejv.impl.octarine.tool.selection.SelectionTool;
 import app.dejv.impl.octarine.tool.selection.command.SelectCommand;
-import app.dejv.impl.octarine.tool.selection.extension.feedback.MarqueeSelectionDynamicFeedback;
-import app.dejv.impl.octarine.tool.selection.extension.helper.IncrementalSelectionListener;
-import app.dejv.impl.octarine.tool.selection.extension.helper.IncrementalSelectionManager;
+import app.dejv.impl.octarine.tool.selection.command.SelectCommand.Op;
+import app.dejv.impl.octarine.tool.selection.extension.helper.MarqueeSelectionActionListener;
+import app.dejv.impl.octarine.tool.selection.extension.helper.MarqueeSelectionManager;
 import app.dejv.impl.octarine.tool.selection.request.SelectRequest;
-import app.dejv.impl.octarine.utils.MathUtils;
 import app.dejv.octarine.Octarine;
 import app.dejv.octarine.controller.ContainerController;
 import app.dejv.octarine.controller.Controller;
@@ -34,122 +32,77 @@ import app.dejv.octarine.tool.ToolExtension;
  */
 public class ContainerSelectionToolExtension
         extends ToolExtension
-        implements IncrementalSelectionListener {
+        implements MarqueeSelectionActionListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContainerSelectionToolExtension.class);
-
-    private final IncrementalSelectionManager incrementalSelectionManager;
-    private final MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback;
-
+    private final MarqueeSelectionManager marqueeSelectionManager;
     private ContainerController controller;
     private ObservableList<Node> nodeList;
 
-    private boolean drag = false;
-    private double initialX;
-    private double initialY;
 
-    //TODO: Derive standalone "MarqueeSelectionManager"
-    public ContainerSelectionToolExtension(
-            ContainerController controller, Octarine octarine,
-            ObservableList<Node> nodeList, MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback, IncrementalSelectionManager incrementalSelectionManager) {
+    public ContainerSelectionToolExtension(ContainerController controller, Octarine octarine,  ObservableList<Node> nodeList,
+                                           MarqueeSelectionManager marqueeSelectionManager) {
 
         super(SelectionTool.class, controller, octarine);
 
         requireNonNull(nodeList);
-        requireNonNull(marqueeSelectionDynamicFeedback);
-        requireNonNull(incrementalSelectionManager);
+        requireNonNull(marqueeSelectionManager);
 
         this.controller = controller;
         this.nodeList = nodeList;
-        this.marqueeSelectionDynamicFeedback = marqueeSelectionDynamicFeedback;
-        this.incrementalSelectionManager = incrementalSelectionManager;
 
+        this.marqueeSelectionManager = marqueeSelectionManager;
     }
 
 
     @Override
     public void toolActivated(Tool tool) {
-        Node view = controller.getView();
-        view.addEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
-        view.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
-        view.addEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+        marqueeSelectionManager.activate(controller.getView(), this);
     }
 
 
     @Override
     public void toolDeactivated(Tool tool) {
-        Node view = controller.getView();
-        view.removeEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
-        view.removeEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
-        view.removeEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+        marqueeSelectionManager.deactivate();
     }
 
 
     @Override
-    public void addToSelection() {
-        performMarqueeSelection(SelectCommand.Op.ADD);
+    public void addToSelection(Bounds marqueeBounds) {
+        performMarqueeSelection(Op.ADD, marqueeBounds);
     }
 
 
     @Override
-    public void removeFromSelection() {
-        performMarqueeSelection(SelectCommand.Op.REMOVE);
+    public void removeFromSelection(Bounds marqueeBounds) {
+        performMarqueeSelection(Op.REMOVE, marqueeBounds);
     }
 
 
     @Override
-    public void replaceSelection() {
-        performMarqueeSelection(SelectCommand.Op.REPLACE);
+    public void replaceSelection(Bounds marqueeBounds) {
+        performMarqueeSelection(Op.REPLACE, marqueeBounds);
     }
 
 
-    private void handleDragDetected(MouseEvent e) {
-        if (e.isPrimaryButtonDown()) {
-            drag = true;
-
-            initialX = e.getX();
-            initialY = e.getY();
-
-            marqueeSelectionDynamicFeedback.setInitialCoords(initialX, initialY);
-
-            marqueeSelectionDynamicFeedback.activate();
-            incrementalSelectionManager.activate(this, true, true);
-            e.consume();
-        }
-    }
-
-
-    private void handleMouseDragged(MouseEvent e) {
-        if (drag) {
-            marqueeSelectionDynamicFeedback.setCurrentCoords(e.getX(), e.getY());
-
-            incrementalSelectionManager.setFeedbackLocation(MathUtils.mean(initialX, e.getX()), MathUtils.mean(initialY, e.getY()));
-        }
-    }
-
-
-    private void handleMouseReleased(MouseEvent e) {
-        if (drag) {
-            incrementalSelectionManager.commit();
-            incrementalSelectionManager.deactivate();
-            marqueeSelectionDynamicFeedback.deactivate();
-            drag = false;
-        } else {
-            performMarqueeSelection(SelectCommand.Op.DESELECT_ALL);
-
-        }
+    @Override
+    public void deselectAll() {
+        performMarqueeSelection(Op.DESELECT_ALL, null);
     }
 
 
     private List<Controller> getBoundedSelectables(Bounds marqueeBounds) {
-        List<Controller> result = new ArrayList<>();
+        final List<Controller> result = new ArrayList<>();
+
         filterSelectables(nodeList, result, marqueeBounds);
+
         return result;
     }
 
 
     private void filterSelectables(ObservableList<Node> list, List<Controller> result, Bounds marqueeBounds) {
         list.stream().forEach((node) -> {
+
             if (node instanceof Parent) {
                 filterSelectables(((Parent) node).getChildrenUnmodifiable(), result, marqueeBounds);
             }
@@ -158,7 +111,7 @@ public class ContainerSelectionToolExtension
                 return;
             }
 
-            Controller candidate = controller.lookup(c -> node.equals(c.getView()));
+            final Controller candidate = controller.lookup(c -> node.equals(c.getView()));
 
             if ((candidate != null) && (candidate.supports(SelectRequest.class))) {
                 result.add(candidate);
@@ -168,13 +121,16 @@ public class ContainerSelectionToolExtension
 
 
     private boolean isFullyWithinBounds(Node node, Bounds bounds) {
-        Bounds b = node.getBoundsInParent();
-        return ((b.getMinX() > bounds.getMinX()) && (b.getMaxX() < bounds.getMaxX()) && (b.getMinY() > bounds.getMinY()) && (b.getMaxY() < bounds.getMaxY()));
+        final Bounds b = node.getBoundsInParent();
+        return ((b.getMinX() > bounds.getMinX()) &&
+                (b.getMaxX() < bounds.getMaxX()) &&
+                (b.getMinY() > bounds.getMinY()) &&
+                (b.getMaxY() < bounds.getMaxY()));
     }
 
 
-    private void performMarqueeSelection(SelectCommand.Op op) {
-        List<Controller> selectableChildren = getBoundedSelectables(marqueeSelectionDynamicFeedback.getBoundsInLocal());
+    private void performMarqueeSelection(SelectCommand.Op op, Bounds marqueeBounds) {
+        final List<Controller> selectableChildren = (marqueeBounds != null) ? getBoundedSelectables(marqueeBounds) : null;
         final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), op, selectableChildren);
         octarine.getCommandStack().execute(sc);
     }

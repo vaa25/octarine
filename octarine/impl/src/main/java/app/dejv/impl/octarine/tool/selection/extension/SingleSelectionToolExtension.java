@@ -7,6 +7,8 @@ package app.dejv.impl.octarine.tool.selection.extension;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.List;
+
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
@@ -16,8 +18,9 @@ import org.slf4j.LoggerFactory;
 import app.dejv.impl.octarine.request.shape.ShapeRequest;
 import app.dejv.impl.octarine.tool.selection.SelectionTool;
 import app.dejv.impl.octarine.tool.selection.command.SelectCommand;
+import app.dejv.impl.octarine.tool.selection.command.SelectCommand.Op;
 import app.dejv.impl.octarine.tool.selection.extension.feedback.MouseOverDynamicFeedback;
-import app.dejv.impl.octarine.tool.selection.extension.helper.IncrementalSelectionListener;
+import app.dejv.impl.octarine.tool.selection.extension.helper.SelectionActionListener;
 import app.dejv.impl.octarine.tool.selection.extension.helper.IncrementalSelectionManager;
 import app.dejv.impl.octarine.tool.selection.request.SelectRequest;
 import app.dejv.octarine.Octarine;
@@ -34,7 +37,7 @@ import info.dejv.common.geometry.Rectangle2D;
  */
 public class SingleSelectionToolExtension
         extends ToolExtension
-        implements IncrementalSelectionListener, EditationListener {
+        implements SelectionActionListener, EditationListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(SingleSelectionToolExtension.class);
 
@@ -93,7 +96,7 @@ public class SingleSelectionToolExtension
 
         LOG.debug("Adding to selection");
 
-        final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), SelectCommand.Op.ADD, controller);
+        final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), Op.ADD, controller);
         octarine.getCommandStack().execute(sc);
 
         activateIncrementalSelectionFeedback();
@@ -104,7 +107,7 @@ public class SingleSelectionToolExtension
     public void removeFromSelection() {
         LOG.debug("Removing from selection");
 
-        final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), SelectCommand.Op.REMOVE, controller);
+        final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), Op.REMOVE, controller);
         octarine.getCommandStack().execute(sc);
 
         activateIncrementalSelectionFeedback();
@@ -120,10 +123,17 @@ public class SingleSelectionToolExtension
 
         LOG.debug("Replacing selection");
 
-        final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), SelectCommand.Op.REPLACE, controller);
+        final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), Op.REPLACE, controller);
         octarine.getCommandStack().execute(sc);
 
         activateIncrementalSelectionFeedback();
+    }
+
+
+    @Override
+    public void deselectAll() {
+        final SelectCommand sc = new SelectCommand(octarine.getSelectionManager(), Op.DESELECT_ALL, (List<Controller>)null);
+        octarine.getCommandStack().execute(sc);
     }
 
 

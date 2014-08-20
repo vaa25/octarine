@@ -17,6 +17,7 @@ import app.dejv.impl.octarine.tool.selection.extension.feedback.IncrementalSelec
 import app.dejv.impl.octarine.tool.selection.extension.feedback.MarqueeSelectionDynamicFeedback;
 import app.dejv.impl.octarine.tool.selection.extension.feedback.MouseOverDynamicFeedback;
 import app.dejv.impl.octarine.tool.selection.extension.helper.IncrementalSelectionManager;
+import app.dejv.impl.octarine.tool.selection.extension.helper.MarqueeSelectionManager;
 import app.dejv.octarine.Octarine;
 import app.dejv.octarine.controller.ContainerController;
 import app.dejv.octarine.controller.Controller;
@@ -41,6 +42,8 @@ public class ConfigSelectionToolExtensions {
     @Autowired
     private IncrementalSelectionManager incrementalSelectionManager;
 
+    @Autowired
+    private MarqueeSelectionManager marqueeSelectionManager;
 
     @Bean
     @Autowired
@@ -71,6 +74,13 @@ public class ConfigSelectionToolExtensions {
 
 
     @Bean
+    @Autowired
+    public MarqueeSelectionManager marqueeSelectionManager(MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback, IncrementalSelectionManager incrementalSelectionManager) {
+        return new MarqueeSelectionManager(marqueeSelectionDynamicFeedback, incrementalSelectionManager);
+    }
+
+
+    @Bean
     @Scope("prototype")
     public SingleSelectionToolExtension singleSelectionToolExtension(Controller controller) {
         return new SingleSelectionToolExtension(controller, octarine, mouseOverDynamicFeedback, incrementalSelectionManager);
@@ -80,7 +90,7 @@ public class ConfigSelectionToolExtensions {
     @Bean
     @Scope("prototype")
     public ContainerSelectionToolExtension containerSelectionToolExtension(ContainerController controller, ObservableList<Node> childrenNodes) {
-        return new ContainerSelectionToolExtension(controller, octarine, childrenNodes, marqueeSelectionDynamicFeedback, incrementalSelectionManager);
+        return new ContainerSelectionToolExtension(controller, octarine, childrenNodes, marqueeSelectionManager);
     }
 
 }
