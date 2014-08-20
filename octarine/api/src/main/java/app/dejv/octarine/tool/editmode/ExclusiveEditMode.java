@@ -9,13 +9,21 @@ public interface ExclusiveEditMode
         extends EditMode {
 
     /**
-     * Notify the EditMode to install its exclusive activation request handlers
+     * Set the edit mode exclusivity enforcer.
+     *
+     * @param exclusivityCoordinator Exclusivity enforcer
+     */
+    void setExclusivityCoordinator(ExclusivityCoordinator exclusivityCoordinator);
+
+
+    /**
+     * Notify the EditMode to install its exclusive activation request handlers.
      */
     void installActivationHandlers();
 
 
     /**
-     * Notify the EditMode to uninstall its exclusive activation request handlers
+     * Notify the EditMode to uninstall its exclusive activation request handlers.
      */
     void uninstallActivationHandlers();
 }

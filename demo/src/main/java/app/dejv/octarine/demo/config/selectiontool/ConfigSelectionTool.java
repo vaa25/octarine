@@ -92,7 +92,11 @@ public class ConfigSelectionTool {
     @Bean
     @Autowired
     public SelectionTool selectionTool(Octarine octarine, List<EditMode> coexistingEditorModes, List<ExclusiveEditMode> exclusiveEditorModes) {
-        return new SelectionTool(octarine, coexistingEditorModes, exclusiveEditorModes);
+        final SelectionTool result = new SelectionTool(octarine, coexistingEditorModes, exclusiveEditorModes);
+        for (ExclusiveEditMode eem : exclusiveEditorModes) {
+            eem.setExclusivityCoordinator(result);
+        }
+        return result;
     }
 
 }

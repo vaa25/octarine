@@ -27,11 +27,10 @@ public abstract class AbstractExclusiveEditMode
     }
 
 
-    public AbstractExclusiveEditMode setExclusivityCoordinator(ExclusivityCoordinator exclusivityCoordinator) {
+    public void setExclusivityCoordinator(ExclusivityCoordinator exclusivityCoordinator) {
         requireNonNull(exclusivityCoordinator, "exclusivityCoordinator is NULL");
 
         this.exclusivityCoordinator = exclusivityCoordinator;
-        return this;
     }
 
 
@@ -76,6 +75,8 @@ public abstract class AbstractExclusiveEditMode
 
 
     protected final void requestActivation() {
+        requireNonNull(exclusivityCoordinator, "exclusivityCoordinator was not set");
+
         if (!isEnabled()) {
             return;
         }

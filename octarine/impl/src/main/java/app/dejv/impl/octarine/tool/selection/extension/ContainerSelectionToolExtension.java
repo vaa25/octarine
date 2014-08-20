@@ -36,7 +36,7 @@ public class ContainerSelectionToolExtension
         extends ToolExtension
         implements IncrementalSelectionListener {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ContainerSelectionToolExtension.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContainerSelectionToolExtension.class);
 
     private final IncrementalSelectionManager incrementalSelectionManager;
     private final MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback;
@@ -48,7 +48,7 @@ public class ContainerSelectionToolExtension
     private double initialX;
     private double initialY;
 
-    //TODO: Derive stamdalone "MarqueeSelectionManager"
+    //TODO: Derive standalone "MarqueeSelectionManager"
     public ContainerSelectionToolExtension(
             ContainerController controller, Octarine octarine,
             ObservableList<Node> nodeList, MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback, IncrementalSelectionManager incrementalSelectionManager) {
