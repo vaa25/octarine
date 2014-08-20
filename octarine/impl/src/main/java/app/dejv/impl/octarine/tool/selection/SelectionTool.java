@@ -1,10 +1,9 @@
 package app.dejv.impl.octarine.tool.selection;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import javafx.scene.Node;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,83 +31,58 @@ public class SelectionTool
     //Editors, that can only be selected one at a time (ie. Scale, Rotate)
     private final List<ExclusiveEditMode> exclusiveEditorModes;
 
+    private final SelectionOutlines selectionOutlines;
+
     private ExclusiveEditMode activeExclusiveEditMode = null;
     private ExclusiveEditMode preferredExclusiveEditMode = null;
 
-    private SelectionOutlines selectionOutlines;
 
-    private boolean initiated = false;
-    private boolean active = false;
+    private boolean isActive = false;
 
 
-    public SelectionTool(Octarine octarine, List<EditMode> coexistingEditorModes, List<ExclusiveEditMode> exclusiveEditorModes) {
+    public SelectionTool(Octarine octarine, List<EditMode> coexistingEditorModes, List<ExclusiveEditMode> exclusiveEditorModes, SelectionOutlines selectionOutlines) {
+        requireNonNull(octarine, "octarine is null");
+        requireNonNull(coexistingEditorModes, "coexistingEditorModes is null");
+        requireNonNull(exclusiveEditorModes, "exclusiveEditorModes is null");
+        requireNonNull(selectionOutlines, "selectionOutline is null");
+
         this.octarine = octarine;
         this.coexistingEditorModes = coexistingEditorModes;
         this.exclusiveEditorModes = exclusiveEditorModes;
-
-        final Node pane = octarine.getView();
-
-        if (pane.getScene() != null) {  // If Scene is already available, initiate now...
-            initWithSceneAvailable();
-        } else {                        //.. otherwise initiate, when it is set
-            pane.sceneProperty().addListener((sender, oldValue, newValue) -> initWithSceneAvailable());
-        }
+        this.selectionOutlines = selectionOutlines;
     }
 
 
     @Override
     public void activate() {
-        if (initiated) {
-            doActivate();
-        }
+        if (!isActive) {
 
-        active = true;
+            octarine.getSelectionManager().addSelectionChangeListener(this);
+
+            coexistingEditorModes.forEach(EditMode::activate);
+            exclusiveEditorModes.forEach(ExclusiveEditMode::installActivationHandlers);
+
+            SelectionManager selectionManager = octarine.getSelectionManager();
+            List<Controller> currentSelection = selectionManager.getSelection();
+            selectionChanged(selectionManager, currentSelection, currentSelection, new ArrayList<>());
+
+            isActive = true;
+        }
     }
 
 
     @Override
     public void deactivate() {
-        active = false;
+        if (isActive) {
+            octarine.getSelectionManager().removeSelectionChangeListener(this);
 
-        if (initiated) {
-            doDeactivate();
+            exclusiveEditorModes.parallelStream().forEach(ExclusiveEditMode::uninstallActivationHandlers);
+            coexistingEditorModes.parallelStream().forEach(EditMode::deactivate);
+
+            selectionOutlines.clear();
+
+            isActive = false;
         }
-    }
-
-
-
-    private void initWithSceneAvailable() {
-        selectionOutlines = new SelectionOutlines(octarine.getLayerManager().getStaticFeedbackLayer(), octarine.getView().zoomFactorProperty());
-
-        initiated = true;
-        if (active) {
-            doActivate();
-        }
-    }
-
-
-    private void doActivate() {
-        if (!initiated)
-            return;
-
-        octarine.getSelectionManager().addSelectionChangeListener(this);
-
-        coexistingEditorModes.forEach(EditMode::activate);
-        exclusiveEditorModes.forEach(ExclusiveEditMode::installActivationHandlers);
-
-        SelectionManager selectionManager = octarine.getSelectionManager();
-        List<Controller> currentSelection = selectionManager.getSelection();
-        selectionChanged(selectionManager, currentSelection, currentSelection, new ArrayList<>());
-    }
-
-
-    private void doDeactivate() {
-        octarine.getSelectionManager().removeSelectionChangeListener(this);
-
-        exclusiveEditorModes.parallelStream().forEach(ExclusiveEditMode::uninstallActivationHandlers);
-        coexistingEditorModes.parallelStream().forEach(EditMode::deactivate);
-
-        selectionOutlines.clear();
     }
 
 
@@ -129,7 +103,7 @@ public class SelectionTool
 
     @Override
     public void onActivationRequest(ExclusiveEditMode sender) {
-        Objects.requireNonNull(sender, "sender is NULL");
+        requireNonNull(sender, "sender is NULL");
 
         preferredExclusiveEditMode = sender;
 
