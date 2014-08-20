@@ -196,12 +196,12 @@ public class DefaultController
 
 
     protected void addViewToScene() {
-        getRoot().getOctarine().getLayerManager().getCurrentLayer().add(getView());
+        getRoot().getOctarine().getLayerManager().getCurrentContentLayer().add(getView());
     }
 
 
     protected void removeViewFromScene() {
-        getRoot().getOctarine().getLayerManager().getCurrentLayer().remove(getView());
+        getRoot().getOctarine().getLayerManager().getCurrentContentLayer().remove(getView());
     }
 
 

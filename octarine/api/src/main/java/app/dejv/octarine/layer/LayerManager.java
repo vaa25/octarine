@@ -3,6 +3,8 @@ package app.dejv.octarine.layer;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 
+import info.dejv.common.ui.ZoomableScrollPane;
+
 /**
  *
  * <br/>
@@ -10,15 +12,23 @@ import javafx.scene.Node;
  */
 public interface LayerManager {
 
+    void addLayersToView(ZoomableScrollPane view);
+
     void addLayer(String layerId);
 
     void removeLayer(String layerId);
 
-    ObservableList<Node> getAllLayers();
+    ObservableList<Node> getStaticFeedbackLayer();
 
-    ObservableList<Node> getLayer(String layerId);
+    ObservableList<Node> getDynamicFeedbackLayer();
 
-    ObservableList<Node> getCurrentLayer();
+    ObservableList<Node> getHandlesLayer();
 
-    String getCurrentLayerId();
+    ObservableList<Node> getAllContentLayers();
+
+    ObservableList<Node> getContentLayer(String layerId);
+
+    ObservableList<Node> getCurrentContentLayer();
+
+    String getCurrentContentLayerId();
 }

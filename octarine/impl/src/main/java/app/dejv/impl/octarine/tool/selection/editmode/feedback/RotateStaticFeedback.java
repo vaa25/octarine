@@ -126,7 +126,7 @@ public class RotateStaticFeedback
 
 
     private void bindPivotCross() {
-        DoubleProperty zoomFactor = octarine.getViewer().zoomFactorProperty();
+        DoubleProperty zoomFactor = octarine.getView().zoomFactorProperty();
         ConstantZoomDoubleBinding pivotCrossScale = new ConstantZoomDoubleBinding(zoomFactor, 1.0);
         pivotCross.scaleXProperty().bind(pivotCrossScale);
         pivotCross.scaleYProperty().bind(pivotCrossScale);

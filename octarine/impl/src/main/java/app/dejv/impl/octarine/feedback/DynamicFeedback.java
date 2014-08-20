@@ -20,6 +20,6 @@ public abstract class DynamicFeedback
 
     @Override
     protected ObservableList<Node> selectFeedbackNodes() {
-        return octarine.getGroupFeedbackDynamic();
+        return octarine.getLayerManager().getDynamicFeedbackLayer();
     }
 }

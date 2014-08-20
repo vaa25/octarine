@@ -6,11 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-import javafx.collections.ObservableList;
 import javafx.scene.Group;
-import javafx.scene.Node;
 
 import app.dejv.impl.octarine.utils.FormattingUtils;
 import app.dejv.octarine.Octarine;
@@ -27,11 +24,6 @@ import info.dejv.common.ui.ZoomableScrollPane;
 public class DefaultOctarineImpl
         implements Octarine {
 
-    private static final String ID_LAYERS = "Layers";
-    private static final String ID_FEEDBACK_STATIC = "Feedback_Static";
-    private static final String ID_FEEDBACK_DYNAMIC = "Feedback_Dynamic";
-    private static final String ID_HANDLES = "Handles";
-
     private final Map<Class<? extends Tool>, List<ToolExtension>> toolExtensions = new HashMap<>();
 
     private final List<EditationListener> editationListeners = new ArrayList<>();
@@ -41,12 +33,7 @@ public class DefaultOctarineImpl
     private final LayerManager layerManager;
     private final Resources resources;
 
-    private final ZoomableScrollPane viewer;
-
-    private final Group groupLayers;
-    private final Group groupFeedbackStatic;
-    private final Group groupFeedbackDynamic;
-    private final Group groupHandles;
+    private final ZoomableScrollPane view;
 
     private ContainerController rootController;
     private Tool activeTool;
@@ -54,33 +41,28 @@ public class DefaultOctarineImpl
     private long childIdSequence = 0;
 
 
-    public DefaultOctarineImpl(ZoomableScrollPane viewer, CommandStack commandStack, SelectionManager selectionManager, LayerManager layerManager, Resources resources,
-                               Group groupLayers, Group groupFeedbackStatic, Group groupFeedbackDynamic, Group groupHandles) {
-        requireNonNull(viewer, "viewer is null");
-        requireNonNull(viewer.getScene(), "scene is NULL");
+    public DefaultOctarineImpl(ZoomableScrollPane view, CommandStack commandStack, SelectionManager selectionManager, LayerManager layerManager, Resources resources) {
+        requireNonNull(view, "view is null");
+        requireNonNull(view.getScene(), "scene is NULL");
         requireNonNull(commandStack, "commandStack is null");
         requireNonNull(selectionManager, "selectionManager is null");
         requireNonNull(layerManager, "layerManager is null");
         requireNonNull(resources, "resources is null");
 
-        this.viewer = viewer;
+        this.view = view;
         this.commandStack = commandStack;
         this.selectionManager = selectionManager;
         this.layerManager = layerManager;
         this.resources = resources;
 
-        this.groupLayers = prepareGroup(groupLayers, ID_LAYERS);
-        this.groupFeedbackStatic = prepareGroup(groupFeedbackStatic, ID_FEEDBACK_STATIC);
-        this.groupFeedbackDynamic = prepareGroup(groupFeedbackDynamic, ID_FEEDBACK_DYNAMIC);
-        this.groupHandles = prepareGroup(groupHandles, ID_LAYERS);
-
-        FormattingUtils.setZoomFactor(viewer.zoomFactorProperty());
+        this.layerManager.addLayersToView(view);
+        FormattingUtils.setZoomFactor(view.zoomFactorProperty());
     }
 
 
     private Group prepareGroup(Group group, String id) {
         group.setId(id);
-        viewer.getContent().add(group);
+        view.getContent().add(group);
         return group;
     }
 
@@ -94,8 +76,8 @@ public class DefaultOctarineImpl
 
 
     @Override
-    public ZoomableScrollPane getViewer() {
-        return viewer;
+    public ZoomableScrollPane getView() {
+        return view;
     }
 
 
@@ -190,29 +172,5 @@ public class DefaultOctarineImpl
 
     public Resources getResources() {
         return resources;
-    }
-
-
-    @Override
-    public ObservableList<Node> getGroupLayers() {
-        return groupLayers.getChildren();
-    }
-
-
-    @Override
-    public ObservableList<Node> getGroupFeedbackStatic() {
-        return groupFeedbackStatic.getChildren();
-    }
-
-
-    @Override
-    public ObservableList<Node> getGroupFeedbackDynamic() {
-        return groupFeedbackDynamic.getChildren();
-    }
-
-
-    @Override
-    public ObservableList<Node> getGroupHandles() {
-        return groupHandles.getChildren();
     }
 }

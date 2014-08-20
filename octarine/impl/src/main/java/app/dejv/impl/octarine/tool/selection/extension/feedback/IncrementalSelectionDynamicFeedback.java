@@ -50,7 +50,7 @@ public class IncrementalSelectionDynamicFeedback
     public IncrementalSelectionDynamicFeedback(Octarine octarine) throws IOException {
         super(octarine);
 
-        final DoubleProperty zoomFactor = octarine.getViewer().zoomFactorProperty();
+        final DoubleProperty zoomFactor = octarine.getView().zoomFactorProperty();
         symbolScale = new ConstantZoomDoubleBinding(zoomFactor, SYMBOL_MAGNIFICATION);
 
         final Resources resources = octarine.getResources();

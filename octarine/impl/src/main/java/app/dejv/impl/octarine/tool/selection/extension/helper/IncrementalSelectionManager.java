@@ -36,7 +36,7 @@ public class IncrementalSelectionManager {
         requireNonNull(octarine, "octarine is null");
         requireNonNull(incrementalSelectionFeedback, "incrementalSelectionFeedback is null");
 
-        this.scene = octarine.getViewer().getScene();
+        this.scene = octarine.getView().getScene();
         requireNonNull(scene, "scene is null");
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, this::handleKeyEvent);

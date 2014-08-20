@@ -9,6 +9,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 
 import app.dejv.octarine.layer.LayerManager;
+import info.dejv.common.ui.ZoomableScrollPane;
+import info.dejv.common.ui.logic.ZoomableScrollPaneView;
 
 /**
  *
@@ -18,16 +20,37 @@ import app.dejv.octarine.layer.LayerManager;
 public class DefaultLayerManager
         implements LayerManager {
 
+    private static final String ID_LAYERS = "Layers";
+    private static final String ID_FEEDBACK_STATIC = "Feedback_Static";
+    private static final String ID_FEEDBACK_DYNAMIC = "Feedback_Dynamic";
+    private static final String ID_HANDLES = "Handles";
+
     public static final String LAYER_DEFAULT = "Default";
 
-    private final Map<String, Group> layersMap = new HashMap<>();
-    private final ObservableList<Node> layers;
+    private final Group groupLayers = new Group();
+    private final Group groupFeedbackStatic = new Group();
+    private final Group groupFeedbackDynamic = new Group();
+    private final Group groupHandles = new Group();
 
-    public DefaultLayerManager(ObservableList<Node> layersGroup) {
-        this.layers = layersGroup;
+    private final Map<String, Group> layersMap = new HashMap<>();
+    private final ObservableList<Node> layers = groupLayers.getChildren();
+
+    private boolean isAdded = false;
+
+    public DefaultLayerManager() {
         addLayer(LAYER_DEFAULT);
     }
 
+    public void addLayersToView(ZoomableScrollPane view) {
+        if (!isAdded) {
+            prepareGroup(view, groupLayers, ID_LAYERS);
+            prepareGroup(view, groupFeedbackStatic, ID_FEEDBACK_STATIC);
+            prepareGroup(view, groupFeedbackDynamic, ID_FEEDBACK_DYNAMIC);
+            prepareGroup(view, groupHandles, ID_HANDLES);
+
+            isAdded = true;
+        }
+    }
 
     @Override
     public final void addLayer(String layerId) {
@@ -55,25 +78,48 @@ public class DefaultLayerManager
 
 
     @Override
-    public ObservableList<Node> getAllLayers() {
+    public ObservableList<Node> getStaticFeedbackLayer() {
+        return groupFeedbackStatic.getChildren();
+    }
+
+
+    @Override
+    public ObservableList<Node> getDynamicFeedbackLayer() {
+        return groupFeedbackDynamic.getChildren();
+    }
+
+
+    @Override
+    public ObservableList<Node> getHandlesLayer() {
+        return groupHandles.getChildren();
+    }
+
+
+    @Override
+    public ObservableList<Node> getAllContentLayers() {
         return layers;
     }
 
 
     @Override
-    public ObservableList<Node> getLayer(String layerId) {
+    public ObservableList<Node> getContentLayer(String layerId) {
         return layersMap.get(layerId).getChildren();
     }
 
 
     @Override
-    public ObservableList<Node> getCurrentLayer() {
-        return getLayer(LAYER_DEFAULT);
+    public ObservableList<Node> getCurrentContentLayer() {
+        return getContentLayer(LAYER_DEFAULT);
     }
 
 
     @Override
-    public String getCurrentLayerId() {
+    public String getCurrentContentLayerId() {
         return LAYER_DEFAULT;
+    }
+
+    private void prepareGroup(ZoomableScrollPaneView viewer, Group group, String id) {
+        group.setId(id);
+        viewer.getContent().add(group);
     }
 }

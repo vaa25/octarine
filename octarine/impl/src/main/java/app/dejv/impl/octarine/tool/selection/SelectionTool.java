@@ -46,7 +46,7 @@ public class SelectionTool
         this.coexistingEditorModes = coexistingEditorModes;
         this.exclusiveEditorModes = exclusiveEditorModes;
 
-        final Node pane = octarine.getViewer();
+        final Node pane = octarine.getView();
 
         if (pane.getScene() != null) {  // If Scene is already available, initiate now...
             initWithSceneAvailable();
@@ -78,7 +78,7 @@ public class SelectionTool
 
 
     private void initWithSceneAvailable() {
-        selectionOutlines = new SelectionOutlines(octarine.getGroupFeedbackStatic(), octarine.getViewer().zoomFactorProperty());
+        selectionOutlines = new SelectionOutlines(octarine.getLayerManager().getStaticFeedbackLayer(), octarine.getView().zoomFactorProperty());
 
         initiated = true;
         if (active) {

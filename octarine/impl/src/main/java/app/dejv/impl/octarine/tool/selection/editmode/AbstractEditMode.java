@@ -42,14 +42,14 @@ public abstract class AbstractEditMode
 
     public AbstractEditMode(Octarine octarine, Class<? extends Request> requestType) {
         requireNonNull(octarine, "octarine is NULL");
-        requireNonNull(octarine.getViewer().getScene(), "scene is NULL");
+        requireNonNull(octarine.getView().getScene(), "scene is NULL");
         requireNonNull(octarine.getCommandStack(), "commandStack is NULL");
         requireNonNull(requestType, "type is NULL");
 
         this.octarine = octarine;
         this.requestType = requestType;
 
-        this.scene = octarine.getViewer().getScene();
+        this.scene = octarine.getView().getScene();
         this.commandStack = octarine.getCommandStack();
 
         LOG = LoggerFactory.getLogger(getClass());

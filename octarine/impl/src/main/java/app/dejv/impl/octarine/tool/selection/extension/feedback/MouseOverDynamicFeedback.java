@@ -32,7 +32,7 @@ public class MouseOverDynamicFeedback
     public MouseOverDynamicFeedback(Octarine octarine) {
         super(octarine);
 
-        final DoubleProperty zoomFactor = octarine.getViewer().zoomFactorProperty();
+        final DoubleProperty zoomFactor = octarine.getView().zoomFactorProperty();
 
         zoomFactor.addListener((observable) -> createOutline());
         spacing = new ConstantZoomDoubleBinding(zoomFactor, SPACING);

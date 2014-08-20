@@ -64,7 +64,7 @@ public class ConfigController {
                 (RequestHandler) appContext.getBean("deleteRequestHandler", modelElement, result));
 
         result.addToolExtension(
-                (ToolExtension) appContext.getBean("containerSelectionToolExtension", result, octarine.getLayerManager().getAllLayers()));
+                (ToolExtension) appContext.getBean("containerSelectionToolExtension", result, octarine.getLayerManager().getAllContentLayers()));
 
         return result;
     }

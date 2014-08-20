@@ -37,7 +37,7 @@ public abstract class CorneredStaticFeedback
     protected CorneredStaticFeedback(Octarine octarine, CompositeObservableBounds selectionBounds) {
         super(octarine);
 
-        final DoubleProperty zoom = octarine.getViewer().zoomFactorProperty();
+        final DoubleProperty zoom = octarine.getView().zoomFactorProperty();
 
         this.selectionBounds = selectionBounds;
         this.size = new ConstantZoomDoubleBinding(zoom, HANDLE_SIZE);

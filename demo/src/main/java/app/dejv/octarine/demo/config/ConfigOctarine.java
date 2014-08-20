@@ -1,9 +1,6 @@
 package app.dejv.octarine.demo.config;
 
-import javafx.scene.Group;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,8 +52,8 @@ public class ConfigOctarine {
 
     @Bean
     @Autowired
-    public LayerManager layerManager(@Qualifier("groupLayers") Group groupLayers) {
-        return new DefaultLayerManager(groupLayers.getChildren());
+    public LayerManager layerManager() {
+        return new DefaultLayerManager();
     }
 
     @Bean
@@ -66,40 +63,13 @@ public class ConfigOctarine {
     }
 
     @Bean
-    public Group groupLayers() {
-        return new Group();
-    }
-
-
-    @Bean
-    public Group groupFeedbackStatic() {
-        return new Group();
-    }
-
-
-    @Bean
-    public Group groupFeedbackDynamic() {
-        return new Group();
-    }
-
-
-    @Bean
-    public Group groupHandles() {
-        return new Group();
-    }
-
-
-    @Bean
     @Autowired
     Octarine octarine(ZoomableScrollPane zoomableScrollPane,
                       CommandStack commandStack,
                       SelectionManager selectionManager,
                       LayerManager layerManager,
-                      Resources resources,
-                      @Qualifier("groupLayers") Group groupLayers,
-                      @Qualifier("groupFeedbackStatic") Group groupFeedbackStatic,
-                      @Qualifier("groupFeedbackDynamic") Group groupFeedbackDynamic,
-                      @Qualifier("groupHandles") Group groupHandles) {
-        return new DefaultOctarineImpl(zoomableScrollPane, commandStack, selectionManager, layerManager, resources, groupLayers, groupFeedbackStatic, groupFeedbackDynamic, groupHandles);
+                      Resources resources) {
+
+        return new DefaultOctarineImpl(zoomableScrollPane, commandStack, selectionManager, layerManager, resources);
     }
 }

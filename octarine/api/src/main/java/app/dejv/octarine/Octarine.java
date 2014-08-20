@@ -7,9 +7,6 @@ package app.dejv.octarine;
 
 import java.util.List;
 
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-
 import app.dejv.octarine.command.CommandStack;
 import app.dejv.octarine.controller.ContainerController;
 import app.dejv.octarine.infrastructure.Resources;
@@ -35,7 +32,7 @@ public interface Octarine {
 
     ContainerController getRootController();
 
-    ZoomableScrollPane getViewer();
+    ZoomableScrollPane getView();
 
 
     long getNextChildSequence();
@@ -56,13 +53,4 @@ public interface Octarine {
     LayerManager getLayerManager();
 
     Resources getResources();
-
-
-    ObservableList<Node> getGroupLayers();
-
-    ObservableList<Node> getGroupFeedbackStatic();
-
-    ObservableList<Node> getGroupFeedbackDynamic();
-
-    ObservableList<Node> getGroupHandles();
 }
