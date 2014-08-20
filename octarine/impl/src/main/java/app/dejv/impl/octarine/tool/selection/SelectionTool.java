@@ -31,7 +31,7 @@ public class SelectionTool
     //Editors, that can only be selected one at a time (ie. Scale, Rotate)
     private final List<ExclusiveEditMode> exclusiveEditorModes;
 
-    private final SelectionOutlines selectionOutlines;
+    private final SelectionOutlinesStaticFeedback selectionOutlinesStaticFeedback;
 
     private ExclusiveEditMode activeExclusiveEditMode = null;
     private ExclusiveEditMode preferredExclusiveEditMode = null;
@@ -40,22 +40,24 @@ public class SelectionTool
     private boolean isActive = false;
 
 
-    public SelectionTool(Octarine octarine, List<EditMode> coexistingEditorModes, List<ExclusiveEditMode> exclusiveEditorModes, SelectionOutlines selectionOutlines) {
+    public SelectionTool(Octarine octarine, List<EditMode> coexistingEditorModes, List<ExclusiveEditMode> exclusiveEditorModes, SelectionOutlinesStaticFeedback selectionOutlinesStaticFeedback) {
         requireNonNull(octarine, "octarine is null");
         requireNonNull(coexistingEditorModes, "coexistingEditorModes is null");
         requireNonNull(exclusiveEditorModes, "exclusiveEditorModes is null");
-        requireNonNull(selectionOutlines, "selectionOutline is null");
+        requireNonNull(selectionOutlinesStaticFeedback, "selectionOutline is null");
 
         this.octarine = octarine;
         this.coexistingEditorModes = coexistingEditorModes;
         this.exclusiveEditorModes = exclusiveEditorModes;
-        this.selectionOutlines = selectionOutlines;
+        this.selectionOutlinesStaticFeedback = selectionOutlinesStaticFeedback;
     }
 
 
     @Override
     public void activate() {
         if (!isActive) {
+
+            selectionOutlinesStaticFeedback.activate();
 
             octarine.getSelectionManager().addSelectionChangeListener(this);
 
@@ -64,6 +66,7 @@ public class SelectionTool
 
             SelectionManager selectionManager = octarine.getSelectionManager();
             List<Controller> currentSelection = selectionManager.getSelection();
+
             selectionChanged(selectionManager, currentSelection, currentSelection, new ArrayList<>());
 
             isActive = true;
@@ -79,7 +82,7 @@ public class SelectionTool
             exclusiveEditorModes.parallelStream().forEach(ExclusiveEditMode::uninstallActivationHandlers);
             coexistingEditorModes.parallelStream().forEach(EditMode::deactivate);
 
-            selectionOutlines.clear();
+            selectionOutlinesStaticFeedback.deactivate();
 
             isActive = false;
         }
@@ -90,7 +93,7 @@ public class SelectionTool
     public void selectionChanged(SelectionManager sender, List<Controller> selection, List<Controller> added, List<Controller> removed) {
         LOG.trace("Selection changed: {}", selection.toString());
 
-        selectionOutlines.selectionChanged(added, removed);
+        selectionOutlinesStaticFeedback.selectionChanged(added, removed);
 
         coexistingEditorModes.stream().forEach(editor -> editor.selectionUpdated(selection));
         exclusiveEditorModes.stream().forEach(editor -> editor.selectionUpdated(selection));

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
+import app.dejv.impl.octarine.tool.selection.SelectionOutlinesStaticFeedback;
 import app.dejv.impl.octarine.tool.selection.SelectionTool;
 import app.dejv.impl.octarine.tool.selection.editmode.EditModeDelete;
 import app.dejv.impl.octarine.tool.selection.editmode.EditModeResize;
@@ -51,10 +52,12 @@ public class ConfigSelectionTool {
         return new EditModeDelete(octarine);
     }
 
+
     @Bean
     public EditModeTranslate editModeTranslate() {
         return new EditModeTranslate(octarine);
     }
+
 
     @Bean
     @Autowired
@@ -89,10 +92,17 @@ public class ConfigSelectionTool {
         return result;
     }
 
+
+    @Bean
+    public SelectionOutlinesStaticFeedback selectionOutlines() {
+        return new SelectionOutlinesStaticFeedback(octarine);
+    }
+
+
     @Bean
     @Autowired
-    public SelectionTool selectionTool(Octarine octarine, List<EditMode> coexistingEditorModes, List<ExclusiveEditMode> exclusiveEditorModes) {
-        final SelectionTool result = new SelectionTool(octarine, coexistingEditorModes, exclusiveEditorModes);
+    public SelectionTool selectionTool(List<EditMode> coexistingEditorModes, List<ExclusiveEditMode> exclusiveEditorModes, SelectionOutlinesStaticFeedback selectionOutlinesStaticFeedback) {
+        final SelectionTool result = new SelectionTool(octarine, coexistingEditorModes, exclusiveEditorModes, selectionOutlinesStaticFeedback);
         for (ExclusiveEditMode eem : exclusiveEditorModes) {
             eem.setExclusivityCoordinator(result);
         }
