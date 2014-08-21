@@ -12,7 +12,7 @@ import javafx.scene.shape.Shape;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import app.dejv.impl.octarine.feedback.StaticFeedback;
+import app.dejv.impl.octarine.feedback.statics.StaticFeedback;
 import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.impl.octarine.utils.ConstantZoomDoubleBinding;
 import app.dejv.impl.octarine.utils.FormattingUtils;

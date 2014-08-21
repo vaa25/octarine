@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Lazy;
 
 import app.dejv.impl.octarine.tool.selection.SelectionOutlinesStaticFeedback;
 import app.dejv.impl.octarine.tool.selection.SelectionTool;
-import app.dejv.impl.octarine.tool.selection.editmode.EditModeDelete;
-import app.dejv.impl.octarine.tool.selection.editmode.EditModeResize;
-import app.dejv.impl.octarine.tool.selection.editmode.EditModeRotate;
-import app.dejv.impl.octarine.tool.selection.editmode.EditModeTranslate;
-import app.dejv.impl.octarine.tool.selection.editmode.feedback.ResizeHandleFeedback;
-import app.dejv.impl.octarine.tool.selection.editmode.feedback.RotateHandleFeedback;
+import app.dejv.impl.octarine.tool.selection.editmode.delete.EditModeDelete;
+import app.dejv.impl.octarine.tool.selection.editmode.resize.EditModeResize;
+import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeHandleFeedback;
+import app.dejv.impl.octarine.tool.selection.editmode.rotate.EditModeRotate;
+import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateHandleFeedback;
+import app.dejv.impl.octarine.tool.selection.editmode.translate.EditModeTranslate;
 import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.octarine.Octarine;
 import app.dejv.octarine.tool.editmode.EditMode;
