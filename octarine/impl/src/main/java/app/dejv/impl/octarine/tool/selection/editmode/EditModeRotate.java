@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import javafx.scene.input.KeyCode;
 
-import app.dejv.impl.octarine.tool.selection.editmode.feedback.RotateStaticFeedback;
+import app.dejv.impl.octarine.tool.selection.editmode.feedback.RotateHandleFeedback;
 import app.dejv.impl.octarine.tool.selection.request.RotateRequest;
 import app.dejv.octarine.Octarine;
 
@@ -22,10 +22,10 @@ import app.dejv.octarine.Octarine;
 public class EditModeRotate
         extends AbstractExclusiveEditMode {
 
-    private final RotateStaticFeedback staticFeedback;
+    private final RotateHandleFeedback staticFeedback;
 
 
-    public EditModeRotate(Octarine octarine, RotateStaticFeedback rotateStaticFeedback) throws IOException {
+    public EditModeRotate(Octarine octarine, RotateHandleFeedback rotateStaticFeedback) throws IOException {
         super(octarine, RotateRequest.class);
         this.staticFeedback = rotateStaticFeedback;
     }

@@ -1,6 +1,5 @@
 package app.dejv.impl.octarine.tool.selection.editmode.feedback;
 
-import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -16,10 +15,10 @@ import app.dejv.octarine.Octarine;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class ResizeStaticFeedback
-        extends CorneredStaticFeedback {
+public class ResizeHandleFeedback
+        extends CorneredHandleFeedback {
 
-    public ResizeStaticFeedback(Octarine octarine, CompositeObservableBounds selectionBounds) {
+    public ResizeHandleFeedback(Octarine octarine, CompositeObservableBounds selectionBounds) {
         super(octarine, selectionBounds);
     }
 
@@ -52,51 +51,46 @@ public class ResizeStaticFeedback
     }
 
 
+
+
     private void bindRectangle(Rectangle rectangle, HandlePos handlePos) {
         rectangle.widthProperty().bind(size);
         rectangle.heightProperty().bind(size);
         rectangle.strokeWidthProperty().bind(FormattingUtils.getDefaultFeedbackStrokeWidth(FormattingUtils.FeedbackType.STATIC));
-
+        rectangle.cursorProperty().setValue(handlePos.getCursor());
+        rectangle.setId("Resize handle " + handlePos);
         switch (handlePos) {
             case N:
                 rectangle.xProperty().bind(selectionBounds.centerXProperty().subtract(sizeHalf));
                 rectangle.yProperty().bind(selectionBounds.minYProperty().subtract(sizeHalf));
-                rectangle.setCursor(Cursor.N_RESIZE);
                 break;
             case NE:
                 rectangle.xProperty().bind(selectionBounds.maxXProperty().subtract(sizeHalf));
                 rectangle.yProperty().bind(selectionBounds.minYProperty().subtract(sizeHalf));
-                rectangle.setCursor(Cursor.NE_RESIZE);
                 break;
             case E:
                 rectangle.xProperty().bind(selectionBounds.maxXProperty().subtract(sizeHalf));
                 rectangle.yProperty().bind(selectionBounds.centerYProperty().subtract(sizeHalf));
-                rectangle.setCursor(Cursor.E_RESIZE);
                 break;
             case SE:
                 rectangle.xProperty().bind(selectionBounds.maxXProperty().subtract(sizeHalf));
                 rectangle.yProperty().bind(selectionBounds.maxYProperty().subtract(sizeHalf));
-                rectangle.setCursor(Cursor.SE_RESIZE);
                 break;
             case S:
                 rectangle.xProperty().bind(selectionBounds.centerXProperty().subtract(sizeHalf));
                 rectangle.yProperty().bind(selectionBounds.maxYProperty().subtract(sizeHalf));
-                rectangle.setCursor(Cursor.S_RESIZE);
                 break;
             case SW:
                 rectangle.xProperty().bind(selectionBounds.minXProperty().subtract(sizeHalf));
                 rectangle.yProperty().bind(selectionBounds.maxYProperty().subtract(sizeHalf));
-                rectangle.setCursor(Cursor.SW_RESIZE);
                 break;
             case W:
                 rectangle.xProperty().bind(selectionBounds.minXProperty().subtract(sizeHalf));
                 rectangle.yProperty().bind(selectionBounds.centerYProperty().subtract(sizeHalf));
-                rectangle.setCursor(Cursor.W_RESIZE);
                 break;
             case NW:
                 rectangle.xProperty().bind(selectionBounds.minXProperty().subtract(sizeHalf));
                 rectangle.yProperty().bind(selectionBounds.minYProperty().subtract(sizeHalf));
-                rectangle.setCursor(Cursor.NW_RESIZE);
                 break;
         }
     }

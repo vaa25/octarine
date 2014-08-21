@@ -27,13 +27,13 @@ import app.dejv.octarine.Octarine;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class RotateStaticFeedback
-        extends CorneredStaticFeedback {
+public class RotateHandleFeedback
+        extends CorneredHandleFeedback {
 
     private final Group pivotCross;
 
 
-    public RotateStaticFeedback(Octarine octarine, CompositeObservableBounds selectionBounds) throws IOException {
+    public RotateHandleFeedback(Octarine octarine, CompositeObservableBounds selectionBounds) throws IOException {
         super(octarine, selectionBounds);
 
         this.pivotCross = InfrastructureUtils.getRequiredShape(octarine.getResources(), "rotpivot");

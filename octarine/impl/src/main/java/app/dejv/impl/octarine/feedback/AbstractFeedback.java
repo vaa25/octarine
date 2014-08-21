@@ -48,7 +48,9 @@ public abstract class AbstractFeedback
         if (!feedbackNodes.contains(this)) {
             feedbackNodes.add(this);
         }
+
         active = true;
+        afterActivate();
     }
 
 
@@ -62,14 +64,20 @@ public abstract class AbstractFeedback
     }
 
 
+    protected void beforeActivate() {
+        bind();
+    }
+
+
+    protected void afterActivate() {
+
+    }
+
+
     protected void beforeDeactivate() {
         onDeactivationConfirmed();
     }
 
-
-    protected void beforeActivate() {
-        bind();
-    }
 
     protected void onDeactivationConfirmed() {
         if (feedbackNodes.contains(this)) {
@@ -79,13 +87,16 @@ public abstract class AbstractFeedback
         afterDeactivate();
     }
 
+
     protected void afterDeactivate() {
         unbind();
     }
 
+
     protected void bind() {
         //Intentionally left blank
     }
+
 
     protected void unbind() {
         //Intentionally left blank

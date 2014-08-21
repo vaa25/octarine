@@ -15,8 +15,8 @@ import app.dejv.impl.octarine.tool.selection.editmode.EditModeDelete;
 import app.dejv.impl.octarine.tool.selection.editmode.EditModeResize;
 import app.dejv.impl.octarine.tool.selection.editmode.EditModeRotate;
 import app.dejv.impl.octarine.tool.selection.editmode.EditModeTranslate;
-import app.dejv.impl.octarine.tool.selection.editmode.feedback.ResizeStaticFeedback;
-import app.dejv.impl.octarine.tool.selection.editmode.feedback.RotateStaticFeedback;
+import app.dejv.impl.octarine.tool.selection.editmode.feedback.ResizeHandleFeedback;
+import app.dejv.impl.octarine.tool.selection.editmode.feedback.RotateHandleFeedback;
 import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.octarine.Octarine;
 import app.dejv.octarine.tool.editmode.EditMode;
@@ -35,15 +35,15 @@ public class ConfigSelectionTool {
 
     @Bean
     @Autowired
-    public ResizeStaticFeedback resizeStaticFeedback(CompositeObservableBounds compositeObservableBounds) {
-        return new ResizeStaticFeedback(octarine, compositeObservableBounds);
+    public ResizeHandleFeedback resizeStaticFeedback(CompositeObservableBounds compositeObservableBounds) {
+        return new ResizeHandleFeedback(octarine, compositeObservableBounds);
     }
 
 
     @Bean
     @Autowired
-    public RotateStaticFeedback rotateStaticFeedback(CompositeObservableBounds compositeObservableBounds) throws IOException {
-        return new RotateStaticFeedback(octarine, compositeObservableBounds);
+    public RotateHandleFeedback rotateStaticFeedback(CompositeObservableBounds compositeObservableBounds) throws IOException {
+        return new RotateHandleFeedback(octarine, compositeObservableBounds);
     }
 
 
@@ -61,14 +61,14 @@ public class ConfigSelectionTool {
 
     @Bean
     @Autowired
-    public EditModeResize editModeResize(ResizeStaticFeedback resizeStaticFeedback) {
+    public EditModeResize editModeResize(ResizeHandleFeedback resizeStaticFeedback) {
         return new EditModeResize(octarine, resizeStaticFeedback);
     }
 
 
     @Bean
     @Autowired
-    public EditModeRotate editModeRotate(RotateStaticFeedback rotateStaticFeedback) throws IOException {
+    public EditModeRotate editModeRotate(RotateHandleFeedback rotateStaticFeedback) throws IOException {
         return new EditModeRotate(octarine, rotateStaticFeedback);
     }
 

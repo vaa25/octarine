@@ -10,7 +10,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.shape.Shape;
 
-import app.dejv.impl.octarine.feedback.StaticFeedback;
+import app.dejv.impl.octarine.feedback.HandleFeedback;
 import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.impl.octarine.utils.ConstantZoomDoubleBinding;
 import app.dejv.octarine.Octarine;
@@ -19,8 +19,8 @@ import app.dejv.octarine.Octarine;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public abstract class CorneredStaticFeedback
-        extends StaticFeedback {
+public abstract class CorneredHandleFeedback
+        extends HandleFeedback {
 
     public static final HandlePos[] ALL_HANDLE_POSITIONS = HandlePos.values();
     public static final HandlePos[] CORNER_HANDLE_POSITIONS = {HandlePos.NE, HandlePos.NW, HandlePos.SE, HandlePos.SW};
@@ -34,7 +34,7 @@ public abstract class CorneredStaticFeedback
     protected Set<HandlePos> handleSet = new HashSet<>();
 
 
-    protected CorneredStaticFeedback(Octarine octarine, CompositeObservableBounds selectionBounds) {
+    protected CorneredHandleFeedback(Octarine octarine, CompositeObservableBounds selectionBounds) {
         super(octarine);
 
         final DoubleProperty zoom = octarine.getView().zoomFactorProperty();
