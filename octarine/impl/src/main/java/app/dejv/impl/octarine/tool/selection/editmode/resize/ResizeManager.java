@@ -7,4 +7,21 @@ package app.dejv.impl.octarine.tool.selection.editmode.resize;
  * Author: dejv (www.dejv.info)
  */
 public class ResizeManager {
+
+    private final ResizeHandleFeedback resizeHandleFeedback;
+    private final ResizeProgressFeedback resizeProgressFeedback;
+
+
+    public ResizeManager(ResizeHandleFeedback resizeHandleFeedback, ResizeProgressFeedback resizeProgressFeedback) {
+        this.resizeHandleFeedback = resizeHandleFeedback;
+        this.resizeProgressFeedback = resizeProgressFeedback;
+    }
+
+    public void activate() {
+        //TODO: Bind to handles drag events
+    }
+
+    public void deactivate() {
+        //TODO: Unbind from handles drag events
+    }
 }
