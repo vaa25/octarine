@@ -3,38 +3,40 @@ package app.dejv.impl.octarine.tool.selection.extension.container;
 import static java.util.Objects.requireNonNull;
 
 import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
 
-import app.dejv.impl.octarine.tool.selection.extension.incremental.IncrementalSelectionManager;
+import app.dejv.impl.octarine.drag.DefaultMouseDragHelper;
+import app.dejv.octarine.input.MouseDragListener;
 import app.dejv.impl.octarine.tool.selection.SelectionActionListener;
+import app.dejv.impl.octarine.tool.selection.extension.incremental.IncrementalSelectionManager;
 import app.dejv.impl.octarine.utils.MathUtils;
 
 /**
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class MarqueeSelectionManager implements SelectionActionListener {
+public class MarqueeSelectionManager
+        implements SelectionActionListener, MouseDragListener {
 
     private final MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback;
-
     private final IncrementalSelectionManager incrementalSelectionManager;
+    private final DefaultMouseDragHelper mouseDragHelper;
 
     private boolean isActive = false;
 
-    private boolean drag = false;
     private double initialX;
     private double initialY;
 
-    private Node view;
     private MarqueeSelectionActionListener listener;
 
 
-    public MarqueeSelectionManager(MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback, IncrementalSelectionManager incrementalSelectionManager) {
+    public MarqueeSelectionManager(MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback, IncrementalSelectionManager incrementalSelectionManager, DefaultMouseDragHelper mouseDragHelper) {
         this.marqueeSelectionDynamicFeedback = marqueeSelectionDynamicFeedback;
         this.incrementalSelectionManager = incrementalSelectionManager;
+        this.mouseDragHelper = mouseDragHelper;
 
-        requireNonNull(marqueeSelectionDynamicFeedback);
-        requireNonNull(incrementalSelectionManager);
+        requireNonNull(marqueeSelectionDynamicFeedback, "marqueeSelectionDynamicFeedback is null");
+        requireNonNull(incrementalSelectionManager, "incrementalSelectionManager is null");
+        requireNonNull(mouseDragHelper, "mouseDragHelper is null");
     }
 
 
@@ -46,12 +48,9 @@ public class MarqueeSelectionManager implements SelectionActionListener {
         requireNonNull(view, "view is null");
         requireNonNull(listener, "listener is null");
 
-        this.view = view;
         this.listener = listener;
 
-        view.addEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
-        view.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
-        view.addEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+        mouseDragHelper.activate(view, this);
     }
 
 
@@ -59,9 +58,46 @@ public class MarqueeSelectionManager implements SelectionActionListener {
         if (!isActive) {
             return;
         }
-        view.removeEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
-        view.removeEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
-        view.removeEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+        mouseDragHelper.deactivate();
+        deactivateContainerSelection();
+    }
+
+
+    @Override
+    public void onDragStarted(double initialX, double initialY) {
+        this.initialX = initialX;
+        this.initialY = initialY;
+
+        marqueeSelectionDynamicFeedback.setInitialCoords(initialX, initialY);
+
+        marqueeSelectionDynamicFeedback.activate();
+        incrementalSelectionManager.activate(this, true, true);
+    }
+
+
+    @Override
+    public void onDragged(double currentX, double currentY) {
+        marqueeSelectionDynamicFeedback.setCurrentCoords(currentX, currentY);
+        incrementalSelectionManager.setFeedbackLocation(MathUtils.mean(initialX, currentX), MathUtils.mean(initialY, currentY));
+    }
+
+
+    @Override
+    public void onDragCancelled(double finalX, double finalY) {
+        deactivateContainerSelection();
+    }
+
+
+    @Override
+    public void onDragCommited(double finalX, double finalY) {
+        incrementalSelectionManager.commit();
+        deactivateContainerSelection();
+    }
+
+
+    @Override
+    public void onMouseReleased(double finalX, double finalY) {
+        deselectAll();
     }
 
 
@@ -89,40 +125,13 @@ public class MarqueeSelectionManager implements SelectionActionListener {
     }
 
 
-    private void handleDragDetected(MouseEvent e) {
-        if (e.isPrimaryButtonDown()) {
-            drag = true;
-
-            initialX = e.getX();
-            initialY = e.getY();
-
-            marqueeSelectionDynamicFeedback.setInitialCoords(initialX, initialY);
-
-            marqueeSelectionDynamicFeedback.activate();
-            incrementalSelectionManager.activate(this, true, true);
-            e.consume();
-        }
-    }
-
-
-    private void handleMouseDragged(MouseEvent e) {
-        if (drag) {
-            marqueeSelectionDynamicFeedback.setCurrentCoords(e.getX(), e.getY());
-
-            incrementalSelectionManager.setFeedbackLocation(MathUtils.mean(initialX, e.getX()), MathUtils.mean(initialY, e.getY()));
-        }
-    }
-
-
-    private void handleMouseReleased(MouseEvent e) {
-        if (drag) {
-            incrementalSelectionManager.commit();
+    private void deactivateContainerSelection() {
+        if (incrementalSelectionManager.isActive()) {
             incrementalSelectionManager.deactivate();
+        }
+
+        if (marqueeSelectionDynamicFeedback.isActive()) {
             marqueeSelectionDynamicFeedback.deactivate();
-            drag = false;
-        } else {
-            deselectAll();
         }
     }
-
 }

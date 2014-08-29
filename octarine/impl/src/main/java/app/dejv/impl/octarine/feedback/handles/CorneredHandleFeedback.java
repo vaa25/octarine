@@ -44,6 +44,11 @@ public abstract class CorneredHandleFeedback
     }
 
 
+    public Map<HandlePos, Shape> getHandles() {
+        return handles;
+    }
+
+
     @Override
     protected void beforeActivate() {
         ensureHandleSetIsValid();

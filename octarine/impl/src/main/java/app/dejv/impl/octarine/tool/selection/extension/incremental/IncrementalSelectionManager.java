@@ -103,6 +103,11 @@ public class IncrementalSelectionManager {
     }
 
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+
     private void handleKeyEvent(KeyEvent e) {
         this.addKeyDown = e.isControlDown();
         this.subtractKeyDown = e.isAltDown();

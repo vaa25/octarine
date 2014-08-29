@@ -110,7 +110,7 @@ public class EditModeTranslate
     private void addTransformationFeedback(double x, double y) {
         moveTransformationFeedback(x, y);
 
-        ObservableList<Node> activeFeedback = getOctarine().getLayerManager().getDynamicFeedbackLayer();
+        final ObservableList<Node> activeFeedback = getOctarine().getLayerManager().getDynamicFeedbackLayer();
         transformationFeedback.keySet().stream().forEach(activeFeedback::add);
     }
 
@@ -126,7 +126,7 @@ public class EditModeTranslate
     }
 
     private void removeTransformationFeedback() {
-        ObservableList<Node> activeFeedback = getOctarine().getLayerManager().getDynamicFeedbackLayer();
+        final ObservableList<Node> activeFeedback = getOctarine().getLayerManager().getDynamicFeedbackLayer();
         transformationFeedback.keySet().stream().forEach(activeFeedback::remove);
         transformationFeedback.clear();
     }

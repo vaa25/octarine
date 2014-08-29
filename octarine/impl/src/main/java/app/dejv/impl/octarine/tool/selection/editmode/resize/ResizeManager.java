@@ -1,27 +1,50 @@
 package app.dejv.impl.octarine.tool.selection.editmode.resize;
 
+import static java.util.Objects.requireNonNull;
+
+import app.dejv.impl.octarine.feedback.handles.HandlePos;
+import app.dejv.impl.octarine.tool.selection.editmode.HandleTransformationManager;
+import app.dejv.octarine.input.MouseDragHelperFactory;
+
 /**
  * Resize manager governs the "resize operation in-progress" phase.
  * It reacts on the input from handles, and updates the ResizeProgressFeedback accordingly.
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class ResizeManager {
+public class ResizeManager extends HandleTransformationManager {
 
-    private final ResizeHandleFeedback resizeHandleFeedback;
     private final ResizeProgressFeedback resizeProgressFeedback;
 
+    public ResizeManager(ResizeHandleFeedback resizeHandleFeedback, ResizeProgressFeedback resizeProgressFeedback, MouseDragHelperFactory mouseDragHelperFactory) {
+        super(resizeHandleFeedback, mouseDragHelperFactory);
 
-    public ResizeManager(ResizeHandleFeedback resizeHandleFeedback, ResizeProgressFeedback resizeProgressFeedback) {
-        this.resizeHandleFeedback = resizeHandleFeedback;
+        requireNonNull(resizeProgressFeedback, "resizeProgressFeedback is null");
+
         this.resizeProgressFeedback = resizeProgressFeedback;
     }
 
-    public void activate() {
-        //TODO: Bind to handles drag events
+
+    @Override
+    protected void showTransformationProgressFeedback(HandlePos handlePos) {
+
     }
 
-    public void deactivate() {
-        //TODO: Unbind from handles drag events
+
+    @Override
+    protected void updateTransformationProgressFeedback(double deltaX, double deltaY) {
+
+    }
+
+
+    @Override
+    protected void commitTransformation(double deltaX, double deltaY) {
+
+    }
+
+
+    @Override
+    protected void hideTransformationFeedback() {
+
     }
 }

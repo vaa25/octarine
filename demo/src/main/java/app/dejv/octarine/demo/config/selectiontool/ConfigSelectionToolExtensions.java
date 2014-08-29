@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
+import app.dejv.impl.octarine.drag.DefaultMouseDragHelper;
 import app.dejv.impl.octarine.tool.selection.extension.container.ContainerSelectionToolExtension;
 import app.dejv.impl.octarine.tool.selection.extension.container.MarqueeSelectionDynamicFeedback;
 import app.dejv.impl.octarine.tool.selection.extension.container.MarqueeSelectionManager;
@@ -37,46 +38,53 @@ public class ConfigSelectionToolExtensions {
     private MouseOverDynamicFeedback mouseOverDynamicFeedback;
 
     @Autowired
-    private MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback;
+    private IncrementalSelectionDynamicFeedback incrementalSelectionDynamicFeedback;
 
     @Autowired
     private IncrementalSelectionManager incrementalSelectionManager;
 
     @Autowired
+    private MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback;
+
+    @Autowired
     private MarqueeSelectionManager marqueeSelectionManager;
 
-    @Bean
     @Autowired
-    public MouseOverDynamicFeedback mouseOverDynamicFeedback(Octarine octarine) {
+    private DefaultMouseDragHelper mouseDragHelper;
+
+
+    @Bean
+    public MouseOverDynamicFeedback mouseOverDynamicFeedback() {
         return new MouseOverDynamicFeedback(octarine);
     }
 
 
     @Bean
-    @Autowired
-    public MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback(Octarine octarine) {
+    public MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback() {
         return new MarqueeSelectionDynamicFeedback(octarine);
     }
 
 
     @Bean
-    @Autowired
-    public IncrementalSelectionDynamicFeedback incrementalSelectionDynamicFeedback(Octarine octarine) throws IOException {
+    public IncrementalSelectionDynamicFeedback incrementalSelectionDynamicFeedback() throws IOException {
         return new IncrementalSelectionDynamicFeedback(octarine);
     }
 
+    @Bean
+    @Scope("prototype")
+    public DefaultMouseDragHelper mouseDragHelper() {
+        return new DefaultMouseDragHelper();
+    }
 
     @Bean
-    @Autowired
-    public IncrementalSelectionManager incrementalSelectionManager(Octarine octarine, IncrementalSelectionDynamicFeedback incrementalSelectionDynamicFeedback) {
+    public IncrementalSelectionManager incrementalSelectionManager() {
         return new IncrementalSelectionManager(octarine, incrementalSelectionDynamicFeedback);
     }
 
 
     @Bean
-    @Autowired
-    public MarqueeSelectionManager marqueeSelectionManager(MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback, IncrementalSelectionManager incrementalSelectionManager) {
-        return new MarqueeSelectionManager(marqueeSelectionDynamicFeedback, incrementalSelectionManager);
+    public MarqueeSelectionManager marqueeSelectionManager() {
+        return new MarqueeSelectionManager(marqueeSelectionDynamicFeedback, incrementalSelectionManager, mouseDragHelper);
     }
 
 
