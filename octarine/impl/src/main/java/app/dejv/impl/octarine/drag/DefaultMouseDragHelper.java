@@ -18,10 +18,15 @@ public class DefaultMouseDragHelper implements MouseDragHelper {
     private MouseDragListener listener;
 
     private boolean drag;
+    private boolean isActive = false;
 
 
     @Override
     public void activate(Node node, MouseDragListener listener) {
+        if (isActive) {
+            return;
+        }
+
         requireNonNull(node, "node is null");
         requireNonNull(listener, "listener is null");
 
@@ -31,17 +36,24 @@ public class DefaultMouseDragHelper implements MouseDragHelper {
         node.addEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
         node.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
         node.addEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+
+        isActive = true;
     }
 
 
     @Override
     public void deactivate() {
+        if (!isActive) {
+            return;
+        }
+
         node.removeEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
         node.removeEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
         node.removeEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
 
         node = null;
         listener = null;
+        isActive = false;
     }
 
 

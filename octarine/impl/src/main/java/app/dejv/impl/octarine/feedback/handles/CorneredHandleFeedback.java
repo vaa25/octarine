@@ -1,5 +1,7 @@
 package app.dejv.impl.octarine.feedback.handles;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +10,7 @@ import java.util.Set;
 
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
+import javafx.geometry.Point2D;
 import javafx.scene.shape.Shape;
 
 import app.dejv.impl.octarine.utils.CompositeObservableBounds;
@@ -21,18 +24,19 @@ import app.dejv.octarine.Octarine;
 public abstract class CorneredHandleFeedback
         extends HandleFeedback {
 
-    public static final HandlePos[] ALL_HANDLE_POSITIONS = HandlePos.values();
-    public static final HandlePos[] CORNER_HANDLE_POSITIONS = {HandlePos.NE, HandlePos.NW, HandlePos.SE, HandlePos.SW};
+    public static final Direction[] ALL_HANDLE_POSITIONS = Direction.values();
+    public static final Direction[] CORNER_HANDLE_POSITIONS = {Direction.NE, Direction.NW, Direction.SE, Direction.SW};
 
     public static final double HANDLE_SIZE = 6.0d;
 
     protected final CompositeObservableBounds selectionBounds;
     protected final DoubleBinding size;
     protected final DoubleBinding sizeHalf;
-    protected final Map<HandlePos, Shape> handles = new HashMap<>();
-    protected Set<HandlePos> handleSet = new HashSet<>();
+    protected final Map<Direction, Shape> handles = new HashMap<>();
+    protected Set<Direction> handleSet = new HashSet<>();
 
 
+    @SuppressWarnings({"OverridableMethodCallDuringObjectConstruction", "OverriddenMethodCallDuringObjectConstruction", "AbstractMethodCallInConstructor"})
     protected CorneredHandleFeedback(Octarine octarine, CompositeObservableBounds selectionBounds) {
         super(octarine);
 
@@ -41,19 +45,37 @@ public abstract class CorneredHandleFeedback
         this.selectionBounds = selectionBounds;
         this.size = new ConstantZoomDoubleBinding(zoom, HANDLE_SIZE);
         this.sizeHalf = new ConstantZoomDoubleBinding(zoom, HANDLE_SIZE / 2.0d);
+
+        fillHandlePositions(handleSet);
+        handleSet.forEach(handleType -> handles.put(handleType, createHandle(handleType)));
+
     }
 
 
-    public Map<HandlePos, Shape> getHandles() {
+    public Map<Direction, Shape> getHandles() {
         return handles;
+    }
+
+
+    public Point2D getHandleLocation(Direction pos) {
+        requireNonNull(pos, "pos is null");
+
+        switch (pos) {
+            case N: return new Point2D(selectionBounds.getCenterX(), selectionBounds.getMinY());
+            case NE: return new Point2D(selectionBounds.getMaxX(), selectionBounds.getMinY());
+            case E: return new Point2D(selectionBounds.getMaxX(), selectionBounds.getCenterY());
+            case SE: return new Point2D(selectionBounds.getMaxX(), selectionBounds.getMaxY());
+            case S: return new Point2D(selectionBounds.getCenterX(), selectionBounds.getMaxY());
+            case SW: return new Point2D(selectionBounds.getMinX(), selectionBounds.getMaxY());
+            case W: return new Point2D(selectionBounds.getMinX(), selectionBounds.getCenterY());
+            case NW: return new Point2D(selectionBounds.getMinX(), selectionBounds.getMinY());
+        }
+        return null;
     }
 
 
     @Override
     protected void beforeActivate() {
-        ensureHandleSetIsValid();
-        ensureHandlesAreValid();
-
         super.beforeActivate();
 
         handles.values().forEach(handle -> getChildren().add(handle));
@@ -82,29 +104,15 @@ public abstract class CorneredHandleFeedback
     }
 
 
-    protected void fillHandlePositions(final Set<HandlePos> handleSet) {
+    protected void fillHandlePositions(final Set<Direction> handleSet) {
         Collections.addAll(handleSet, ALL_HANDLE_POSITIONS);
     }
 
 
-    protected abstract Shape createHandle(HandlePos handlePos);
+    protected abstract Shape createHandle(Direction direction);
 
-    protected abstract void bindHandle(Shape handle, HandlePos handlePos);
+    protected abstract void bindHandle(Shape handle, Direction direction);
 
     protected abstract void unbindHandle(Shape handle);
-
-
-    private void ensureHandleSetIsValid() {
-        if (handleSet.isEmpty()) {
-            fillHandlePositions(handleSet);
-        }
-    }
-
-
-    private void ensureHandlesAreValid() {
-        if (handles.isEmpty()) {
-            handleSet.forEach(handleType -> handles.put(handleType, createHandle(handleType)));
-        }
-    }
 
 }

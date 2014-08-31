@@ -37,7 +37,7 @@ public abstract class AbstractFeedback
     }
 
 
-    public final void activate() {
+    public void activate() {
         if (active)
             return;
 

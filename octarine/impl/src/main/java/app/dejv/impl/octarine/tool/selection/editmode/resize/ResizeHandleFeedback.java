@@ -6,7 +6,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 
 import app.dejv.impl.octarine.feedback.handles.CorneredHandleFeedback;
-import app.dejv.impl.octarine.feedback.handles.HandlePos;
+import app.dejv.impl.octarine.feedback.handles.Direction;
 import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.impl.octarine.utils.FormattingUtils;
 import app.dejv.impl.octarine.utils.FormattingUtils.FeedbackOpacity;
@@ -26,7 +26,7 @@ public class ResizeHandleFeedback
 
 
     @Override
-    protected Shape createHandle(HandlePos handlePos) {
+    protected Shape createHandle(Direction direction) {
         Rectangle rectangle = new Rectangle();
 
         rectangle.setFill(Color.WHITE);
@@ -38,10 +38,10 @@ public class ResizeHandleFeedback
 
 
     @Override
-    protected void bindHandle(Shape handle, HandlePos handlePos) {
+    protected void bindHandle(Shape handle, Direction direction) {
         assert handle instanceof Rectangle : "Expected handles of type Rectangle";
 
-        bindRectangle((Rectangle) handle, handlePos);
+        bindRectangle((Rectangle) handle, direction);
     }
 
 
@@ -55,13 +55,13 @@ public class ResizeHandleFeedback
 
 
 
-    private void bindRectangle(Rectangle rectangle, HandlePos handlePos) {
+    private void bindRectangle(Rectangle rectangle, Direction direction) {
         rectangle.widthProperty().bind(size);
         rectangle.heightProperty().bind(size);
         rectangle.strokeWidthProperty().bind(FormattingUtils.getDefaultFeedbackStrokeWidth(FormattingUtils.FeedbackType.STATIC));
-        rectangle.cursorProperty().setValue(handlePos.getCursor());
-        rectangle.setId("Resize handles " + handlePos);
-        switch (handlePos) {
+        rectangle.cursorProperty().setValue(direction.getCursor());
+        rectangle.setId("Resize handles " + direction);
+        switch (direction) {
             case N:
                 rectangle.xProperty().bind(selectionBounds.centerXProperty().subtract(sizeHalf));
                 rectangle.yProperty().bind(selectionBounds.minYProperty().subtract(sizeHalf));

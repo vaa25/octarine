@@ -16,7 +16,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 
 import app.dejv.impl.octarine.feedback.handles.CorneredHandleFeedback;
-import app.dejv.impl.octarine.feedback.handles.HandlePos;
+import app.dejv.impl.octarine.feedback.handles.Direction;
 import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.impl.octarine.utils.ConstantZoomDoubleBinding;
 import app.dejv.impl.octarine.utils.FormattingUtils.FeedbackOpacity;
@@ -59,13 +59,13 @@ public class RotateHandleFeedback
 
 
     @Override
-    protected void fillHandlePositions(Set<HandlePos> handleSet) {
+    protected void fillHandlePositions(Set<Direction> handleSet) {
         Collections.addAll(handleSet, CORNER_HANDLE_POSITIONS);
     }
 
 
     @Override
-    protected Shape createHandle(HandlePos handlePos) {
+    protected Shape createHandle(Direction direction) {
         final Circle circle = new Circle();
 
         circle.setFill(Color.WHITE);
@@ -73,16 +73,16 @@ public class RotateHandleFeedback
         circle.setStrokeType(StrokeType.OUTSIDE);
         circle.setCursor(Cursor.HAND);
 
-        bindCircle(circle, handlePos);
+        bindCircle(circle, direction);
         return circle;
     }
 
 
     @Override
-    protected void bindHandle(Shape handle, HandlePos handlePos) {
+    protected void bindHandle(Shape handle, Direction direction) {
         assert handle instanceof Circle : "Expected handles of type Circle";
 
-        bindCircle((Circle) handle, handlePos);
+        bindCircle((Circle) handle, direction);
     }
 
 
@@ -94,11 +94,11 @@ public class RotateHandleFeedback
     }
 
 
-    private void bindCircle(Circle circle, HandlePos handlePos) {
+    private void bindCircle(Circle circle, Direction direction) {
         circle.radiusProperty().bind(sizeHalf);
         circle.strokeWidthProperty().bind(getDefaultFeedbackStrokeWidth(FeedbackType.STATIC));
 
-        switch (handlePos) {
+        switch (direction) {
             case NE:
                 circle.centerXProperty().bind(selectionBounds.maxXProperty());
                 circle.centerYProperty().bind(selectionBounds.minYProperty());

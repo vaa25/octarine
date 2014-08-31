@@ -6,7 +6,7 @@ import javafx.scene.Cursor;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public enum HandlePos {
+public enum Direction {
 
     N(Cursor.N_RESIZE),
     NE(Cursor.NE_RESIZE),
@@ -20,12 +20,26 @@ public enum HandlePos {
     private final Cursor cursor;
 
 
-    private HandlePos(Cursor cursor) {
+    private Direction(Cursor cursor) {
         this.cursor = cursor;
     }
 
 
     public Cursor getCursor() {
         return cursor;
+    }
+
+    public Direction getOpposite() {
+        switch (this) {
+            case N: return S;
+            case NE: return SW;
+            case E: return W;
+            case SE: return NW;
+            case S : return N;
+            case SW: return NE;
+            case W: return E;
+            case NW: return SE;
+        }
+        return null;
     }
 }

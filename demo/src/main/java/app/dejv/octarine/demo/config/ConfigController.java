@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Scope;
 
 import app.dejv.impl.octarine.controller.DefaultContainerController;
 import app.dejv.impl.octarine.controller.DefaultController;
+import app.dejv.impl.octarine.drag.DefaultMouseDragHelper;
 import app.dejv.impl.octarine.model.BasicProperties;
 import app.dejv.impl.octarine.model.chunk.DoubleTuple;
 import app.dejv.impl.octarine.request.shape.DefaultShapeRequestHandler;
@@ -131,6 +132,13 @@ public class ConfigController {
     @Scope("prototype")
     public RequestHandler rotateRequestHandler(ModelElement modelElement, Controller controller) {
         return new RotateRequestHandler();
+    }
+
+
+    @Bean
+    @Scope("prototype")
+    public DefaultMouseDragHelper mouseDragHelper() {
+        return new DefaultMouseDragHelper();
     }
 
 }

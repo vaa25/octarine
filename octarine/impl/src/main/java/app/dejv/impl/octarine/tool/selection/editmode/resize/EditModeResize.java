@@ -1,5 +1,7 @@
 package app.dejv.impl.octarine.tool.selection.editmode.resize;
 
+import static java.util.Objects.requireNonNull;
+
 import javafx.scene.input.KeyCode;
 
 import app.dejv.impl.octarine.tool.selection.editmode.AbstractExclusiveEditMode;
@@ -14,12 +16,17 @@ import app.dejv.octarine.Octarine;
 public class EditModeResize
         extends AbstractExclusiveEditMode {
 
-    private ResizeHandleFeedback staticFeedback;
+    private ResizeHandleFeedback resizeHandleFeedback;
+    private ResizeProgressManager resizeProgressManager;
 
 
-    public EditModeResize(Octarine octarine, ResizeHandleFeedback resizeStaticFeedback) {
+    public EditModeResize(Octarine octarine, ResizeHandleFeedback resizeHandleFeedback, ResizeProgressManager resizeProgressManager) {
         super(octarine, ResizeRequest.class);
-        this.staticFeedback = resizeStaticFeedback;
+        requireNonNull(resizeHandleFeedback, "resizeHandleFeedback is null");
+        requireNonNull(resizeProgressManager, "resizeProgressManager is null");
+
+        this.resizeHandleFeedback = resizeHandleFeedback;
+        this.resizeProgressManager = resizeProgressManager;
     }
 
 
@@ -31,12 +38,14 @@ public class EditModeResize
 
     @Override
     protected void doActivate() {
-        staticFeedback.activate();
+        resizeHandleFeedback.activate();
+        resizeProgressManager.activate(selection);
     }
 
 
     @Override
     protected void doDeactivate() {
-        staticFeedback.deactivate();
+        resizeHandleFeedback.deactivate();
+        resizeProgressManager.deactivate();
     }
 }

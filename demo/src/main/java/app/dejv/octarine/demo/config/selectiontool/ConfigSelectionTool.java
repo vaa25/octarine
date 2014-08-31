@@ -14,11 +14,14 @@ import app.dejv.impl.octarine.tool.selection.SelectionTool;
 import app.dejv.impl.octarine.tool.selection.editmode.delete.EditModeDelete;
 import app.dejv.impl.octarine.tool.selection.editmode.resize.EditModeResize;
 import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeHandleFeedback;
+import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeProgressFeedback;
+import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeProgressManager;
 import app.dejv.impl.octarine.tool.selection.editmode.rotate.EditModeRotate;
 import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateHandleFeedback;
 import app.dejv.impl.octarine.tool.selection.editmode.translate.EditModeTranslate;
 import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.octarine.Octarine;
+import app.dejv.octarine.input.MouseDragHelperFactory;
 import app.dejv.octarine.tool.editmode.EditMode;
 import app.dejv.octarine.tool.editmode.ExclusiveEditMode;
 
@@ -33,12 +36,33 @@ public class ConfigSelectionTool {
     @Autowired
     private Octarine octarine;
 
+    @Autowired
+    private MouseDragHelperFactory mouseDragHelperFactory;
+
+    @Autowired
+    private ResizeHandleFeedback resizeHandleFeedback;
+
+    @Autowired
+    private ResizeProgressFeedback resizeProgressFeedback;
+
+    @Autowired
+    private ResizeProgressManager resizeProgressManager;
+
     @Bean
     @Autowired
     public ResizeHandleFeedback resizeStaticFeedback(CompositeObservableBounds compositeObservableBounds) {
         return new ResizeHandleFeedback(octarine, compositeObservableBounds);
     }
 
+    @Bean
+    public ResizeProgressFeedback resizeProgressFeedback() {
+        return new ResizeProgressFeedback(octarine);
+    }
+
+    @Bean
+    ResizeProgressManager resizeProgressManager() {
+        return new ResizeProgressManager(resizeHandleFeedback, resizeProgressFeedback, mouseDragHelperFactory);
+    }
 
     @Bean
     @Autowired
@@ -62,7 +86,7 @@ public class ConfigSelectionTool {
     @Bean
     @Autowired
     public EditModeResize editModeResize(ResizeHandleFeedback resizeStaticFeedback) {
-        return new EditModeResize(octarine, resizeStaticFeedback);
+        return new EditModeResize(octarine, resizeStaticFeedback, resizeProgressManager);
     }
 
 

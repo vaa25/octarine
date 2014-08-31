@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
-import app.dejv.impl.octarine.drag.DefaultMouseDragHelper;
 import app.dejv.impl.octarine.tool.selection.extension.container.ContainerSelectionToolExtension;
 import app.dejv.impl.octarine.tool.selection.extension.container.MarqueeSelectionDynamicFeedback;
 import app.dejv.impl.octarine.tool.selection.extension.container.MarqueeSelectionManager;
@@ -22,6 +21,7 @@ import app.dejv.impl.octarine.tool.selection.extension.single.SingleSelectionToo
 import app.dejv.octarine.Octarine;
 import app.dejv.octarine.controller.ContainerController;
 import app.dejv.octarine.controller.Controller;
+import app.dejv.octarine.input.MouseDragHelperFactory;
 
 /**
  * <br/>
@@ -33,6 +33,9 @@ public class ConfigSelectionToolExtensions {
 
     @Autowired
     private Octarine octarine;
+
+    @Autowired
+    private MouseDragHelperFactory mouseDragHelperFactory;
 
     @Autowired
     private MouseOverDynamicFeedback mouseOverDynamicFeedback;
@@ -48,9 +51,6 @@ public class ConfigSelectionToolExtensions {
 
     @Autowired
     private MarqueeSelectionManager marqueeSelectionManager;
-
-    @Autowired
-    private DefaultMouseDragHelper mouseDragHelper;
 
 
     @Bean
@@ -70,11 +70,6 @@ public class ConfigSelectionToolExtensions {
         return new IncrementalSelectionDynamicFeedback(octarine);
     }
 
-    @Bean
-    @Scope("prototype")
-    public DefaultMouseDragHelper mouseDragHelper() {
-        return new DefaultMouseDragHelper();
-    }
 
     @Bean
     public IncrementalSelectionManager incrementalSelectionManager() {
@@ -84,7 +79,7 @@ public class ConfigSelectionToolExtensions {
 
     @Bean
     public MarqueeSelectionManager marqueeSelectionManager() {
-        return new MarqueeSelectionManager(marqueeSelectionDynamicFeedback, incrementalSelectionManager, mouseDragHelper);
+        return new MarqueeSelectionManager(marqueeSelectionDynamicFeedback, incrementalSelectionManager, mouseDragHelperFactory.create());
     }
 
 

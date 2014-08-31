@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import javafx.scene.Node;
 
-import app.dejv.impl.octarine.drag.DefaultMouseDragHelper;
+import app.dejv.octarine.input.MouseDragHelper;
 import app.dejv.octarine.input.MouseDragListener;
 import app.dejv.impl.octarine.tool.selection.SelectionActionListener;
 import app.dejv.impl.octarine.tool.selection.extension.incremental.IncrementalSelectionManager;
@@ -19,7 +19,7 @@ public class MarqueeSelectionManager
 
     private final MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback;
     private final IncrementalSelectionManager incrementalSelectionManager;
-    private final DefaultMouseDragHelper mouseDragHelper;
+    private final MouseDragHelper mouseDragHelper;
 
     private boolean isActive = false;
 
@@ -29,7 +29,7 @@ public class MarqueeSelectionManager
     private MarqueeSelectionActionListener listener;
 
 
-    public MarqueeSelectionManager(MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback, IncrementalSelectionManager incrementalSelectionManager, DefaultMouseDragHelper mouseDragHelper) {
+    public MarqueeSelectionManager(MarqueeSelectionDynamicFeedback marqueeSelectionDynamicFeedback, IncrementalSelectionManager incrementalSelectionManager, MouseDragHelper mouseDragHelper) {
         this.marqueeSelectionDynamicFeedback = marqueeSelectionDynamicFeedback;
         this.incrementalSelectionManager = incrementalSelectionManager;
         this.mouseDragHelper = mouseDragHelper;
