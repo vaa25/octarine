@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Scale;
+import javafx.scene.transform.Transform;
 
 import app.dejv.impl.octarine.feedback.handles.Direction;
 import app.dejv.impl.octarine.tool.selection.editmode.HandleTransformationManager;
@@ -21,10 +23,14 @@ public class ResizeProgressManager
         extends HandleTransformationManager {
 
     private final ResizeProgressFeedback resizeProgressFeedback;
+
     private double originalWidth;
     private double originalHeight;
     private Direction pivotDirection;
     private Point2D locPivot;
+    private Scale scale;
+
+
 
     public ResizeProgressManager(ResizeHandleFeedback resizeHandleFeedback, ResizeProgressFeedback resizeProgressFeedback, MouseDragHelperFactory mouseDragHelperFactory) {
         super(resizeHandleFeedback, mouseDragHelperFactory);
@@ -39,14 +45,17 @@ public class ResizeProgressManager
     protected void showTransformationProgressFeedback(Direction direction, Set<Shape> shapes) {
         pivotDirection = direction.getOpposite();
         locPivot = getHandleFeedback().getHandleLocation(pivotDirection);
-        
+
         final Point2D locHandle = getHandleFeedback().getHandleLocation(direction);
 
         originalWidth = locHandle.getX()-locPivot.getX();
         originalHeight = locHandle.getY()-locPivot.getY();
 
-        resizeProgressFeedback.setScalePivot(locPivot);
-        resizeProgressFeedback.activate(shapes);
+        scale = new Scale();
+        scale.setPivotX(locPivot.getX());
+        scale.setPivotY(locPivot.getY());
+
+        resizeProgressFeedback.activate(shapes, scale);
     }
 
 
@@ -55,19 +64,20 @@ public class ResizeProgressManager
         final double sx = getRatio(originalWidth, deltaX, pivotDirection, Direction.N);
         final double sy = getRatio(originalHeight, deltaY, pivotDirection, Direction.E);
 
-        resizeProgressFeedback.setScale(sx, sy);
-    }
-
-
-    @Override
-    protected void commitTransformation(double deltaX, double deltaY) {
-
+        scale.setX(sx);
+        scale.setY(sy);
     }
 
 
     @Override
     protected void hideTransformationFeedback() {
         resizeProgressFeedback.deactivate();
+    }
+
+
+    @Override
+    protected Transform getTransform() {
+        return scale;
     }
 
 

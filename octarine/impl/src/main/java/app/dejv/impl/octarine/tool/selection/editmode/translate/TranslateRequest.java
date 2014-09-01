@@ -20,7 +20,7 @@ public class TranslateRequest
     }
 
 
-    public Dimension2D getPositionDelta() {
+    public Dimension2D getLocationDelta() {
         return positionDelta;
     }
 }

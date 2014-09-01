@@ -5,14 +5,12 @@ import static java.util.Objects.requireNonNull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Transform;
 
 import app.dejv.impl.octarine.feedback.handles.CorneredHandleFeedback;
 import app.dejv.impl.octarine.feedback.handles.Direction;
-import app.dejv.impl.octarine.utils.ControllerUtils;
-import app.dejv.octarine.controller.Controller;
 import app.dejv.octarine.input.MouseDragHelper;
 import app.dejv.octarine.input.MouseDragHelperFactory;
 import app.dejv.octarine.input.MouseDragListener;
@@ -39,7 +37,10 @@ public abstract class HandleTransformationManager {
     }
 
 
-    public void activate(Set<Controller> selection) {
+    public void activate(Set<Shape> selectedShapes, TransformationListener listener) {
+        requireNonNull(selectedShapes, "selectedShapes is null");
+        requireNonNull(listener, "listener is null");
+
         mouseDragHelpers.entrySet().forEach((entry) ->
                 entry.getValue().activate(corneredHandleFeedback.getHandles().get(entry.getKey()), new MouseDragListener() {
 
@@ -50,7 +51,7 @@ public abstract class HandleTransformationManager {
             public void onDragStarted(double initialX, double initialY) {
                 this.initialX = initialX;
                 this.initialY = initialY;
-                showTransformationProgressFeedback(entry.getKey(), selection.stream().map(ControllerUtils::getShape).collect(Collectors.toSet()));
+                showTransformationProgressFeedback(entry.getKey(), selectedShapes);
             }
 
 
@@ -68,7 +69,13 @@ public abstract class HandleTransformationManager {
 
             @Override
             public void onDragCommited(double finalX, double finalY) {
-                commitTransformation(finalX - initialX, finalY - initialY);
+                updateTransformationProgressFeedback(finalX - initialX, finalY - initialY);
+                final Transform transform = getTransform();
+
+                requireNonNull(transform, "transform is null");
+
+                listener.transformationCommited(transform);
+
                 hideTransformationFeedback();
             }
 
@@ -97,7 +104,7 @@ public abstract class HandleTransformationManager {
 
     protected abstract void updateTransformationProgressFeedback(double deltaX, double deltaY);
 
-    protected abstract void commitTransformation(double deltaX, double deltaY);
-
     protected abstract void hideTransformationFeedback();
+
+    protected abstract Transform getTransform();
 }

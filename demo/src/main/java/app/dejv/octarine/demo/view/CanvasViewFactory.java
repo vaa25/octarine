@@ -35,8 +35,8 @@ public class CanvasViewFactory extends AbstractShapeFactory {
 
         r.setLayoutX(0.0d);
         r.setLayoutY(0.0d);
-        r.widthProperty().bind(size.getX());
-        r.heightProperty().bind(size.getY());
+        r.widthProperty().bind(size.xProperty());
+        r.heightProperty().bind(size.yProperty());
         return r;
     }
 }

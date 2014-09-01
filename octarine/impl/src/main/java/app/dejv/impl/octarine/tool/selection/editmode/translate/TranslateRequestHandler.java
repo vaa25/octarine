@@ -2,6 +2,9 @@ package app.dejv.impl.octarine.tool.selection.editmode.translate;
 
 import static java.util.Objects.requireNonNull;
 
+import javafx.geometry.Dimension2D;
+import javafx.geometry.Point2D;
+
 import app.dejv.impl.octarine.model.chunk.DoubleTuple;
 import app.dejv.impl.octarine.request.AbstractRequestHandler;
 import app.dejv.octarine.request.Request;
@@ -14,11 +17,11 @@ import app.dejv.octarine.request.Request;
 public class TranslateRequestHandler
         extends AbstractRequestHandler {
 
-    private final DoubleTuple coords;
+    private final DoubleTuple location;
 
-    public TranslateRequestHandler(DoubleTuple coords) {
-        requireNonNull(coords, "coords is null");
-        this.coords = coords;
+    public TranslateRequestHandler(DoubleTuple location) {
+        requireNonNull(location, "location is null");
+        this.location = location;
     }
 
     @Override
@@ -31,7 +34,10 @@ public class TranslateRequestHandler
     public void requestChecked(Request request) {
         final TranslateRequest translateRequest = (TranslateRequest) request;
 
-        translateRequest.setCommand(new TranslateCommand(coords, translateRequest.getPositionDelta()));
+        final Dimension2D locationDelta = translateRequest.getLocationDelta();
+        final Point2D newLocation = new Point2D(location.getX() + locationDelta.getWidth(), location.getY() + locationDelta.getHeight());
+
+        translateRequest.setCommand(new TranslateCommand(location, newLocation));
     }
 
 }

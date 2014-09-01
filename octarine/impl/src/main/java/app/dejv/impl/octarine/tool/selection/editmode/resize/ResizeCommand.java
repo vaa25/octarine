@@ -19,7 +19,8 @@ public class ResizeCommand
 
     public ResizeCommand(DoubleTuple size, Dimension2D sizeDelta) {
         this.size = size;
-        this.originalDimensions = new Dimension2D(size.getX().doubleValue(), size.getY().doubleValue());
+        this.originalDimensions = new Dimension2D(size.getX(), size.getY());
+
         this.newDimensions = new Dimension2D(originalDimensions.getWidth() + sizeDelta.getWidth(), originalDimensions.getHeight() + sizeDelta.getHeight());
     }
 

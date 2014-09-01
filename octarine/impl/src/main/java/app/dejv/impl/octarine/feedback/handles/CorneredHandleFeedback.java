@@ -74,6 +74,12 @@ public abstract class CorneredHandleFeedback
     }
 
 
+    public Point2D getRelativeHandleLocation(Direction pos) {
+        final Point2D loc = getHandleLocation(pos);
+        return loc.subtract(getHandleLocation(Direction.NW));
+    }
+
+
     @Override
     protected void beforeActivate() {
         super.beforeActivate();

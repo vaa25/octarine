@@ -2,9 +2,16 @@ package app.dejv.impl.octarine.tool.selection.editmode.resize;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javafx.scene.input.KeyCode;
+import javafx.scene.shape.Shape;
+import javafx.scene.transform.Transform;
 
 import app.dejv.impl.octarine.tool.selection.editmode.AbstractExclusiveEditMode;
+import app.dejv.impl.octarine.tool.selection.editmode.TransformationListener;
+import app.dejv.impl.octarine.utils.ControllerUtils;
 import app.dejv.octarine.Octarine;
 
 /**
@@ -14,7 +21,8 @@ import app.dejv.octarine.Octarine;
  * Author: dejv (www.dejv.info)
  */
 public class EditModeResize
-        extends AbstractExclusiveEditMode {
+        extends AbstractExclusiveEditMode
+        implements TransformationListener {
 
     private ResizeHandleFeedback resizeHandleFeedback;
     private ResizeProgressManager resizeProgressManager;
@@ -31,6 +39,12 @@ public class EditModeResize
 
 
     @Override
+    public void transformationCommited(Transform transform) {
+        executeOnSelection(new ResizeRequest(transform));
+    }
+
+
+    @Override
     protected KeyCode getActivationKey() {
         return KeyCode.S;
     }
@@ -38,8 +52,15 @@ public class EditModeResize
 
     @Override
     protected void doActivate() {
+        final Set<Shape> shapes = new HashSet<>();
+
+        selection.forEach((controller) -> {
+            Shape shape = ControllerUtils.getShape(controller);
+            shapes.add(shape);
+        });
+
         resizeHandleFeedback.activate();
-        resizeProgressManager.activate(selection);
+        resizeProgressManager.activate(shapes, this);
     }
 
 

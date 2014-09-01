@@ -4,7 +4,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 /**
- *
  * <br/>
  * Author: dejv (www.dejv.info)
  */
@@ -19,21 +18,35 @@ public class DoubleTuple {
     }
 
 
-    public DoubleProperty getX() {
+    public DoubleProperty xProperty() {
         return x;
     }
+
+
+    public double getX() {
+        return x.doubleValue();
+    }
+
 
     public void setX(double newX) {
         this.x.set(newX);
     }
 
-    public DoubleProperty getY() {
+
+    public DoubleProperty yProperty() {
         return y;
     }
+
+
+    public double getY() {
+        return y.doubleValue();
+    }
+
 
     public void setY(double newY) {
         this.y.set(newY);
     }
+
 
     public final void set(double newX, double newY) {
         setX(newX);

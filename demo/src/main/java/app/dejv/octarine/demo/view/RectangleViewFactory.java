@@ -30,11 +30,11 @@ public class RectangleViewFactory
         r.setStroke(Color.BLACK);
         r.setStrokeType(StrokeType.INSIDE);
 
-        r.widthProperty().bind(size.getX());
-        r.heightProperty().bind(size.getY());
+        r.widthProperty().bind(size.xProperty());
+        r.heightProperty().bind(size.yProperty());
 
-        r.translateXProperty().bind(location.getX());
-        r.translateYProperty().bind(location.getY());
+        r.translateXProperty().bind(location.xProperty());
+        r.translateYProperty().bind(location.yProperty());
         return r;
     }
 }

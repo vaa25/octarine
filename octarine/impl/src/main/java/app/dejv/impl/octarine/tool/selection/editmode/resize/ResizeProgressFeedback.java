@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.Set;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -32,7 +31,8 @@ public class ResizeProgressFeedback
     private Set<Shape> shapes;
     private Rectangle rectangle;
     private CompositeObservableBounds progressBounds = new CompositeObservableBounds().setRounded(true);
-    private Scale scale = new Scale();
+
+    private Scale scale;
 
 
     public ResizeProgressFeedback(Octarine octarine) {
@@ -44,7 +44,6 @@ public class ResizeProgressFeedback
         rectangle.setFill(Color.TRANSPARENT);
         rectangle.setStroke(OctarineProps.getInstance().getDynamicFeedbackColor());
 
-        shapesGroup.getTransforms().add(scale);
         progressBounds.add(shapesGroup.boundsInParentProperty());
     }
 
@@ -55,24 +54,13 @@ public class ResizeProgressFeedback
     }
 
 
-    public void activate(Set<Shape> nodes) {
-        requireNonNull(nodes, "shapes is null");
+    public void activate(Set<Shape> shapes, Scale scale) {
+        requireNonNull(shapes, "shapes is null");
 
-        this.shapes = nodes;
+        this.shapes = shapes;
+        this.scale = scale;
 
         super.activate();
-    }
-
-
-    public void setScalePivot(Point2D pivot) {
-        scale.setPivotX(pivot.getX() - shapesGroup.getLayoutX());
-        scale.setPivotY(pivot.getY() - shapesGroup.getLayoutY());
-    }
-
-
-    public void setScale(double x, double y) {
-        scale.setX(x);
-        scale.setY(y);
     }
 
 
@@ -84,6 +72,9 @@ public class ResizeProgressFeedback
             shape.setOpacity(0.5);
             shapesGroup.getChildren().add(shape);
         });
+
+        shapesGroup.getTransforms().add(scale);
+
         getChildren().add(shapesGroup);
         getChildren().add(rectangle);
     }
@@ -95,6 +86,7 @@ public class ResizeProgressFeedback
         getChildren().remove(rectangle);
 
         shapesGroup.getChildren().clear();
+        shapesGroup.getTransforms().clear();
 
         super.afterDeactivate();
     }

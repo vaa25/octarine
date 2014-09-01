@@ -1,6 +1,6 @@
 package app.dejv.impl.octarine.tool.selection.editmode.resize;
 
-import javafx.geometry.Dimension2D;
+import javafx.scene.transform.Transform;
 
 import app.dejv.impl.octarine.request.CommandRequest;
 
@@ -12,15 +12,15 @@ import app.dejv.impl.octarine.request.CommandRequest;
 public class ResizeRequest
         extends CommandRequest {
 
-    private final Dimension2D sizeDelta;
+    private final Transform transform;
 
 
-    public ResizeRequest(Dimension2D sizeDelta) {
-        this.sizeDelta = sizeDelta;
+    public ResizeRequest(Transform transform) {
+        this.transform = transform;
     }
 
 
-    public Dimension2D getSizeDelta() {
-        return sizeDelta;
+    public Transform getTransform() {
+        return transform;
     }
 }

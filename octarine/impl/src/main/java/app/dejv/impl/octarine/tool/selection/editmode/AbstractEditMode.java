@@ -131,7 +131,7 @@ public abstract class AbstractEditMode
             if (cr.getCommand() == null) {
                 throw new IllegalStateException("Controller " + requestTarget + ": Expected to set Command inside " + cr + ", but it didn't.");
             }
-            compoundCommand.addCommand(cr.getCommand());
+            compoundCommand.add(cr.getCommand());
         });
 
         commandStack.execute(compoundCommand);

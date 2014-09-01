@@ -12,7 +12,7 @@ public class CompoundCommand
     private final List<Command> commands = new ArrayList<>();
 
 
-    public void addCommand(Command command) {
+    public void add(Command command) {
         commands.add(command);
     }
 
