@@ -1,5 +1,7 @@
 package app.dejv.octarine.demo.config;
 
+import javafx.beans.property.DoubleProperty;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -131,7 +133,7 @@ public class ConfigController {
     @Bean
     @Scope("prototype")
     public RequestHandler rotateRequestHandler(ModelElement modelElement, Controller controller) {
-        return new RotateRequestHandler();
+        return new RotateRequestHandler(modelElement.getChunk(BasicProperties.ROTATION, DoubleProperty.class));
     }
 
 
