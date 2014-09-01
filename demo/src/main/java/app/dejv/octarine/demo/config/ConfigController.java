@@ -124,7 +124,7 @@ public class ConfigController {
     @Bean
     @Scope("prototype")
     public RequestHandler resizeRequestHandler(ModelElement modelElement, Controller controller) {
-        return new ResizeRequestHandler();
+        return new ResizeRequestHandler(modelElement.getChunk(BasicProperties.SIZE, DoubleTuple.class));
     }
 
 

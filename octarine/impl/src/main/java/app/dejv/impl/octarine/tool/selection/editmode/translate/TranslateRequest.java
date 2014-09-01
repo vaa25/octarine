@@ -1,5 +1,7 @@
 package app.dejv.impl.octarine.tool.selection.editmode.translate;
 
+import javafx.geometry.Dimension2D;
+
 import app.dejv.impl.octarine.request.CommandRequest;
 
 /**
@@ -10,20 +12,15 @@ import app.dejv.impl.octarine.request.CommandRequest;
 public class TranslateRequest
         extends CommandRequest {
 
-    private final double dx;
-    private final double dy;
+    private final Dimension2D positionDelta;
 
 
-    public TranslateRequest(double dx, double dy) {
-        this.dx = dx;
-        this.dy = dy;
+    public TranslateRequest(Dimension2D positionDelta) {
+        this.positionDelta = positionDelta;
     }
 
-    public double getDx() {
-        return dx;
-    }
 
-    public double getDy() {
-        return dy;
+    public Dimension2D getPositionDelta() {
+        return positionDelta;
     }
 }

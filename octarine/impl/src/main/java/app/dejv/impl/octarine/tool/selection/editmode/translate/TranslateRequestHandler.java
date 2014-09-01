@@ -29,9 +29,9 @@ public class TranslateRequestHandler
 
     @Override
     public void requestChecked(Request request) {
-        TranslateRequest translateRequest = (TranslateRequest) request;
+        final TranslateRequest translateRequest = (TranslateRequest) request;
 
-        translateRequest.setCommand(new TranslateCommand(coords, translateRequest.getDx(), translateRequest.getDy()));
+        translateRequest.setCommand(new TranslateCommand(coords, translateRequest.getPositionDelta()));
     }
 
 }

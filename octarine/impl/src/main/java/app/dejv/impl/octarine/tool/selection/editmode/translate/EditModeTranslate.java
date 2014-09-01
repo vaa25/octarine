@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
+import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -101,7 +102,11 @@ public class EditModeTranslate
     private void handleMouseReleased(MouseEvent e) {
         if (drag) {
             removeTransformationFeedback();
-            executeOnSelection(new TranslateRequest(e.getX() - initialPosition.getX(), e.getY() - initialPosition.getY()));
+
+            final Dimension2D positionDelta = new Dimension2D(e.getX() - initialPosition.getX(), e.getY() - initialPosition.getY());
+
+            executeOnSelection(new TranslateRequest(positionDelta));
+
             drag = false;
             getOctarine().getEditationListeners().forEach(EditationListener::onEditFinished);
         }
