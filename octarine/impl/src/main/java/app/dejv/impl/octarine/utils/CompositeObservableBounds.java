@@ -10,7 +10,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 
 /**
- *
  * <br/>
  * Author: dejv (www.dejv.info)
  */
@@ -18,6 +17,8 @@ public class CompositeObservableBounds
         extends AbstractObservableBounds {
 
     private final List<ReadOnlyObjectProperty<Bounds>> sourceBounds = new ArrayList<>();
+    private boolean rounded = false;
+
 
     public CompositeObservableBounds() {
         minX.set(0);
@@ -34,6 +35,12 @@ public class CompositeObservableBounds
     }
 
 
+    public CompositeObservableBounds setRounded(boolean rounded) {
+        this.rounded = rounded;
+        return this;
+    }
+
+
     @SuppressWarnings("UnusedReturnValue")
     public final CompositeObservableBounds add(ReadOnlyObjectProperty<Bounds> nodeBounds) {
         requireNonNull(nodeBounds, "nodeBounds is null");
@@ -47,6 +54,7 @@ public class CompositeObservableBounds
         return this;
     }
 
+
     public void clear() {
         sourceBounds.stream().forEach((bounds) -> bounds.removeListener(this::observedBoundsChanged));
         sourceBounds.clear();
@@ -57,6 +65,7 @@ public class CompositeObservableBounds
         update();
     }
 
+
     private void update() {
         boolean initialized = false;
 
@@ -64,21 +73,37 @@ public class CompositeObservableBounds
             Bounds bounds = property.get();
 
             if (!initialized) {
-                minX.set(bounds.getMinX());
-                minY.set(bounds.getMinY());
-                minZ.set(bounds.getMinZ());
-                maxX.set(bounds.getMaxX());
-                maxY.set(bounds.getMaxY());
-                maxZ.set(bounds.getMaxZ());
+                minX.set(floorIfNeeded(bounds.getMinX()));
+                minY.set(floorIfNeeded(bounds.getMinY()));
+                minZ.set(floorIfNeeded(bounds.getMinZ()));
+                maxX.set(ceilIfNeeded(bounds.getMaxX()));
+                maxY.set(ceilIfNeeded(bounds.getMaxY()));
+                maxZ.set(ceilIfNeeded(bounds.getMaxZ()));
                 initialized = true;
             } else {
-                minX.set(Double.min(minX.get(), bounds.getMinX()));
-                minY.set(Double.min(minY.get(), bounds.getMinY()));
-                minZ.set(Double.min(minZ.get(), bounds.getMinZ()));
-                maxX.set(Double.max(maxX.get(), bounds.getMaxX()));
-                maxY.set(Double.max(maxY.get(), bounds.getMaxY()));
-                maxZ.set(Double.max(maxZ.get(), bounds.getMaxZ()));
+                minX.set(Double.min(minX.get(), floorIfNeeded(bounds.getMinX())));
+                minY.set(Double.min(minY.get(), floorIfNeeded(bounds.getMinY())));
+                minZ.set(Double.min(minZ.get(), floorIfNeeded(bounds.getMinZ())));
+                maxX.set(Double.max(maxX.get(), ceilIfNeeded(bounds.getMaxX())));
+                maxY.set(Double.max(maxY.get(), ceilIfNeeded(bounds.getMaxY())));
+                maxZ.set(Double.max(maxZ.get(), ceilIfNeeded(bounds.getMaxZ())));
             }
         }
+    }
+
+
+    private double floorIfNeeded(double value) {
+        return (rounded) ? Math.floor(value) : value;
+    }
+
+
+    private double ceilIfNeeded(double value) {
+        return (rounded) ? Math.ceil(value) : value;
+    }
+
+
+    @Override
+    public String toString() {
+        return "CO bounds: [" + getMinX() + ", " + getMinY() + ", " + getMinZ() + "][" + getMaxX() + ", " + getMaxY() + ", " + getMaxZ() + "]";
     }
 }

@@ -7,10 +7,12 @@ import java.util.Set;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Scale;
 
+import app.dejv.impl.octarine.cfg.OctarineProps;
 import app.dejv.impl.octarine.feedback.dynamics.DynamicFeedback;
 import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.impl.octarine.utils.ConstantZoomDoubleBinding;
@@ -29,15 +31,19 @@ public class ResizeProgressFeedback
     private Group shapesGroup = new Group();
     private Set<Shape> shapes;
     private Rectangle rectangle;
-    private CompositeObservableBounds progressBounds = new CompositeObservableBounds();
+    private CompositeObservableBounds progressBounds = new CompositeObservableBounds().setRounded(true);
     private Scale scale = new Scale();
 
 
     public ResizeProgressFeedback(Octarine octarine) {
         super(octarine);
         zoom = octarine.getView().zoomFactorProperty();
+
         rectangle = new Rectangle();
-        rectangle.setOpacity(0.2);
+        rectangle.getStrokeDashArray().addAll(5d, 3d);
+        rectangle.setFill(Color.TRANSPARENT);
+        rectangle.setStroke(OctarineProps.getInstance().getDynamicFeedbackColor());
+
         shapesGroup.getTransforms().add(scale);
         progressBounds.add(shapesGroup.boundsInParentProperty());
     }
@@ -75,6 +81,7 @@ public class ResizeProgressFeedback
         super.beforeActivate();
 
         shapes.forEach((shape) -> {
+            shape.setOpacity(0.5);
             shapesGroup.getChildren().add(shape);
         });
         getChildren().add(shapesGroup);
@@ -86,9 +93,8 @@ public class ResizeProgressFeedback
     protected void afterDeactivate() {
         getChildren().remove(shapesGroup);
         getChildren().remove(rectangle);
-        shapes.forEach((shape) -> {
-            shapesGroup.getChildren().remove(shape);
-        });
+
+        shapesGroup.getChildren().clear();
 
         super.afterDeactivate();
     }
@@ -98,10 +104,10 @@ public class ResizeProgressFeedback
     protected void bind() {
         super.bind();
         rectangle.strokeWidthProperty().bind(new ConstantZoomDoubleBinding(zoom, RECT_STROKE_WIDTH));
-        rectangle.xProperty().bind(progressBounds.minXProperty());
-        rectangle.yProperty().bind(progressBounds.minYProperty());
-        rectangle.widthProperty().bind(progressBounds.widthProperty());
-        rectangle.heightProperty().bind(progressBounds.heightProperty());
+        rectangle.xProperty().bind(progressBounds.minXProperty().subtract(0.5d));
+        rectangle.yProperty().bind(progressBounds.minYProperty().subtract(0.5d));
+        rectangle.widthProperty().bind(progressBounds.widthProperty().add(0.5d));
+        rectangle.heightProperty().bind(progressBounds.heightProperty().add(0.5d));
     }
 
 
