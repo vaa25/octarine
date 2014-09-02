@@ -17,11 +17,11 @@ public class ResizeCommand
     private final Dimension2D newDimensions;
 
 
-    public ResizeCommand(DoubleTuple size, Dimension2D sizeDelta) {
+    public ResizeCommand(DoubleTuple size, Dimension2D sizeMultiplier) {
         this.size = size;
         this.originalDimensions = new Dimension2D(size.getX(), size.getY());
 
-        this.newDimensions = new Dimension2D(originalDimensions.getWidth() + sizeDelta.getWidth(), originalDimensions.getHeight() + sizeDelta.getHeight());
+        this.newDimensions = new Dimension2D(originalDimensions.getWidth() * sizeMultiplier.getWidth(), originalDimensions.getHeight() * sizeMultiplier.getHeight());
     }
 
 

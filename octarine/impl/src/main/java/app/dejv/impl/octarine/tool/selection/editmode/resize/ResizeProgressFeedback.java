@@ -43,8 +43,6 @@ public class ResizeProgressFeedback
         rectangle.getStrokeDashArray().addAll(5d, 3d);
         rectangle.setFill(Color.TRANSPARENT);
         rectangle.setStroke(OctarineProps.getInstance().getDynamicFeedbackColor());
-
-        progressBounds.add(shapesGroup.boundsInParentProperty());
     }
 
 
@@ -56,6 +54,9 @@ public class ResizeProgressFeedback
 
     public void activate(Set<Shape> shapes, Scale scale) {
         requireNonNull(shapes, "shapes is null");
+        requireNonNull(scale, "scale is null");
+
+        deactivate();
 
         this.shapes = shapes;
         this.scale = scale;
@@ -73,8 +74,6 @@ public class ResizeProgressFeedback
             shapesGroup.getChildren().add(shape);
         });
 
-        shapesGroup.getTransforms().add(scale);
-
         getChildren().add(shapesGroup);
         getChildren().add(rectangle);
     }
@@ -86,7 +85,6 @@ public class ResizeProgressFeedback
         getChildren().remove(rectangle);
 
         shapesGroup.getChildren().clear();
-        shapesGroup.getTransforms().clear();
 
         super.afterDeactivate();
     }
@@ -95,6 +93,8 @@ public class ResizeProgressFeedback
     @Override
     protected void bind() {
         super.bind();
+        shapesGroup.getTransforms().add(scale);
+        progressBounds.add(shapesGroup.boundsInParentProperty());
         rectangle.strokeWidthProperty().bind(new ConstantZoomDoubleBinding(zoom, RECT_STROKE_WIDTH));
         rectangle.xProperty().bind(progressBounds.minXProperty().subtract(0.5d));
         rectangle.yProperty().bind(progressBounds.minYProperty().subtract(0.5d));
@@ -110,6 +110,8 @@ public class ResizeProgressFeedback
         rectangle.yProperty().unbind();
         rectangle.widthProperty().unbind();
         rectangle.heightProperty().unbind();
+        progressBounds.clear();
+        shapesGroup.getTransforms().remove(scale);
         super.unbind();
     }
 
