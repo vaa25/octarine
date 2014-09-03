@@ -39,10 +39,10 @@ public class ResizeProgressFeedback
         super(octarine);
         zoom = octarine.getView().zoomFactorProperty();
 
-        rectangle = new Rectangle();
-        rectangle.getStrokeDashArray().addAll(5d, 3d);
-        rectangle.setFill(Color.TRANSPARENT);
-        rectangle.setStroke(OctarineProps.getInstance().getDynamicFeedbackColor());
+        createResizeBoundBox();
+
+        getChildren().add(shapesGroup);
+        getChildren().add(rectangle);
     }
 
 
@@ -73,17 +73,11 @@ public class ResizeProgressFeedback
             shape.setOpacity(0.5);
             shapesGroup.getChildren().add(shape);
         });
-
-        getChildren().add(shapesGroup);
-        getChildren().add(rectangle);
     }
 
 
     @Override
     protected void afterDeactivate() {
-        getChildren().remove(shapesGroup);
-        getChildren().remove(rectangle);
-
         shapesGroup.getChildren().clear();
 
         super.afterDeactivate();
@@ -113,6 +107,14 @@ public class ResizeProgressFeedback
         progressBounds.clear();
         shapesGroup.getTransforms().remove(scale);
         super.unbind();
+    }
+
+
+    private void createResizeBoundBox() {
+        rectangle = new Rectangle();
+        rectangle.getStrokeDashArray().addAll(5d, 3d);
+        rectangle.setFill(Color.TRANSPARENT);
+        rectangle.setStroke(OctarineProps.getInstance().getDynamicFeedbackColor());
     }
 
 }
