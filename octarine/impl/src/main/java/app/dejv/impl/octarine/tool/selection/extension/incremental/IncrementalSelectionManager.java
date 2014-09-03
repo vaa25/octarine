@@ -109,7 +109,7 @@ public class IncrementalSelectionManager {
 
 
     private void handleKeyEvent(KeyEvent e) {
-        this.addKeyDown = e.isControlDown();
+        this.addKeyDown = e.isShiftDown();
         this.subtractKeyDown = e.isAltDown();
 
         updateIncrementType();
