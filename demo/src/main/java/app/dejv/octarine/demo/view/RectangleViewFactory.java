@@ -1,14 +1,20 @@
 package app.dejv.octarine.demo.view;
 
-import javafx.scene.paint.Color;
+import static java.util.Objects.requireNonNull;
+
+import javafx.collections.ObservableList;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
+import javafx.scene.transform.Transform;
 
 import org.springframework.context.annotation.Configuration;
 
-import app.dejv.impl.octarine.model.BasicProperties;
-import app.dejv.impl.octarine.model.chunk.DoubleTuple;
+import app.dejv.impl.octarine.model.DefaultChunks;
+import app.dejv.impl.octarine.model.chunk.FillChunk;
+import app.dejv.impl.octarine.model.chunk.SizeChunk;
+import app.dejv.impl.octarine.model.chunk.StrokeChunk;
+import app.dejv.impl.octarine.model.chunk.TransformChunk;
 import app.dejv.impl.octarine.view.AbstractShapeFactory;
 import app.dejv.octarine.model.ModelElement;
 
@@ -22,19 +28,32 @@ public class RectangleViewFactory
 
     @Override
     public Shape createShape(ModelElement modelElement) {
-        DoubleTuple location = modelElement.getChunk(BasicProperties.LOCATION, DoubleTuple.class);
-        DoubleTuple size = modelElement.getChunk(BasicProperties.SIZE, DoubleTuple.class);
+        final TransformChunk transformChunk = modelElement.getChunk(DefaultChunks.TRANSFORMATION, TransformChunk.class);
+        final SizeChunk sizeChunk = modelElement.getChunk(DefaultChunks.SIZE, SizeChunk.class);
+        final StrokeChunk strokeChunk = modelElement.getChunk(DefaultChunks.STROKE, StrokeChunk.class);
+        final FillChunk fillChunk = modelElement.getChunk(DefaultChunks.FILL, FillChunk.class);
 
-        Rectangle r = new Rectangle();
-        r.setFill(Color.ALICEBLUE);
-        r.setStroke(Color.BLACK);
+        requireNonNull(transformChunk, "transform chunk not present in model");
+        requireNonNull(sizeChunk, "size chunk not present in model");
+        requireNonNull(strokeChunk, "stroke chunk not present in model");
+        requireNonNull(fillChunk, "fill chunk not present in model");
+
+        final Rectangle r = new Rectangle(0, 0, 1, 1);
+        r.widthProperty().bind(sizeChunk.widthProperty());
+        r.heightProperty().bind(sizeChunk.heightProperty());
+
+        final ObservableList<Transform> transforms = r.getTransforms();
+        transforms.add(transformChunk.getTransform());
+
+        transformChunk.transformProperty().addListener((observable, oldValue, newValue) -> {
+            transforms.remove(oldValue);
+            transforms.add(newValue);
+        });
+
         r.setStrokeType(StrokeType.INSIDE);
+        r.strokeProperty().bind(strokeChunk.getPaint().paintProperty());
+        r.fillProperty().bind(fillChunk.getPaint().paintProperty());
 
-        r.widthProperty().bind(size.xProperty());
-        r.heightProperty().bind(size.yProperty());
-
-        r.translateXProperty().bind(location.xProperty());
-        r.translateYProperty().bind(location.yProperty());
         return r;
     }
 }

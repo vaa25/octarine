@@ -27,8 +27,7 @@ public class ResizeProgressManager
     private double originalWidth;
     private double originalHeight;
     private Direction pivotDirection;
-    private Point2D locPivot;
-    private Scale scale;
+    private Scale scale = new Scale();
 
 
 
@@ -44,16 +43,15 @@ public class ResizeProgressManager
     @Override
     protected void showTransformationProgressFeedback(Direction direction, Set<Shape> shapes) {
         pivotDirection = direction.getOpposite();
-        locPivot = getHandleFeedback().getHandleLocation(pivotDirection);
+        final Point2D pivotLocation = getHandleFeedback().getHandleLocation(pivotDirection);
 
         final Point2D locHandle = getHandleFeedback().getHandleLocation(direction);
 
-        originalWidth = locHandle.getX()-locPivot.getX();
-        originalHeight = locHandle.getY()-locPivot.getY();
+        originalWidth = locHandle.getX()-pivotLocation.getX();
+        originalHeight = locHandle.getY()-pivotLocation.getY();
 
-        scale = new Scale();
-        scale.setPivotX(locPivot.getX());
-        scale.setPivotY(locPivot.getY());
+        scale.setPivotX(pivotLocation.getX());
+        scale.setPivotY(pivotLocation.getY());
 
         resizeProgressFeedback.activate(shapes, scale);
     }

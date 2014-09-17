@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
 
 import app.dejv.impl.octarine.tool.selection.editmode.AbstractExclusiveEditMode;
@@ -40,7 +41,10 @@ public class EditModeResize
 
     @Override
     public void transformationCommited(Transform transform) {
-        executeOnSelection(new ResizeRequest(transform));
+
+        if (transform instanceof Scale) {
+            executeOnSelection(new ResizeRequest((Scale) transform));
+        }
     }
 
 

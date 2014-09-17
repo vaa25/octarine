@@ -1,26 +1,18 @@
 package app.dejv.impl.octarine.tool.selection.editmode.translate;
 
-import javafx.geometry.Dimension2D;
+import javafx.scene.transform.Translate;
 
-import app.dejv.impl.octarine.request.CommandRequest;
+import app.dejv.impl.octarine.tool.selection.editmode.transform.TransformRequest;
 
 /**
- *
  * <br/>
  * Author: dejv (www.dejv.info)
  */
 public class TranslateRequest
-        extends CommandRequest {
-
-    private final Dimension2D positionDelta;
+        extends TransformRequest {
 
 
-    public TranslateRequest(Dimension2D positionDelta) {
-        this.positionDelta = positionDelta;
-    }
-
-
-    public Dimension2D getLocationDelta() {
-        return positionDelta;
+    public TranslateRequest(Translate translate) {
+        super(translate);
     }
 }

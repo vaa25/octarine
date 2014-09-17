@@ -57,8 +57,12 @@ public final class FormattingUtils {
 
     public static Shape grow(Shape outline, double amount) {
         Paint p = Color.BLACK;
+        outline.strokeProperty().unbind();
         outline.setStroke(p);
+
+        outline.fillProperty().unbind();
         outline.setFill(p);
+
         outline.setStrokeType(StrokeType.OUTSIDE);
         outline.setStrokeLineCap(StrokeLineCap.ROUND);
         outline.setStrokeLineJoin(StrokeLineJoin.MITER);

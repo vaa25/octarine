@@ -1,38 +1,39 @@
 package app.dejv.impl.octarine.tool.selection.editmode.resize;
 
 import javafx.geometry.Dimension2D;
+import javafx.scene.transform.Scale;
 
-import app.dejv.impl.octarine.model.chunk.DoubleTuple;
+import app.dejv.impl.octarine.model.chunk.SizeChunk;
 import app.dejv.octarine.command.Command;
 
 /**
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class ResizeCommand
-        implements Command {
+public class ResizeCommand implements Command {
 
-    private final DoubleTuple size;
-    private final Dimension2D originalDimensions;
-    private final Dimension2D newDimensions;
+    private final SizeChunk sizeChunk;
+
+    private final Dimension2D originalSize;
+    private final Dimension2D newSize;
 
 
-    public ResizeCommand(DoubleTuple size, Dimension2D sizeMultiplier) {
-        this.size = size;
-        this.originalDimensions = new Dimension2D(size.getX(), size.getY());
+    public ResizeCommand(SizeChunk sizeChunk, Scale scaleTransform) {
+        this.sizeChunk = sizeChunk;
 
-        this.newDimensions = new Dimension2D(originalDimensions.getWidth() * sizeMultiplier.getWidth(), originalDimensions.getHeight() * sizeMultiplier.getHeight());
+        this.originalSize = sizeChunk.get();
+        this.newSize = new Dimension2D(originalSize.getWidth() * scaleTransform.getX(), originalSize.getHeight() * scaleTransform.getY());
     }
 
 
     @Override
     public void execute() {
-        size.set(newDimensions.getWidth(), newDimensions.getHeight());
+        sizeChunk.set(newSize);
     }
 
 
     @Override
     public void undo() {
-        size.set(originalDimensions.getWidth(), originalDimensions.getHeight());
+        sizeChunk.set(originalSize);
     }
 }

@@ -12,8 +12,9 @@ public class CompoundCommand
     private final List<Command> commands = new ArrayList<>();
 
 
-    public void add(Command command) {
+    public CompoundCommand add(Command command) {
         commands.add(command);
+        return this;
     }
 
 

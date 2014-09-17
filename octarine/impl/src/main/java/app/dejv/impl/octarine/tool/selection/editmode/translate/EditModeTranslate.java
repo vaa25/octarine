@@ -15,6 +15,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Translate;
 
 import app.dejv.impl.octarine.tool.selection.editmode.AbstractEditMode;
 import app.dejv.impl.octarine.utils.ControllerUtils;
@@ -34,6 +35,7 @@ public class EditModeTranslate
 
     private boolean drag = false;
     private Point2D initialPosition;
+    private Translate fbTranslation = new Translate();
 
     private final Map<Shape, Point2D> transformationFeedback = new HashMap<>();
 
@@ -72,12 +74,13 @@ public class EditModeTranslate
         if (e.isPrimaryButtonDown()) {
             drag = true;
             initialPosition = new Point2D(e.getX(), e.getY());
+            fbTranslation.setX(0);
+            fbTranslation.setY(0);
 
             selection.stream().forEach((controller) -> {
                 Shape shape = ControllerUtils.getShape(controller);
-                shape.translateXProperty().unbind();
-                shape.translateYProperty().unbind();
                 shape.setOpacity(0.5);
+                shape.getTransforms().add(fbTranslation);
 
                 Bounds shapeBounds = shape.getBoundsInParent();
                 transformationFeedback.put(shape, new Point2D(shapeBounds.getMinX() - e.getX(), shapeBounds.getMinY() - e.getY()));
@@ -105,7 +108,7 @@ public class EditModeTranslate
 
             final Dimension2D positionDelta = new Dimension2D(e.getX() - initialPosition.getX(), e.getY() - initialPosition.getY());
 
-            executeOnSelection(new TranslateRequest(positionDelta));
+            executeOnSelection(new TranslateRequest(new Translate(positionDelta.getWidth(), positionDelta.getHeight())));
 
             drag = false;
             getOctarine().getEditationListeners().forEach(EditationListener::onEditFinished);
@@ -121,13 +124,8 @@ public class EditModeTranslate
 
 
     private void moveTransformationFeedback(double x, double y) {
-        transformationFeedback.entrySet().stream().forEach((entry) -> {
-            Shape shape = entry.getKey();
-            Point2D initialOffset = entry.getValue();
-
-            shape.setTranslateX(x + initialOffset.getX());
-            shape.setTranslateY(y + initialOffset.getY());
-        });
+        fbTranslation.setX(x - initialPosition.getX());
+        fbTranslation.setY(y - initialPosition.getY());
     }
 
     private void removeTransformationFeedback() {

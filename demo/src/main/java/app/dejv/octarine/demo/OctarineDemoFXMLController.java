@@ -4,7 +4,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
@@ -80,9 +79,9 @@ public class OctarineDemoFXMLController {
 
         octarine.setRootController((ContainerController) controllerFactory.createController(shapeContainer, null));
 
-        shapeContainer.getChildren().add(new RectangleShape(new Rectangle2D(20, 50, 100, 200)));
-        shapeContainer.getChildren().add(new RectangleShape(new Rectangle2D(130, 80, 100, 120)));
-        shapeContainer.getChildren().add(new RectangleShape(new Rectangle2D(200, 300, 150, 70)));
+        shapeContainer.getChildren().add(new RectangleShape(20, 50, 100, 200));
+        shapeContainer.getChildren().add(new RectangleShape(130, 80, 100, 120));
+        shapeContainer.getChildren().add(new RectangleShape(200, 300, 150, 70));
     }
 
 }

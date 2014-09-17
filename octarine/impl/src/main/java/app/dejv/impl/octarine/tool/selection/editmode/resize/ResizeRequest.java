@@ -1,26 +1,22 @@
 package app.dejv.impl.octarine.tool.selection.editmode.resize;
 
-import javafx.scene.transform.Transform;
+import javafx.scene.transform.Scale;
 
-import app.dejv.impl.octarine.request.CommandRequest;
+import app.dejv.impl.octarine.tool.selection.editmode.transform.TransformRequest;
 
 /**
- *
  * <br/>
  * Author: dejv (www.dejv.info)
  */
 public class ResizeRequest
-        extends CommandRequest {
-
-    private final Transform transform;
+        extends TransformRequest {
 
 
-    public ResizeRequest(Transform transform) {
-        this.transform = transform;
+    public ResizeRequest(Scale scale) {
+        super(scale);
     }
 
-
-    public Transform getTransform() {
-        return transform;
+    public Scale getScale() {
+        return (Scale) getTransform();
     }
 }
