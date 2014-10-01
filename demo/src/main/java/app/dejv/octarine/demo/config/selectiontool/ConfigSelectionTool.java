@@ -18,6 +18,8 @@ import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeProgressFeedb
 import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeProgressManager;
 import app.dejv.impl.octarine.tool.selection.editmode.rotate.EditModeRotate;
 import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateHandleFeedback;
+import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateProgressFeedback;
+import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateProgressManager;
 import app.dejv.impl.octarine.tool.selection.editmode.translate.EditModeTranslate;
 import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.octarine.Octarine;
@@ -48,6 +50,15 @@ public class ConfigSelectionTool {
     @Autowired
     private ResizeProgressManager resizeProgressManager;
 
+    @Autowired
+    private RotateHandleFeedback rotateHandleFeedback;
+
+    @Autowired
+    private RotateProgressFeedback rotateProgressFeedback;
+
+    @Autowired
+    private RotateProgressManager rotateProgressManager;
+
     @Bean
     @Autowired
     public ResizeHandleFeedback resizeStaticFeedback(CompositeObservableBounds compositeObservableBounds) {
@@ -62,6 +73,16 @@ public class ConfigSelectionTool {
     @Bean
     ResizeProgressManager resizeProgressManager() {
         return new ResizeProgressManager(resizeHandleFeedback, resizeProgressFeedback, mouseDragHelperFactory);
+    }
+
+    @Bean
+    public RotateProgressFeedback rotateProgressFeedback() {
+        return new RotateProgressFeedback(octarine);
+    }
+
+    @Bean
+    RotateProgressManager rotateProgressManager() {
+        return new RotateProgressManager(rotateHandleFeedback, rotateProgressFeedback, mouseDragHelperFactory);
     }
 
     @Bean
@@ -93,7 +114,7 @@ public class ConfigSelectionTool {
     @Bean
     @Autowired
     public EditModeRotate editModeRotate(RotateHandleFeedback rotateStaticFeedback) throws IOException {
-        return new EditModeRotate(octarine, rotateStaticFeedback);
+        return new EditModeRotate(octarine, rotateStaticFeedback, rotateProgressManager);
     }
 
 

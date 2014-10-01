@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.Set;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -33,12 +35,40 @@ public class RotateHandleFeedback
         extends CorneredHandleFeedback {
 
     private final Group pivotCross;
+    private final DoubleProperty pivotX = new SimpleDoubleProperty();
+    private final DoubleProperty pivotY = new SimpleDoubleProperty();
 
 
     public RotateHandleFeedback(Octarine octarine, CompositeObservableBounds selectionBounds) throws IOException {
         super(octarine, selectionBounds);
 
+        this.pivotX.bind(selectionBounds.centerXProperty());
+        this.pivotY.bind(selectionBounds.centerYProperty());
+
         this.pivotCross = InfrastructureUtils.getRequiredShape(octarine.getResources(), "rotpivot");
+        this.pivotCross.setMouseTransparent(false);
+        this.pivotCross.setCursor(Cursor.HAND);
+        getChildren().add(pivotCross);
+    }
+
+
+    public double getPivotX() {
+        return pivotX.get();
+    }
+
+
+    public ReadOnlyDoubleProperty pivotXProperty() {
+        return pivotX;
+    }
+
+
+    public double getPivotY() {
+        return pivotY.get();
+    }
+
+
+    public ReadOnlyDoubleProperty pivotYProperty() {
+        return pivotY;
     }
 
 
@@ -71,7 +101,7 @@ public class RotateHandleFeedback
         circle.setFill(Color.WHITE);
         circle.setStroke(getFeedbackColor(FeedbackType.STATIC, FeedbackOpacity.OPAQUE));
         circle.setStrokeType(StrokeType.OUTSIDE);
-        circle.setCursor(Cursor.HAND);
+        circle.setCursor(Cursor.CROSSHAIR);
 
         bindCircle(circle, direction);
         return circle;
@@ -128,15 +158,19 @@ public class RotateHandleFeedback
 
 
     private void bindPivotCross() {
-        DoubleProperty zoomFactor = octarine.getView().zoomFactorProperty();
-        ConstantZoomDoubleBinding pivotCrossScale = new ConstantZoomDoubleBinding(zoomFactor, 1.0);
+        final DoubleProperty zoomFactor = octarine.getView().zoomFactorProperty();
+        final ConstantZoomDoubleBinding pivotCrossScale = new ConstantZoomDoubleBinding(zoomFactor, 1.0);
         pivotCross.scaleXProperty().bind(pivotCrossScale);
         pivotCross.scaleYProperty().bind(pivotCrossScale);
+        pivotCross.translateXProperty().bind(pivotX);
+        pivotCross.translateYProperty().bind(pivotY);
     }
 
 
     private void unbindPivotCross() {
         pivotCross.scaleXProperty().unbind();
         pivotCross.scaleYProperty().unbind();
+        pivotCross.translateXProperty().unbind();
+        pivotCross.translateYProperty().unbind();
     }
 }
