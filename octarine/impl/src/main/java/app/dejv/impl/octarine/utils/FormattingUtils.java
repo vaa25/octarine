@@ -75,7 +75,6 @@ public final class FormattingUtils {
     public static void formatSymbol(SVGPath shape) {
         shape.setStroke(COLOR_GLOW);
         shape.setStrokeType(StrokeType.OUTSIDE);
-        shape.strokeWidthProperty().bind(WIDTH_FB_STROKE_STATIC);
         shape.setFill(getFeedbackColor(FeedbackType.STATIC, FeedbackOpacity.OPAQUE));
         shape.setMouseTransparent(true);
     }
