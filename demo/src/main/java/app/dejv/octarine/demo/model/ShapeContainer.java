@@ -10,7 +10,6 @@ import app.dejv.impl.octarine.model.chunk.FillChunk;
 import app.dejv.impl.octarine.model.chunk.PaintChunk;
 import app.dejv.impl.octarine.model.chunk.SizeChunk;
 import app.dejv.impl.octarine.model.chunk.StrokeChunk;
-import app.dejv.impl.octarine.model.chunk.TransformChunk;
 
 
 @Component
@@ -23,8 +22,6 @@ public class ShapeContainer
                 .setWidth(700d)
                 .setHeight(700d)
                 .setSupportsResize(false));
-
-        chunks.put(DefaultChunks.TRANSFORMATION, new TransformChunk());
 
         chunks.put(DefaultChunks.FILL, new FillChunk(new PaintChunk()
         .setPaint(Color.WHITE)));

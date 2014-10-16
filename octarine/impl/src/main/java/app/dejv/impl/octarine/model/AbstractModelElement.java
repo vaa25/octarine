@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import app.dejv.octarine.model.ModelElement;
 
@@ -28,14 +28,14 @@ public class AbstractModelElement
 
 
     @Override
-    public <T> T getChunk(String chunkId, Class<T> chunkType) {
+    public <T> Optional<T> getChunk(String chunkId, Class<T> chunkType) {
         requireNonNull(chunkId, "chunkId is null");
         requireNonNull(chunkType, "chunkType is null");
 
         if (!containsChunk(chunkId, chunkType)) {
-            throw new NoSuchElementException("Requested chunk with ID[" + chunkId + "] and TYPE[" + chunkType.getName() + "] is not available");
+            return Optional.empty();
         }
 
-        return chunkType.cast(chunks.get(chunkId));
+        return Optional.of(chunkType.cast(chunks.get(chunkId)));
     }
 }

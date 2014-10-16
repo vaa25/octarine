@@ -1,9 +1,8 @@
 package app.dejv.impl.octarine.tool.selection.editmode.rotate;
 
-import javafx.geometry.Dimension2D;
 import javafx.scene.transform.Rotate;
 
-import app.dejv.impl.octarine.model.chunk.SizeChunk;
+import app.dejv.impl.octarine.model.chunk.RotationChunk;
 import app.dejv.octarine.command.Command;
 
 /**
@@ -13,28 +12,46 @@ import app.dejv.octarine.command.Command;
 public class RotateCommand
         implements Command {
 
-    private final SizeChunk sizeChunk;
+    private final RotationChunk rotationChunk;
 
-    private final Dimension2D originalSize;
-    private final Dimension2D newSize;
+    private final double originalAngle;
+    private final double originalPivotX;
+    private final double originalPivotY;
+
+    private final double newAngle;
+    private final double newPivotX;
+    private final double newPivotY;
 
 
-    public RotateCommand(SizeChunk sizeChunk, Rotate rotateTransform) {
-        this.sizeChunk = sizeChunk;
+    public RotateCommand(RotationChunk rotationChunk, Rotate rotateTransform) {
+        this.rotationChunk = rotationChunk;
 
-        this.originalSize = sizeChunk.get();
-        this.newSize = new Dimension2D(originalSize.getWidth() * rotateTransform.getX(), originalSize.getHeight() * rotateTransform.getY());
+        this.originalAngle = rotationChunk.getAngle();
+        this.originalPivotX = rotationChunk.getPivotX();
+        this.originalPivotY = rotationChunk.getPivotY();
+
+        this.newAngle = originalAngle + rotateTransform.getAngle();
+        this.newPivotX = rotateTransform.getPivotX();
+        this.newPivotY = rotateTransform.getPivotY();
     }
 
 
     @Override
     public void execute() {
-        sizeChunk.set(newSize);
+        set(newAngle, newPivotX, newPivotY);
     }
 
 
     @Override
     public void undo() {
-        sizeChunk.set(originalSize);
+        set(originalAngle, originalPivotX, originalPivotY);
     }
+
+
+    private void set(double angle, double pivotX, double pivotY) {
+        rotationChunk.setAngle(angle);
+        rotationChunk.setPivotX(pivotX);
+        rotationChunk.setPivotY(pivotY);
+    }
+
 }

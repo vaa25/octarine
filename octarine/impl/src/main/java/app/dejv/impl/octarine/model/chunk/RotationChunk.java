@@ -29,8 +29,9 @@ public class RotationChunk {
     }
 
 
-    public void setAngle(double angle) {
+    public RotationChunk setAngle(double angle) {
         this.angle.set(angle);
+        return this;
     }
 
 
@@ -44,8 +45,9 @@ public class RotationChunk {
     }
 
 
-    public void setPivotX(double pivotX) {
+    public RotationChunk setPivotX(double pivotX) {
         this.pivotX.set(pivotX);
+        return this;
     }
 
 
@@ -59,8 +61,9 @@ public class RotationChunk {
     }
 
 
-    public void setPivotY(double pivotY) {
+    public RotationChunk setPivotY(double pivotY) {
         this.pivotY.set(pivotY);
+        return this;
     }
 
 
@@ -74,7 +77,8 @@ public class RotationChunk {
     }
 
 
-    public void setSupportsRotate(boolean supportsRotate) {
+    public RotationChunk setSupportsRotate(boolean supportsRotate) {
         this.supportsRotate.set(supportsRotate);
+        return this;
     }
 }

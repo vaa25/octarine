@@ -14,4 +14,9 @@ public class RotateRequest
     public RotateRequest(Rotate rotate) {
         super(rotate);
     }
+
+    public Rotate getRotate() {
+        return (Rotate) getTransform();
+    }
+
 }

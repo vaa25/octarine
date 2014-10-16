@@ -27,8 +27,9 @@ public class TranslationChunk {
     }
 
 
-    public void setX(double x) {
+    public TranslationChunk setX(double x) {
         this.x.set(x);
+        return this;
     }
 
 
@@ -42,8 +43,9 @@ public class TranslationChunk {
     }
 
 
-    public void setY(double y) {
+    public TranslationChunk setY(double y) {
         this.y.set(y);
+        return this;
     }
 
 
@@ -57,7 +59,8 @@ public class TranslationChunk {
     }
 
 
-    public void setSupportsTranslate(boolean supportsTranslate) {
+    public TranslationChunk setSupportsTranslate(boolean supportsTranslate) {
         this.supportsTranslate.set(supportsTranslate);
+        return this;
     }
 }

@@ -73,14 +73,14 @@ public class EditModeTranslate
 
         if (e.isPrimaryButtonDown()) {
             drag = true;
-            initialPosition = new Point2D(e.getX(), e.getY());
+            initialPosition = new Point2D(e.getSceneX(), e.getSceneY());
             fbTranslation.setX(0);
             fbTranslation.setY(0);
 
             selection.stream().forEach((controller) -> {
                 Shape shape = ControllerUtils.getShape(controller);
                 shape.setOpacity(0.5);
-                shape.getTransforms().add(fbTranslation);
+                shape.getTransforms().add(1,fbTranslation);
 
                 Bounds shapeBounds = shape.getBoundsInParent();
                 transformationFeedback.put(shape, new Point2D(shapeBounds.getMinX() - e.getX(), shapeBounds.getMinY() - e.getY()));
@@ -97,7 +97,7 @@ public class EditModeTranslate
 
     private void handleMouseDragged(MouseEvent e) {
         if (drag) {
-            moveTransformationFeedback(e.getX(), e.getY());
+            moveTransformationFeedback(e.getSceneX(), e.getSceneY());
         }
     }
 
@@ -106,7 +106,7 @@ public class EditModeTranslate
         if (drag) {
             removeTransformationFeedback();
 
-            final Dimension2D positionDelta = new Dimension2D(e.getX() - initialPosition.getX(), e.getY() - initialPosition.getY());
+            final Dimension2D positionDelta = new Dimension2D(e.getSceneX() - initialPosition.getX(), e.getSceneY() - initialPosition.getY());
 
             executeOnSelection(new TranslateRequest(new Translate(positionDelta.getWidth(), positionDelta.getHeight())));
 

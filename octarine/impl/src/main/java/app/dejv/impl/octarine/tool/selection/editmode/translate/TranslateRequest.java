@@ -15,4 +15,9 @@ public class TranslateRequest
     public TranslateRequest(Translate translate) {
         super(translate);
     }
+
+
+    public Translate getTranslate() {
+        return (Translate) getTransform();
+    }
 }

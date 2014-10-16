@@ -1,5 +1,7 @@
 package app.dejv.octarine.model;
 
+import java.util.Optional;
+
 /**
  *
  * <br/>
@@ -9,5 +11,5 @@ public interface ModelElement {
 
     boolean containsChunk(String chunkId, Class<?> chunkType);
 
-    <T> T getChunk(String chunkId, Class<T> chunkType);
+    <T> Optional<T> getChunk(String chunkId, Class<T> chunkType);
 }

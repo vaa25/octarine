@@ -2,17 +2,26 @@ package app.dejv.impl.octarine.tool.selection.editmode.transform;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Optional;
+
 import javafx.geometry.Point2D;
+import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
+import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import app.dejv.impl.octarine.command.CompoundCommand;
 import app.dejv.impl.octarine.model.DefaultChunks;
+import app.dejv.impl.octarine.model.chunk.RotationChunk;
 import app.dejv.impl.octarine.model.chunk.SizeChunk;
-import app.dejv.impl.octarine.model.chunk.TransformChunk;
+import app.dejv.impl.octarine.model.chunk.TranslationChunk;
 import app.dejv.impl.octarine.request.AbstractRequestHandler;
 import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeCommand;
 import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeRequest;
+import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateCommand;
 import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateRequest;
 import app.dejv.impl.octarine.tool.selection.editmode.translate.TranslateRequest;
 import app.dejv.octarine.command.Command;
@@ -26,15 +35,19 @@ import app.dejv.octarine.request.Request;
 public class TransformRequestHandler
         extends AbstractRequestHandler {
 
-    private final TransformChunk transformChunk;
-    private final SizeChunk sizeChunk;
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransformRequestHandler.class);
+
+    private final Optional<TranslationChunk> oTranslationChunk;
+    private final Optional<SizeChunk> oSizeChunk;
+    private final Optional<RotationChunk> oRotationChunk;
 
 
     public TransformRequestHandler(ModelElement model) {
         requireNonNull(model, "model is null");
 
-        this.transformChunk = model.getChunk(DefaultChunks.TRANSFORMATION, TransformChunk.class);
-        this.sizeChunk = model.getChunk(DefaultChunks.SIZE, SizeChunk.class);
+        this.oTranslationChunk = model.getChunk(DefaultChunks.TRANSLATION, TranslationChunk.class);
+        this.oSizeChunk = model.getChunk(DefaultChunks.SIZE, SizeChunk.class);
+        this.oRotationChunk = model.getChunk(DefaultChunks.ROTATION, RotationChunk.class);
     }
 
 
@@ -45,7 +58,7 @@ public class TransformRequestHandler
             return supportsTranslate();
         }
         if (ResizeRequest.class.equals(request)) {
-            return supportsResize() || supportsScale();
+            return supportsResize();
         }
         if (RotateRequest.class.equals(request)) {
             return supportsRotate();
@@ -56,48 +69,80 @@ public class TransformRequestHandler
 
     @Override
     public void requestChecked(Request request) {
-        // If element supports both Resize and Scale, Resize takes priority...
+
         if ((request instanceof ResizeRequest) && supportsResize()) {
 
             final Scale s = ((ResizeRequest) request).getScale();
             ((ResizeRequest) request).setCommand(createResizeCommand(s));
             return;
         }
-        final TransformRequest transformRequest = (TransformRequest) request;
-        transformRequest.setCommand(new TransformCommand(transformChunk, transformRequest.getTransform()));
+
+        if ((request instanceof RotateRequest) && supportsResize()) {
+
+            final Rotate r = ((RotateRequest) request).getRotate();
+            ((RotateRequest) request).setCommand(createRotateCommand(r));
+            return;
+        }
+
+        if ((request instanceof TranslateRequest) && supportsTranslate()) {
+            final TranslateRequest translateRequest = (TranslateRequest) request;
+            translateRequest.setCommand(new TranslateCommand(oTranslationChunk.get(), translateRequest.getTranslate()));
+            LOGGER.info("TR:   Delta {}, {}", translateRequest.getTranslate().getX(), translateRequest.getTranslate().getY());
+        }
     }
 
 
     private boolean supportsTranslate() {
-        return (transformChunk != null) && transformChunk.getSupportsTranslate();
+        return (oTranslationChunk.isPresent()) && oTranslationChunk.get().getSupportsTranslate();
     }
 
 
     private boolean supportsResize() {
-        return supportsTranslate() && ((sizeChunk != null) && sizeChunk.getSupportsResize());
-    }
-
-
-    private boolean supportsScale() {
-        return supportsTranslate() && ((transformChunk != null) && transformChunk.getSupportsScale());
+        return supportsTranslate() && ((oSizeChunk.isPresent()) && oSizeChunk.get().getSupportsResize());
     }
 
 
     private boolean supportsRotate() {
-        return (transformChunk != null) && transformChunk.getSupportsRotate();
+        return (oRotationChunk.isPresent()) && oRotationChunk.get().getSupportsRotate();
     }
 
 
     private Command createResizeCommand(Scale scale) {
         return new CompoundCommand()
-                .add(new TransformCommand(transformChunk, scaleToTranslate(scale, transformChunk.getTransform().getTx(), transformChunk.getTransform().getTy())))
-                .add(new ResizeCommand(sizeChunk, scale));
+                .add(new TranslateCommand(oTranslationChunk.get(), pivotedTransformToTranslate(scale, oTranslationChunk.get().getX(), oTranslationChunk.get().getY())))
+                .add(new ResizeCommand(oSizeChunk.get(), scale));
     }
 
 
-    private Translate scaleToTranslate(Scale scale, double originalX, double originalY) {
-        final Point2D p = scale.transform(originalX, originalY);
-        return new Translate(p.getX() - originalX, p.getY() - originalY);
+    private Command createRotateCommand(Rotate rotate) {
+        return new CompoundCommand()
+                .add(new TranslateCommand(oTranslationChunk.get(), pivotedTransformToTranslate(rotate, oTranslationChunk.get().getX(), oTranslationChunk.get().getY())))
+                .add(new RotateCommand(oRotationChunk.get(), rotate));
+    }
+
+
+    private Translate pivotedTransformToTranslate(Transform pivotedTransform, double originalX, double originalY) {
+        final Transform pt = getFixedTransform(pivotedTransform, originalX, originalY);
+        final Point2D p = pt.transform(0, 0);
+
+        return new Translate(p.getX(), p.getY());
+    }
+
+
+    private Transform getFixedTransform(Transform originalTransform, double originalX, double originalY) {
+        if (originalTransform instanceof Rotate) {
+            final Rotate pt = (Rotate) originalTransform.clone();
+            pt.setPivotX(pt.getPivotX() - originalX);
+            pt.setPivotY(pt.getPivotY() - originalY);
+            return pt;
+        }
+        if (originalTransform instanceof Scale) {
+            final Scale pt = (Scale) originalTransform.clone();
+            pt.setPivotX(pt.getPivotX() - originalX);
+            pt.setPivotY(pt.getPivotY() - originalY);
+            return pt;
+        }
+        throw new IllegalArgumentException("Unsupported transform type");
     }
 
 }
