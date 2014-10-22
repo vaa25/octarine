@@ -23,6 +23,7 @@ import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeCommand;
 import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeRequest;
 import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateCommand;
 import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateRequest;
+import app.dejv.impl.octarine.tool.selection.editmode.translate.TranslateCommand;
 import app.dejv.impl.octarine.tool.selection.editmode.translate.TranslateRequest;
 import app.dejv.octarine.command.Command;
 import app.dejv.octarine.model.ModelElement;
@@ -87,7 +88,6 @@ public class TransformRequestHandler
         if ((request instanceof TranslateRequest) && supportsTranslate()) {
             final TranslateRequest translateRequest = (TranslateRequest) request;
             translateRequest.setCommand(new TranslateCommand(oTranslationChunk.get(), translateRequest.getTranslate()));
-            LOGGER.info("TR:   Delta {}, {}", translateRequest.getTranslate().getX(), translateRequest.getTranslate().getY());
         }
     }
 

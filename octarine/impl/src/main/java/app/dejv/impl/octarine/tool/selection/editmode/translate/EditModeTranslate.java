@@ -5,19 +5,19 @@
  */
 package app.dejv.impl.octarine.tool.selection.editmode.translate;
 
-import java.util.HashMap;
-import java.util.Map;
+import static java.util.Objects.requireNonNull;
 
-import javafx.collections.ObservableList;
-import javafx.geometry.Bounds;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Translate;
 
 import app.dejv.impl.octarine.tool.selection.editmode.AbstractEditMode;
+import app.dejv.impl.octarine.tool.selection.editmode.transform.TransformProgressFeedback;
 import app.dejv.impl.octarine.utils.ControllerUtils;
 import app.dejv.octarine.Octarine;
 import app.dejv.octarine.controller.Controller;
@@ -35,13 +35,19 @@ public class EditModeTranslate
 
     private boolean drag = false;
     private Point2D initialPosition;
-    private Translate fbTranslation = new Translate();
+    private Translate translate = new Translate();
 
-    private final Map<Shape, Point2D> transformationFeedback = new HashMap<>();
+    private final TransformProgressFeedback transformProgressFeedback;
+
+    //private final Map<Shape, Point2D> transformationFeedback = new HashMap<>();
 
 
-    public EditModeTranslate(Octarine octarine) {
+    public EditModeTranslate(Octarine octarine, TransformProgressFeedback transformProgressFeedback) {
         super(octarine, TranslateRequest.class);
+
+        requireNonNull(transformProgressFeedback, "transformProgressFeedback is null");
+
+        this.transformProgressFeedback = transformProgressFeedback;
     }
 
 
@@ -72,21 +78,16 @@ public class EditModeTranslate
         }
 
         if (e.isPrimaryButtonDown()) {
+
             drag = true;
+
             initialPosition = new Point2D(e.getSceneX(), e.getSceneY());
-            fbTranslation.setX(0);
-            fbTranslation.setY(0);
 
-            selection.stream().forEach((controller) -> {
-                Shape shape = ControllerUtils.getShape(controller);
-                shape.setOpacity(0.5);
-                shape.getTransforms().add(1,fbTranslation);
+            translate.setX(0);
+            translate.setY(0);
 
-                Bounds shapeBounds = shape.getBoundsInParent();
-                transformationFeedback.put(shape, new Point2D(shapeBounds.getMinX() - e.getX(), shapeBounds.getMinY() - e.getY()));
-            });
-
-            addTransformationFeedback(e.getX(), e.getY());
+            final Set<Shape> shapes = selection.stream().map(ControllerUtils::getShape).collect(Collectors.toSet());
+            transformProgressFeedback.activate(shapes, translate);
 
             e.consume();
 
@@ -97,41 +98,24 @@ public class EditModeTranslate
 
     private void handleMouseDragged(MouseEvent e) {
         if (drag) {
-            moveTransformationFeedback(e.getSceneX(), e.getSceneY());
+            translate.setX(e.getSceneX() - initialPosition.getX());
+            translate.setY(e.getSceneY() - initialPosition.getY());
         }
     }
 
 
     private void handleMouseReleased(MouseEvent e) {
         if (drag) {
-            removeTransformationFeedback();
+
+            drag = false;
+
+            transformProgressFeedback.deactivate();
 
             final Dimension2D positionDelta = new Dimension2D(e.getSceneX() - initialPosition.getX(), e.getSceneY() - initialPosition.getY());
 
             executeOnSelection(new TranslateRequest(new Translate(positionDelta.getWidth(), positionDelta.getHeight())));
 
-            drag = false;
             getOctarine().getEditationListeners().forEach(EditationListener::onEditFinished);
         }
     }
-
-    private void addTransformationFeedback(double x, double y) {
-        moveTransformationFeedback(x, y);
-
-        final ObservableList<Node> activeFeedback = getOctarine().getLayerManager().getDynamicFeedbackLayer();
-        transformationFeedback.keySet().stream().forEach(activeFeedback::add);
-    }
-
-
-    private void moveTransformationFeedback(double x, double y) {
-        fbTranslation.setX(x - initialPosition.getX());
-        fbTranslation.setY(y - initialPosition.getY());
-    }
-
-    private void removeTransformationFeedback() {
-        final ObservableList<Node> activeFeedback = getOctarine().getLayerManager().getDynamicFeedbackLayer();
-        transformationFeedback.keySet().stream().forEach(activeFeedback::remove);
-        transformationFeedback.clear();
-    }
-
 }

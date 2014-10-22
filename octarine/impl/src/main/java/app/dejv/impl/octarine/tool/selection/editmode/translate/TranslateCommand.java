@@ -1,4 +1,4 @@
-package app.dejv.impl.octarine.tool.selection.editmode.transform;
+package app.dejv.impl.octarine.tool.selection.editmode.translate;
 
 import static java.util.Objects.requireNonNull;
 

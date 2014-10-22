@@ -91,7 +91,7 @@ public class ConfigSelectionTool {
 
     @Bean
     public EditModeTranslate editModeTranslate() {
-        return new EditModeTranslate(octarine);
+        return new EditModeTranslate(octarine, transformProgressFeedback);
     }
 
 
