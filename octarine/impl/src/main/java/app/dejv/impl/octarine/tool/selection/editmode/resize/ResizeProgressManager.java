@@ -11,6 +11,7 @@ import javafx.scene.transform.Transform;
 
 import app.dejv.impl.octarine.feedback.handles.Direction;
 import app.dejv.impl.octarine.tool.selection.editmode.HandleTransformationManager;
+import app.dejv.impl.octarine.tool.selection.editmode.transform.TransformProgressFeedback;
 import app.dejv.octarine.input.MouseDragHelperFactory;
 
 /**
@@ -22,7 +23,7 @@ import app.dejv.octarine.input.MouseDragHelperFactory;
 public class ResizeProgressManager
         extends HandleTransformationManager {
 
-    private final ResizeProgressFeedback resizeProgressFeedback;
+    private final TransformProgressFeedback transformProgressFeedback;
 
     private double originalWidth;
     private double originalHeight;
@@ -31,12 +32,12 @@ public class ResizeProgressManager
 
 
 
-    public ResizeProgressManager(ResizeHandleFeedback resizeHandleFeedback, ResizeProgressFeedback resizeProgressFeedback, MouseDragHelperFactory mouseDragHelperFactory) {
+    public ResizeProgressManager(ResizeHandleFeedback resizeHandleFeedback, TransformProgressFeedback transformProgressFeedback, MouseDragHelperFactory mouseDragHelperFactory) {
         super(resizeHandleFeedback, mouseDragHelperFactory);
 
-        requireNonNull(resizeProgressFeedback, "resizeProgressFeedback is null");
+        requireNonNull(transformProgressFeedback, "transformProgressFeedback is null");
 
-        this.resizeProgressFeedback = resizeProgressFeedback;
+        this.transformProgressFeedback = transformProgressFeedback;
     }
 
 
@@ -53,7 +54,7 @@ public class ResizeProgressManager
         scale.setPivotX(pivotLocation.getX());
         scale.setPivotY(pivotLocation.getY());
 
-        resizeProgressFeedback.activate(shapes, scale);
+        transformProgressFeedback.activate(shapes, scale);
     }
 
 
@@ -69,7 +70,7 @@ public class ResizeProgressManager
 
     @Override
     protected void hideTransformationFeedback() {
-        resizeProgressFeedback.deactivate();
+        transformProgressFeedback.deactivate();
     }
 
 

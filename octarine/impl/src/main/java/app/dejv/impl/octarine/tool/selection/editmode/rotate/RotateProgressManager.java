@@ -11,6 +11,7 @@ import javafx.scene.transform.Transform;
 
 import app.dejv.impl.octarine.feedback.handles.Direction;
 import app.dejv.impl.octarine.tool.selection.editmode.HandleTransformationManager;
+import app.dejv.impl.octarine.tool.selection.editmode.transform.TransformProgressFeedback;
 import app.dejv.impl.octarine.utils.GeometryUtils;
 import app.dejv.octarine.input.MouseDragHelperFactory;
 
@@ -23,7 +24,7 @@ import app.dejv.octarine.input.MouseDragHelperFactory;
 public class RotateProgressManager
         extends HandleTransformationManager {
 
-    private final RotateProgressFeedback rotateProgressFeedback;
+    private final TransformProgressFeedback rotateProgressFeedback;
 
     private double originalAngle;
     private Point2D locPivot;
@@ -32,7 +33,7 @@ public class RotateProgressManager
 
 
 
-    public RotateProgressManager(RotateHandleFeedback rotateHandleFeedback, RotateProgressFeedback rotateProgressFeedback, MouseDragHelperFactory mouseDragHelperFactory) {
+    public RotateProgressManager(RotateHandleFeedback rotateHandleFeedback, TransformProgressFeedback rotateProgressFeedback, MouseDragHelperFactory mouseDragHelperFactory) {
         super(rotateHandleFeedback, mouseDragHelperFactory);
 
         requireNonNull(rotateProgressFeedback, "rotateProgressFeedback is null");

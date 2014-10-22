@@ -1,4 +1,4 @@
-package app.dejv.impl.octarine.tool.selection.editmode.rotate;
+package app.dejv.impl.octarine.tool.selection.editmode.transform;
 
 import static java.util.Objects.requireNonNull;
 
@@ -9,7 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 
 import app.dejv.impl.octarine.cfg.OctarineProps;
 import app.dejv.impl.octarine.feedback.dynamics.DynamicFeedback;
@@ -22,7 +22,7 @@ import app.dejv.octarine.Octarine;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class RotateProgressFeedback
+public class TransformProgressFeedback
         extends DynamicFeedback {
 
     public static final double RECT_STROKE_WIDTH = 1.0d;
@@ -32,10 +32,10 @@ public class RotateProgressFeedback
     private Rectangle rectangle;
     private CompositeObservableBounds progressBounds = new CompositeObservableBounds().setRounded(true);
 
-    private Rotate rotate;
+    private Transform transform;
 
 
-    public RotateProgressFeedback(Octarine octarine) {
+    public TransformProgressFeedback(Octarine octarine) {
         super(octarine);
         zoom = octarine.getView().zoomFactorProperty();
 
@@ -52,14 +52,14 @@ public class RotateProgressFeedback
     }
 
 
-    public void activate(Set<Shape> shapes, Rotate scale) {
+    public void activate(Set<Shape> shapes, Transform transform) {
         requireNonNull(shapes, "shapes is null");
-        requireNonNull(scale, "rotate is null");
+        requireNonNull(transform, "transform is null");
 
         deactivate();
 
         this.shapes = shapes;
-        this.rotate = scale;
+        this.transform = transform;
 
         super.activate();
     }
@@ -87,7 +87,7 @@ public class RotateProgressFeedback
     @Override
     protected void bind() {
         super.bind();
-        shapesGroup.getTransforms().add(rotate);
+        shapesGroup.getTransforms().add(transform);
         progressBounds.add(shapesGroup.boundsInParentProperty());
         rectangle.strokeWidthProperty().bind(new ConstantZoomDoubleBinding(zoom, RECT_STROKE_WIDTH));
         rectangle.xProperty().bind(progressBounds.minXProperty().subtract(0.5d));
@@ -105,7 +105,7 @@ public class RotateProgressFeedback
         rectangle.widthProperty().unbind();
         rectangle.heightProperty().unbind();
         progressBounds.clear();
-        shapesGroup.getTransforms().remove(rotate);
+        shapesGroup.getTransforms().remove(transform);
         super.unbind();
     }
 

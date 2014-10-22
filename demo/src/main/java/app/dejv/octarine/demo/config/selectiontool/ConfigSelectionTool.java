@@ -14,12 +14,11 @@ import app.dejv.impl.octarine.tool.selection.SelectionTool;
 import app.dejv.impl.octarine.tool.selection.editmode.delete.EditModeDelete;
 import app.dejv.impl.octarine.tool.selection.editmode.resize.EditModeResize;
 import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeHandleFeedback;
-import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeProgressFeedback;
 import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeProgressManager;
 import app.dejv.impl.octarine.tool.selection.editmode.rotate.EditModeRotate;
 import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateHandleFeedback;
-import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateProgressFeedback;
 import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateProgressManager;
+import app.dejv.impl.octarine.tool.selection.editmode.transform.TransformProgressFeedback;
 import app.dejv.impl.octarine.tool.selection.editmode.translate.EditModeTranslate;
 import app.dejv.impl.octarine.utils.CompositeObservableBounds;
 import app.dejv.octarine.Octarine;
@@ -42,19 +41,16 @@ public class ConfigSelectionTool {
     private MouseDragHelperFactory mouseDragHelperFactory;
 
     @Autowired
-    private ResizeHandleFeedback resizeHandleFeedback;
+    private TransformProgressFeedback transformProgressFeedback;
 
     @Autowired
-    private ResizeProgressFeedback resizeProgressFeedback;
+    private ResizeHandleFeedback resizeHandleFeedback;
 
     @Autowired
     private ResizeProgressManager resizeProgressManager;
 
     @Autowired
     private RotateHandleFeedback rotateHandleFeedback;
-
-    @Autowired
-    private RotateProgressFeedback rotateProgressFeedback;
 
     @Autowired
     private RotateProgressManager rotateProgressManager;
@@ -66,23 +62,18 @@ public class ConfigSelectionTool {
     }
 
     @Bean
-    public ResizeProgressFeedback resizeProgressFeedback() {
-        return new ResizeProgressFeedback(octarine);
+    public TransformProgressFeedback transformProgressFeedback() {
+        return new TransformProgressFeedback(octarine);
     }
 
     @Bean
     ResizeProgressManager resizeProgressManager() {
-        return new ResizeProgressManager(resizeHandleFeedback, resizeProgressFeedback, mouseDragHelperFactory);
-    }
-
-    @Bean
-    public RotateProgressFeedback rotateProgressFeedback() {
-        return new RotateProgressFeedback(octarine);
+        return new ResizeProgressManager(resizeHandleFeedback, transformProgressFeedback, mouseDragHelperFactory);
     }
 
     @Bean
     RotateProgressManager rotateProgressManager() {
-        return new RotateProgressManager(rotateHandleFeedback, rotateProgressFeedback, mouseDragHelperFactory);
+        return new RotateProgressManager(rotateHandleFeedback, transformProgressFeedback, mouseDragHelperFactory);
     }
 
     @Bean
