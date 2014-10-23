@@ -23,7 +23,6 @@ public abstract class HandleTransformationManager {
 
     private final CorneredHandleFeedback corneredHandleFeedback;
     private final Map<Direction, MouseDragHelper> mouseDragHelpers = new HashMap<>();
-    private final MouseDragHelperFactory mouseDragHelperFactory;
 
 
     public HandleTransformationManager(CorneredHandleFeedback corneredHandleFeedback, MouseDragHelperFactory mouseDragHelperFactory) {
@@ -31,7 +30,6 @@ public abstract class HandleTransformationManager {
         requireNonNull(mouseDragHelperFactory, "mouseDragHelperFactory is null");
 
         this.corneredHandleFeedback = corneredHandleFeedback;
-        this.mouseDragHelperFactory = mouseDragHelperFactory;
 
         corneredHandleFeedback.getHandles().keySet().forEach((direction) -> mouseDragHelpers.put(direction, mouseDragHelperFactory.create()));
     }
