@@ -12,7 +12,8 @@ import app.dejv.octarine.input.MouseDragListener;
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class DefaultMouseDragHelper implements MouseDragHelper {
+public class DefaultMouseDragHelper
+        implements MouseDragHelper {
 
     private Node node;
     private MouseDragListener listener;
