@@ -13,8 +13,8 @@ public class RotationChunk {
 
     private final DoubleProperty angle = new SimpleDoubleProperty(this, "angle", 0d);
 
-    private final DoubleProperty pivotX = new SimpleDoubleProperty(this, "pivotX", 0d);
-    private final DoubleProperty pivotY = new SimpleDoubleProperty(this, "pivotY", 0d);
+    private final DoubleProperty pivotX = new SimpleDoubleProperty(this, "pivotX", Double.MIN_VALUE);
+    private final DoubleProperty pivotY = new SimpleDoubleProperty(this, "pivotY", Double.MIN_VALUE);
 
     private final BooleanProperty supportsRotate = new SimpleBooleanProperty(false);
 

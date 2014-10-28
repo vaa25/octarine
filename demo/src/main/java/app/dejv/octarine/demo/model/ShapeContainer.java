@@ -4,8 +4,8 @@ import javafx.scene.paint.Color;
 
 import org.springframework.stereotype.Component;
 
+import app.dejv.impl.octarine.constants.PredefinedChunkTypes;
 import app.dejv.impl.octarine.model.AbstractContainerModelElement;
-import app.dejv.impl.octarine.model.DefaultChunks;
 import app.dejv.impl.octarine.model.chunk.FillChunk;
 import app.dejv.impl.octarine.model.chunk.PaintChunk;
 import app.dejv.impl.octarine.model.chunk.SizeChunk;
@@ -18,15 +18,15 @@ public class ShapeContainer
 
 
     public ShapeContainer() {
-        chunks.put(DefaultChunks.SIZE, new SizeChunk()
+        chunks.put(PredefinedChunkTypes.SIZE, new SizeChunk()
                 .setWidth(700d)
                 .setHeight(700d)
                 .setSupportsResize(false));
 
-        chunks.put(DefaultChunks.FILL, new FillChunk(new PaintChunk()
+        chunks.put(PredefinedChunkTypes.FILL, new FillChunk(new PaintChunk()
         .setPaint(Color.WHITE)));
 
-        chunks.put(DefaultChunks.STROKE, new StrokeChunk(new PaintChunk()
+        chunks.put(PredefinedChunkTypes.STROKE, new StrokeChunk(new PaintChunk()
         .setPaint(Color.BLACK)));
     }
 

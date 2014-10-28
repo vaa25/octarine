@@ -9,7 +9,6 @@ import java.util.Set;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
@@ -35,40 +34,92 @@ public class RotateHandleFeedback
         extends CorneredHandleFeedback {
 
     private final Group pivotCross;
-    private final DoubleProperty pivotX = new SimpleDoubleProperty();
-    private final DoubleProperty pivotY = new SimpleDoubleProperty();
+
+    private ReadOnlyDoubleProperty pivotX;
+    private ReadOnlyDoubleProperty pivotY;
+
+    private ReadOnlyDoubleProperty pivotXOffset;
+    private ReadOnlyDoubleProperty pivotYOffset;
+
+    private boolean bound = false;
+    private boolean usingDefaultPivot = true;
 
 
     public RotateHandleFeedback(Octarine octarine, CompositeObservableBounds selectionBounds) throws IOException {
         super(octarine, selectionBounds);
 
-        this.pivotX.bind(selectionBounds.centerXProperty());
-        this.pivotY.bind(selectionBounds.centerYProperty());
-
         this.pivotCross = InfrastructureUtils.getRequiredShape(octarine.getResources(), "rotpivot");
+        this.pivotCross.getChildren().forEach((child) -> child.setMouseTransparent(false));
         this.pivotCross.setMouseTransparent(false);
         this.pivotCross.setCursor(Cursor.HAND);
+
+        resetPivot();
+
         getChildren().add(pivotCross);
     }
 
 
+    public final void setPivot(ReadOnlyDoubleProperty x, ReadOnlyDoubleProperty y) {
+        pivotX = x;
+        pivotY = y;
+
+        usingDefaultPivot = false;
+        bindPivotCrossLocation();
+    }
+
+
+    public final void resetPivot() {
+        pivotX = null;
+        pivotY = null;
+
+        usingDefaultPivot = true;
+        bindPivotCrossLocation();
+    }
+
+
+    public final void setPivotOffset(ReadOnlyDoubleProperty ox, ReadOnlyDoubleProperty oy) {
+        pivotXOffset = ox;
+        pivotYOffset = oy;
+
+        bindPivotCrossLocation();
+    }
+
+
+    public final void resetPivotOffset() {
+        pivotXOffset = null;
+        pivotYOffset = null;
+
+        bindPivotCrossLocation();
+    }
+
+
     public double getPivotX() {
-        return pivotX.get();
+        return pivotCross.translateXProperty().get();
     }
 
 
     public ReadOnlyDoubleProperty pivotXProperty() {
-        return pivotX;
+        return pivotCross.translateXProperty();
     }
 
 
     public double getPivotY() {
-        return pivotY.get();
+        return pivotCross.translateXProperty().get();
     }
 
 
     public ReadOnlyDoubleProperty pivotYProperty() {
-        return pivotY;
+        return pivotCross.translateXProperty();
+    }
+
+
+    public Group getPivotCross() {
+        return pivotCross;
+    }
+
+
+    public boolean isUsingDefaultPivot() {
+        return usingDefaultPivot;
     }
 
 
@@ -162,15 +213,41 @@ public class RotateHandleFeedback
         final ConstantZoomDoubleBinding pivotCrossScale = new ConstantZoomDoubleBinding(zoomFactor, 1.0);
         pivotCross.scaleXProperty().bind(pivotCrossScale);
         pivotCross.scaleYProperty().bind(pivotCrossScale);
-        pivotCross.translateXProperty().bind(pivotX);
-        pivotCross.translateYProperty().bind(pivotY);
+
+        bound = true;
+
+        bindPivotCrossLocation();
     }
 
 
     private void unbindPivotCross() {
+        bound = false;
+
         pivotCross.scaleXProperty().unbind();
         pivotCross.scaleYProperty().unbind();
         pivotCross.translateXProperty().unbind();
         pivotCross.translateYProperty().unbind();
+    }
+
+
+    private void bindPivotCrossLocation() {
+        if (!bound) {
+            return;
+        }
+
+        if ((pivotX != null) && (pivotY != null)) {
+
+            if ((pivotXOffset != null) && (pivotYOffset != null)) {
+
+                pivotCross.translateXProperty().bind(pivotX.add(pivotXOffset));
+                pivotCross.translateYProperty().bind(pivotY.add(pivotYOffset));
+            } else {
+                pivotCross.translateXProperty().bind(pivotX);
+                pivotCross.translateYProperty().bind(pivotY);
+            }
+        } else {
+            pivotCross.translateXProperty().bind(selectionBounds.centerXProperty());
+            pivotCross.translateYProperty().bind(selectionBounds.centerYProperty());
+        }
     }
 }

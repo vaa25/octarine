@@ -5,8 +5,8 @@ import javafx.scene.paint.Color;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import app.dejv.impl.octarine.constants.PredefinedChunkTypes;
 import app.dejv.impl.octarine.model.AbstractModelElement;
-import app.dejv.impl.octarine.model.DefaultChunks;
 import app.dejv.impl.octarine.model.chunk.FillChunk;
 import app.dejv.impl.octarine.model.chunk.PaintChunk;
 import app.dejv.impl.octarine.model.chunk.RotationChunk;
@@ -22,26 +22,23 @@ public class RectangleShape
 
     public RectangleShape(double x, double y, double w, double h) {
 
-        chunks.put(DefaultChunks.TRANSLATION, new TranslationChunk()
+        chunks.put(PredefinedChunkTypes.TRANSLATION, new TranslationChunk()
                 .setX(x)
                 .setY(y)
                 .setSupportsTranslate(true));
 
-        chunks.put(DefaultChunks.SIZE, new SizeChunk()
+        chunks.put(PredefinedChunkTypes.SIZE, new SizeChunk()
                 .setWidth(w)
                 .setHeight(h)
                 .setSupportsResize(true));
 
-        chunks.put(DefaultChunks.ROTATION, new RotationChunk()
-                .setAngle(0)
-                .setPivotX(0)
-                .setPivotY(0)
+        chunks.put(PredefinedChunkTypes.ROTATION, new RotationChunk()
                 .setSupportsRotate(true));
 
-        chunks.put(DefaultChunks.FILL, new FillChunk(new PaintChunk()
+        chunks.put(PredefinedChunkTypes.FILL, new FillChunk(new PaintChunk()
                 .setPaint(Color.BLANCHEDALMOND)));
 
-        chunks.put(DefaultChunks.STROKE, new StrokeChunk(new PaintChunk()));
+        chunks.put(PredefinedChunkTypes.STROKE, new StrokeChunk(new PaintChunk()));
 
     }
 }

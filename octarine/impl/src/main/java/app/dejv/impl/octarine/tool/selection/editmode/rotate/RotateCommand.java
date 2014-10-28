@@ -15,43 +15,27 @@ public class RotateCommand
     private final RotationChunk rotationChunk;
 
     private final double originalAngle;
-    private final double originalPivotX;
-    private final double originalPivotY;
 
     private final double newAngle;
-    private final double newPivotX;
-    private final double newPivotY;
 
 
     public RotateCommand(RotationChunk rotationChunk, Rotate rotateTransform) {
         this.rotationChunk = rotationChunk;
 
         this.originalAngle = rotationChunk.getAngle();
-        this.originalPivotX = rotationChunk.getPivotX();
-        this.originalPivotY = rotationChunk.getPivotY();
 
         this.newAngle = originalAngle + rotateTransform.getAngle();
-        this.newPivotX = rotateTransform.getPivotX();
-        this.newPivotY = rotateTransform.getPivotY();
     }
 
 
     @Override
     public void execute() {
-        set(newAngle, newPivotX, newPivotY);
+        rotationChunk.setAngle(newAngle);
     }
 
 
     @Override
     public void undo() {
-        set(originalAngle, originalPivotX, originalPivotY);
+        rotationChunk.setAngle(originalAngle);
     }
-
-
-    private void set(double angle, double pivotX, double pivotY) {
-        rotationChunk.setAngle(angle);
-        rotationChunk.setPivotX(pivotX);
-        rotationChunk.setPivotY(pivotY);
-    }
-
 }

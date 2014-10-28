@@ -9,11 +9,14 @@ import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 
+import app.dejv.impl.octarine.constants.PredefinedDragHelperTypes;
+import app.dejv.impl.octarine.drag.PropertyMouseDragWrapper;
 import app.dejv.impl.octarine.feedback.handles.Direction;
 import app.dejv.impl.octarine.tool.selection.editmode.HandleTransformationManager;
 import app.dejv.impl.octarine.tool.selection.editmode.transform.TransformProgressFeedback;
 import app.dejv.impl.octarine.utils.GeometryUtils;
 import app.dejv.octarine.input.MouseDragHelperFactory;
+import app.dejv.octarine.input.SimpleMouseDragListener;
 
 /**
  * Resize manager governs the "resize operation in-progress" phase.
@@ -22,7 +25,8 @@ import app.dejv.octarine.input.MouseDragHelperFactory;
  * Author: dejv (www.dejv.info)
  */
 public class RotateProgressManager
-        extends HandleTransformationManager {
+        extends HandleTransformationManager
+        implements SimpleMouseDragListener {
 
     private final TransformProgressFeedback rotateProgressFeedback;
 
@@ -31,15 +35,37 @@ public class RotateProgressManager
     private Point2D locHandle;
     private Rotate rotate = new Rotate();
 
+    private final PropertyMouseDragWrapper propertyMouseDragWrapper;
 
 
     public RotateProgressManager(RotateHandleFeedback rotateHandleFeedback, TransformProgressFeedback rotateProgressFeedback, MouseDragHelperFactory mouseDragHelperFactory) {
         super(rotateHandleFeedback, mouseDragHelperFactory);
 
+        requireNonNull(rotateHandleFeedback, "rotateHandleFeedback is null");
         requireNonNull(rotateProgressFeedback, "rotateProgressFeedback is null");
+        requireNonNull(mouseDragHelperFactory, "mouseDragHelperFactory is null");
 
         this.rotateProgressFeedback = rotateProgressFeedback;
+
+        propertyMouseDragWrapper = new PropertyMouseDragWrapper(mouseDragHelperFactory.create(PredefinedDragHelperTypes.DEFAULT), rotateHandleFeedback.getPivotCross(), this);
         rotate.setAxis(Rotate.Z_AXIS);
+    }
+
+
+    @Override
+    public void onDragStarted() {
+        final RotateHandleFeedback handleFeedback = (RotateHandleFeedback) getHandleFeedback();
+
+        handleFeedback.setPivotOffset(propertyMouseDragWrapper.xProperty(), propertyMouseDragWrapper.yProperty());
+    }
+
+
+    @Override
+    public void onDragFinished() {
+        final RotateHandleFeedback handleFeedback = (RotateHandleFeedback) getHandleFeedback();
+
+        getListener().auxiliaryOperationCommited(new Point2D(handleFeedback.getPivotX(), handleFeedback.getPivotY()));
+        handleFeedback.resetPivotOffset();
     }
 
 

@@ -8,5 +8,7 @@ import javafx.scene.transform.Transform;
  */
 public interface TransformationListener {
 
+    void auxiliaryOperationCommited(Object operationDescriptor);
+
     void transformationCommited(Transform transform);
 }

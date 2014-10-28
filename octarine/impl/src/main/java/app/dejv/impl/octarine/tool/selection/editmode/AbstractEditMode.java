@@ -40,6 +40,7 @@ public abstract class AbstractEditMode
 
     private Octarine octarine;
 
+
     public AbstractEditMode(Octarine octarine, Class<? extends Request> requestType) {
         requireNonNull(octarine, "octarine is NULL");
         requireNonNull(octarine.getView().getScene(), "scene is NULL");
@@ -64,6 +65,7 @@ public abstract class AbstractEditMode
         }
     }
 
+
     @Override
     public final void deactivate() {
         if (active) {
@@ -71,6 +73,7 @@ public abstract class AbstractEditMode
             active = false;
         }
     }
+
 
     @Override
     public void selectionUpdated(List<Controller> newSelection) {
@@ -98,18 +101,22 @@ public abstract class AbstractEditMode
         LOG.debug("{} on current selection", enabled ? "Enabled" : "Disabled");
     }
 
+
     @Override
     public boolean isEnabled() {
         return enabled;
     }
 
+
     public boolean isActive() {
         return active;
     }
 
+
     public Octarine getOctarine() {
         return octarine;
     }
+
 
     protected boolean isSelectionItemSupported(Controller controller) {
         return controller.supports(requestType);
@@ -137,9 +144,22 @@ public abstract class AbstractEditMode
         commandStack.execute(compoundCommand);
     }
 
-    protected void tryActivate() {
-            doActivate();
+
+    protected void executeGeneralRequest(Request request) {
+        requireNonNull(request, "request is null");
+
+        selection.stream().forEach((controller) -> {
+            if (controller.supports(request.getClass())) {
+                controller.request(request);
+            }
+        });
     }
+
+
+    protected void tryActivate() {
+        doActivate();
+    }
+
 
     protected abstract void doActivate();
 

@@ -108,8 +108,7 @@ public class ConfigController {
 
     @Bean
     @Scope("prototype")
-    public DefaultMouseDragHelper mouseDragHelper() {
+    public DefaultMouseDragHelper defaultMouseDragHelper() {
         return new DefaultMouseDragHelper();
     }
-
 }

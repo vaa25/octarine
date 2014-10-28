@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 
-import app.dejv.impl.octarine.model.DefaultChunks;
+import app.dejv.impl.octarine.constants.PredefinedChunkTypes;
 import app.dejv.impl.octarine.model.chunk.FillChunk;
 import app.dejv.impl.octarine.model.chunk.RotationChunk;
 import app.dejv.impl.octarine.model.chunk.SizeChunk;
@@ -33,11 +33,11 @@ public class RectangleViewFactory
 
     @Override
     public Shape createShape(ModelElement modelElement) {
-        final Optional<TranslationChunk> oTranslationChunk = modelElement.getChunk(DefaultChunks.TRANSLATION, TranslationChunk.class);
-        final Optional<SizeChunk> oSizeChunk = modelElement.getChunk(DefaultChunks.SIZE, SizeChunk.class);
-        final Optional<RotationChunk> oRotationChunk = modelElement.getChunk(DefaultChunks.ROTATION, RotationChunk.class);
-        final Optional<StrokeChunk> oStrokeChunk = modelElement.getChunk(DefaultChunks.STROKE, StrokeChunk.class);
-        final Optional<FillChunk> oFillChunk = modelElement.getChunk(DefaultChunks.FILL, FillChunk.class);
+        final Optional<TranslationChunk> oTranslationChunk = modelElement.getChunk(PredefinedChunkTypes.TRANSLATION, TranslationChunk.class);
+        final Optional<SizeChunk> oSizeChunk = modelElement.getChunk(PredefinedChunkTypes.SIZE, SizeChunk.class);
+        final Optional<RotationChunk> oRotationChunk = modelElement.getChunk(PredefinedChunkTypes.ROTATION, RotationChunk.class);
+        final Optional<StrokeChunk> oStrokeChunk = modelElement.getChunk(PredefinedChunkTypes.STROKE, StrokeChunk.class);
+        final Optional<FillChunk> oFillChunk = modelElement.getChunk(PredefinedChunkTypes.FILL, FillChunk.class);
 
         final Rectangle r = new Rectangle(0, 0, 1, 1);
 
@@ -47,7 +47,7 @@ public class RectangleViewFactory
             final Translate translate = new Translate();
             translate.xProperty().bind(translationChunk.xProperty());
             translate.yProperty().bind(translationChunk.yProperty());
-            translate.yProperty().addListener((observable, oldValue, newValue) -> LOGGER.info("X:{} Y:{} ", translate.getX(), translate.getY()));
+            //translate.yProperty().addListener((observable, oldValue, newValue) -> LOGGER.info("X:{} Y:{} ", translate.getX(), translate.getY()));
 
             r.getTransforms().add(translate);
 
@@ -56,7 +56,7 @@ public class RectangleViewFactory
 
                 final Rotate rotate = new Rotate();
                 rotate.angleProperty().bind(rotationChunk.angleProperty());
-                rotate.angleProperty().addListener((observable, oldValue, newValue) -> LOGGER.info("Angle: {} ", rotate.getAngle()));
+                //rotate.angleProperty().addListener((observable, oldValue, newValue) -> LOGGER.info("Angle: {} ", rotate.getAngle()));
 
                 rotate.setAxis(Rotate.Z_AXIS);
 

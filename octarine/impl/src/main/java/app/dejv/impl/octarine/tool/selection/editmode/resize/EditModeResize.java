@@ -49,6 +49,12 @@ public class EditModeResize
 
 
     @Override
+    public void auxiliaryOperationCommited(Object operationDescriptor) {
+
+    }
+
+
+    @Override
     protected KeyCode getActivationKey() {
         return KeyCode.S;
     }

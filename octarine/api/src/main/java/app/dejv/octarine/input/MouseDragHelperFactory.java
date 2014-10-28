@@ -6,5 +6,5 @@ package app.dejv.octarine.input;
  */
 public interface MouseDragHelperFactory {
 
-    MouseDragHelper create();
+    MouseDragHelper create(String type);
 }

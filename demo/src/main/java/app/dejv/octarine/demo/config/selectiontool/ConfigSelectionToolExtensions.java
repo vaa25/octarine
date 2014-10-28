@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
+import app.dejv.impl.octarine.constants.PredefinedDragHelperTypes;
 import app.dejv.impl.octarine.tool.selection.extension.container.ContainerSelectionToolExtension;
 import app.dejv.impl.octarine.tool.selection.extension.container.MarqueeSelectionDynamicFeedback;
 import app.dejv.impl.octarine.tool.selection.extension.container.MarqueeSelectionManager;
@@ -79,7 +80,7 @@ public class ConfigSelectionToolExtensions {
 
     @Bean
     public MarqueeSelectionManager marqueeSelectionManager() {
-        return new MarqueeSelectionManager(marqueeSelectionDynamicFeedback, incrementalSelectionManager, mouseDragHelperFactory.create());
+        return new MarqueeSelectionManager(marqueeSelectionDynamicFeedback, incrementalSelectionManager, mouseDragHelperFactory.create(PredefinedDragHelperTypes.DEFAULT));
     }
 
 

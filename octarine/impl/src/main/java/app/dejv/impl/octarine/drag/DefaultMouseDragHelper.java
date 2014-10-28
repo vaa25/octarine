@@ -34,9 +34,9 @@ public class DefaultMouseDragHelper
         this.node = node;
         this.listener = listener;
 
-        node.addEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
-        node.addEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
-        node.addEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+        node.addEventFilter(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
+        node.addEventFilter(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
+        node.addEventFilter(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
 
         isActive = true;
     }
@@ -48,9 +48,9 @@ public class DefaultMouseDragHelper
             return;
         }
 
-        node.removeEventHandler(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
-        node.removeEventHandler(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
-        node.removeEventHandler(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
+        node.removeEventFilter(MouseEvent.DRAG_DETECTED, this::handleDragDetected);
+        node.removeEventFilter(MouseEvent.MOUSE_DRAGGED, this::handleMouseDragged);
+        node.removeEventFilter(MouseEvent.MOUSE_RELEASED, this::handleMouseReleased);
 
         node = null;
         listener = null;
@@ -58,11 +58,18 @@ public class DefaultMouseDragHelper
     }
 
 
+    public Node getNode() {
+        return node;
+    }
+
+
     private void handleDragDetected(MouseEvent e) {
         if (e.isPrimaryButtonDown()) {
             drag = true;
 
-            listener.onDragStarted(e.getX(), e.getY());
+            dragStarted(e);
+
+            listener.onDragStarted(e.getSceneX(), e.getSceneY());
             e.consume();
         }
     }
@@ -70,18 +77,33 @@ public class DefaultMouseDragHelper
 
     private void handleMouseDragged(MouseEvent e) {
         if (drag) {
-            listener.onDragged(e.getX(), e.getY());
+            dragging(e);
+
+            listener.onDragged(e.getSceneX(), e.getSceneY());
         }
     }
 
 
     private void handleMouseReleased(MouseEvent e) {
         if (drag) {
+            dragFinished(e);
+
             drag = false;
-            listener.onDragCommited(e.getX(), e.getY());
+            listener.onDragCommited(e.getSceneX(), e.getSceneY());
         } else {
-            listener.onMouseReleased(e.getX(), e.getY());
+            listener.onMouseReleased(e.getSceneX(), e.getSceneY());
         }
     }
 
+    protected void dragStarted(MouseEvent e) {
+
+    }
+
+    protected void dragging(MouseEvent e) {
+
+    }
+
+    protected void dragFinished(MouseEvent e) {
+
+    }
 }

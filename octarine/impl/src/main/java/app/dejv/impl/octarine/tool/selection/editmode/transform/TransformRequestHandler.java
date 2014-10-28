@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import app.dejv.impl.octarine.command.CompoundCommand;
-import app.dejv.impl.octarine.model.DefaultChunks;
+import app.dejv.impl.octarine.constants.PredefinedChunkTypes;
 import app.dejv.impl.octarine.model.chunk.RotationChunk;
 import app.dejv.impl.octarine.model.chunk.SizeChunk;
 import app.dejv.impl.octarine.model.chunk.TranslationChunk;
@@ -23,6 +23,8 @@ import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeCommand;
 import app.dejv.impl.octarine.tool.selection.editmode.resize.ResizeRequest;
 import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateCommand;
 import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotateRequest;
+import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotationPivotRequest;
+import app.dejv.impl.octarine.tool.selection.editmode.rotate.RotationPivotResetRequest;
 import app.dejv.impl.octarine.tool.selection.editmode.translate.TranslateCommand;
 import app.dejv.impl.octarine.tool.selection.editmode.translate.TranslateRequest;
 import app.dejv.octarine.command.Command;
@@ -46,9 +48,9 @@ public class TransformRequestHandler
     public TransformRequestHandler(ModelElement model) {
         requireNonNull(model, "model is null");
 
-        this.oTranslationChunk = model.getChunk(DefaultChunks.TRANSLATION, TranslationChunk.class);
-        this.oSizeChunk = model.getChunk(DefaultChunks.SIZE, SizeChunk.class);
-        this.oRotationChunk = model.getChunk(DefaultChunks.ROTATION, RotationChunk.class);
+        this.oTranslationChunk = model.getChunk(PredefinedChunkTypes.TRANSLATION, TranslationChunk.class);
+        this.oSizeChunk = model.getChunk(PredefinedChunkTypes.SIZE, SizeChunk.class);
+        this.oRotationChunk = model.getChunk(PredefinedChunkTypes.ROTATION, RotationChunk.class);
     }
 
 
@@ -64,6 +66,12 @@ public class TransformRequestHandler
         if (RotateRequest.class.equals(request)) {
             return supportsRotate();
         }
+        if (RotationPivotRequest.class.equals(request)) {
+            return supportsRotate();
+        }
+        if (RotationPivotResetRequest.class.equals(request)) {
+            return supportsRotate();
+        }
         return false;
     }
 
@@ -75,6 +83,22 @@ public class TransformRequestHandler
 
             final Scale s = ((ResizeRequest) request).getScale();
             ((ResizeRequest) request).setCommand(createResizeCommand(s));
+            return;
+        }
+
+        if ((request instanceof RotationPivotRequest) && supportsRotate()) {
+
+            final Point2D pivot = ((RotationPivotRequest) request).getPivot();
+            oRotationChunk.get().setPivotX(pivot.getX());
+            oRotationChunk.get().setPivotY(pivot.getY());
+            return;
+        }
+
+        if ((request instanceof RotationPivotResetRequest) && supportsRotate()) {
+
+            System.out.println("Reset");
+            oRotationChunk.get().setPivotX(Double.MIN_VALUE);
+            oRotationChunk.get().setPivotY(Double.MIN_VALUE);
             return;
         }
 

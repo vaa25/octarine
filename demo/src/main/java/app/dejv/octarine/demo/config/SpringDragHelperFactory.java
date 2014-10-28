@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import app.dejv.impl.octarine.drag.DefaultMouseDragHelper;
 import app.dejv.octarine.input.MouseDragHelper;
 import app.dejv.octarine.input.MouseDragHelperFactory;
 
@@ -19,7 +20,8 @@ public class SpringDragHelperFactory
     private ApplicationContext appContext;
 
     @Override
-    public MouseDragHelper create() {
-        return appContext.getBean(MouseDragHelper.class);
+    public MouseDragHelper create(String dragHelperType) {
+
+        return appContext.getBean(DefaultMouseDragHelper.class);
     }
 }

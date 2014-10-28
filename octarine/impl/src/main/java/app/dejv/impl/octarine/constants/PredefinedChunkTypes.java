@@ -1,11 +1,11 @@
-package app.dejv.impl.octarine.model;
+package app.dejv.impl.octarine.constants;
 
 /**
  *
  * <br/>
  * Author: dejv (www.dejv.info)
  */
-public class DefaultChunks {
+public class PredefinedChunkTypes {
 
     public static final String TRANSFORMATION = "Transformation";
 

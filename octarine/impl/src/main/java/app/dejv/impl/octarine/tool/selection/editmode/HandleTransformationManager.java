@@ -9,6 +9,7 @@ import java.util.Set;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Transform;
 
+import app.dejv.impl.octarine.constants.PredefinedDragHelperTypes;
 import app.dejv.impl.octarine.feedback.handles.CorneredHandleFeedback;
 import app.dejv.impl.octarine.feedback.handles.Direction;
 import app.dejv.octarine.input.MouseDragHelper;
@@ -24,6 +25,7 @@ public abstract class HandleTransformationManager {
     private final CorneredHandleFeedback corneredHandleFeedback;
     private final Map<Direction, MouseDragHelper> mouseDragHelpers = new HashMap<>();
 
+    private TransformationListener listener;
 
     public HandleTransformationManager(CorneredHandleFeedback corneredHandleFeedback, MouseDragHelperFactory mouseDragHelperFactory) {
         requireNonNull(corneredHandleFeedback, "corneredHandleFeedback is null");
@@ -31,13 +33,15 @@ public abstract class HandleTransformationManager {
 
         this.corneredHandleFeedback = corneredHandleFeedback;
 
-        corneredHandleFeedback.getHandles().keySet().forEach((direction) -> mouseDragHelpers.put(direction, mouseDragHelperFactory.create()));
+        corneredHandleFeedback.getHandles().keySet().forEach((direction) -> mouseDragHelpers.put(direction, mouseDragHelperFactory.create(PredefinedDragHelperTypes.DEFAULT)));
     }
 
 
     public void activate(Set<Shape> selectedShapes, TransformationListener listener) {
         requireNonNull(selectedShapes, "selectedShapes is null");
         requireNonNull(listener, "listener is null");
+
+        this.listener = listener;
 
         mouseDragHelpers.entrySet().forEach((entry) ->
                 entry.getValue().activate(corneredHandleFeedback.getHandles().get(entry.getKey()), new MouseDragListener() {
@@ -95,6 +99,11 @@ public abstract class HandleTransformationManager {
 
     public CorneredHandleFeedback getHandleFeedback() {
         return corneredHandleFeedback;
+    }
+
+
+    public TransformationListener getListener() {
+        return listener;
     }
 
 
