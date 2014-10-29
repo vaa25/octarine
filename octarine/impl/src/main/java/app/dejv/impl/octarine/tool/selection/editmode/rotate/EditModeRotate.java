@@ -75,6 +75,7 @@ public class EditModeRotate
             final RotationPivotRequest rotationPivotRequest = new RotationPivotRequest((Point2D) operationDescriptor);
 
             executeGeneralRequest(rotationPivotRequest);
+            updateSelectionPivot();
         }
     }
 
@@ -94,7 +95,7 @@ public class EditModeRotate
             shapes.add(shape);
         });
 
-        resolveInitialPivot();
+        updateSelectionPivot();
 
         rotateHandleFeedback.activate();
         rotateProgressManager.activate(shapes, this);
@@ -108,7 +109,7 @@ public class EditModeRotate
     }
 
 
-    private void resolveInitialPivot() {
+    private void updateSelectionPivot() {
         Set<Optional<RotationChunk>> oRCs = selection.stream()
                 .map((controller) -> controller.getModel().getChunk(PredefinedChunkTypes.ROTATION, RotationChunk.class)).collect(Collectors.toSet());
 
@@ -119,7 +120,6 @@ public class EditModeRotate
                 if (defaultPivot) {
                     //Check, that pivot in RotChunk is already set; if not, use default
                     if ((oRC.get().pivotXProperty().get() == Double.MIN_VALUE) || (oRC.get().pivotYProperty().get() == Double.MIN_VALUE)) {
-                        System.out.println("NOTSET");
                         defaultPivot = true;
                         break;
                     }
@@ -127,21 +127,17 @@ public class EditModeRotate
                     defaultPivot = false;
                     pivotX = oRC.get().pivotXProperty();
                     pivotY = oRC.get().pivotYProperty();
-                    System.out.println("OK, FIRST");
 
                 } else {
                     // If selection contains different pivots, use default
                     if ((pivotX.get() != oRC.get().pivotXProperty().get()) || (pivotX.get() != oRC.get().pivotXProperty().get())) {
-                        System.out.println("NOTEQUAL");
                         defaultPivot = true;
                         break;
                     }
                 }
-                System.out.println("OK");
 
             // If RotChunk is not present for at least one element, use default
             } else {
-                System.out.println("NOTPRESENT");
                 defaultPivot = true;
                 break;
             }

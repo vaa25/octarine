@@ -96,7 +96,6 @@ public class TransformRequestHandler
 
         if ((request instanceof RotationPivotResetRequest) && supportsRotate()) {
 
-            System.out.println("Reset");
             oRotationChunk.get().setPivotX(Double.MIN_VALUE);
             oRotationChunk.get().setPivotY(Double.MIN_VALUE);
             return;

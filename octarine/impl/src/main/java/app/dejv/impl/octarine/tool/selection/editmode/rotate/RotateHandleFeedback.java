@@ -63,6 +63,7 @@ public class RotateHandleFeedback
         pivotX = x;
         pivotY = y;
 
+        System.out.println("Using pivot");
         usingDefaultPivot = false;
         bindPivotCrossLocation();
     }
@@ -72,6 +73,7 @@ public class RotateHandleFeedback
         pivotX = null;
         pivotY = null;
 
+        System.out.println("Reset pivot");
         usingDefaultPivot = true;
         bindPivotCrossLocation();
     }
@@ -81,6 +83,7 @@ public class RotateHandleFeedback
         pivotXOffset = ox;
         pivotYOffset = oy;
 
+        System.out.println("Using offset");
         bindPivotCrossLocation();
     }
 
@@ -89,6 +92,7 @@ public class RotateHandleFeedback
         pivotXOffset = null;
         pivotYOffset = null;
 
+        System.out.println("Reset offset");
         bindPivotCrossLocation();
     }
 
@@ -104,12 +108,12 @@ public class RotateHandleFeedback
 
 
     public double getPivotY() {
-        return pivotCross.translateXProperty().get();
+        return pivotCross.translateYProperty().get();
     }
 
 
     public ReadOnlyDoubleProperty pivotYProperty() {
-        return pivotCross.translateXProperty();
+        return pivotCross.translateYProperty();
     }
 
 
@@ -246,8 +250,15 @@ public class RotateHandleFeedback
                 pivotCross.translateYProperty().bind(pivotY);
             }
         } else {
-            pivotCross.translateXProperty().bind(selectionBounds.centerXProperty());
-            pivotCross.translateYProperty().bind(selectionBounds.centerYProperty());
+            if ((pivotXOffset != null) && (pivotYOffset != null)) {
+
+                pivotCross.translateXProperty().bind(selectionBounds.centerXProperty().add(pivotXOffset));
+                pivotCross.translateYProperty().bind(selectionBounds.centerYProperty().add(pivotYOffset));
+            }
+            else {
+                pivotCross.translateXProperty().bind(selectionBounds.centerXProperty());
+                pivotCross.translateYProperty().bind(selectionBounds.centerYProperty());
+            }
         }
     }
 }
