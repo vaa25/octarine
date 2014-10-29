@@ -63,7 +63,6 @@ public class RotateHandleFeedback
         pivotX = x;
         pivotY = y;
 
-        System.out.println("Using pivot");
         usingDefaultPivot = false;
         bindPivotCrossLocation();
     }
@@ -73,7 +72,6 @@ public class RotateHandleFeedback
         pivotX = null;
         pivotY = null;
 
-        System.out.println("Reset pivot");
         usingDefaultPivot = true;
         bindPivotCrossLocation();
     }
@@ -83,7 +81,6 @@ public class RotateHandleFeedback
         pivotXOffset = ox;
         pivotYOffset = oy;
 
-        System.out.println("Using offset");
         bindPivotCrossLocation();
     }
 
@@ -92,7 +89,6 @@ public class RotateHandleFeedback
         pivotXOffset = null;
         pivotYOffset = null;
 
-        System.out.println("Reset offset");
         bindPivotCrossLocation();
     }
 
