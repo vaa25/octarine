@@ -39,6 +39,5 @@ public class RectangleShape
                 .setPaint(Color.BLANCHEDALMOND)));
 
         chunks.put(PredefinedChunkTypes.STROKE, new StrokeChunk(new PaintChunk()));
-
     }
 }

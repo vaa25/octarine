@@ -13,6 +13,8 @@ public class PredefinedChunkTypes {
 
     public static final String ROTATION = "Rotation";
 
+    public static final String SHEAR = "Shear";
+
     public static final String SIZE = "Size";
 
     public static final String STROKE = "Stroke";
